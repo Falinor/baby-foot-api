@@ -211,7 +211,7 @@ babel-code-frame@^6.16.0, babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@^6.17.0, babel-core@^6.24.1:
+babel-core@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.24.1.tgz#8c428564dce1e1f41fb337ec34f4c3b022b5ad83"
   dependencies:
@@ -666,7 +666,7 @@ babel-plugin-transform-regenerator@^6.24.1:
   dependencies:
     regenerator-transform "0.9.11"
 
-babel-plugin-transform-runtime@^6.15.0:
+babel-plugin-transform-runtime@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
   dependencies:
@@ -679,7 +679,7 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
-babel-preset-es2015@^6.9.0:
+babel-preset-es2015@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-preset-es2015/-/babel-preset-es2015-6.24.1.tgz#d44050d6bc2c9feea702aaf38d727a0210538939"
   dependencies:
@@ -708,7 +708,7 @@ babel-preset-es2015@^6.9.0:
     babel-plugin-transform-es2015-unicode-regex "^6.24.1"
     babel-plugin-transform-regenerator "^6.24.1"
 
-babel-preset-stage-1@^6.16.0:
+babel-preset-stage-1@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-preset-stage-1/-/babel-preset-stage-1-6.24.1.tgz#7692cd7dcd6849907e6ae4a0a85589cfb9e2bfb0"
   dependencies:
@@ -747,7 +747,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -829,11 +829,11 @@ bluebird@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
 
-bluebird@^3.4.0, bluebird@^3.5.0:
+bluebird@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
-body-parser@^1.15.1:
+body-parser@^1.17.1:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.17.1.tgz#75b3bc98ddd6e7e0d8ffe750dfaca5c66993fa47"
   dependencies:
@@ -848,7 +848,7 @@ body-parser@^1.15.1:
     raw-body "~2.2.0"
     type-is "~1.6.14"
 
-bodymen@^1.0.1:
+bodymen@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/bodymen/-/bodymen-1.0.3.tgz#1aa6cfb46d38effb30749878788dcbec2f8bcb46"
   dependencies:
@@ -1102,7 +1102,7 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-cors@^2.7.1:
+cors@^2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/cors/-/cors-2.8.3.tgz#4cf78e1d23329a7496b2fc2225b77ca5bb5eb802"
   dependencies:
@@ -1137,11 +1137,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-debug@2, debug@2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
+debug@2, debug@2.6.1, debug@^2.1.1, debug@^2.2.0:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
-    ms "0.7.3"
+    ms "0.7.2"
 
 debug@2.2.0, debug@~2.2.0:
   version "2.2.0"
@@ -1149,11 +1149,11 @@ debug@2.2.0, debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
-debug@2.6.1, debug@^2.1.1, debug@^2.2.0:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
+debug@2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
   dependencies:
-    ms "0.7.2"
+    ms "0.7.3"
 
 decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
@@ -1518,7 +1518,7 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express@^4.13.4:
+express@^4.15.2:
   version "4.15.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.15.2.tgz#af107fc148504457f2dca9a6f2571d7129b97b35"
   dependencies:
@@ -2329,7 +2329,7 @@ lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
 
-lodash@^4.0.0, lodash@^4.11.1, lodash@^4.11.2, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.17.2, lodash@~4.17.4:
+lodash@^4.0.0, lodash@^4.11.1, lodash@^4.11.2, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.17.2, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -2510,17 +2510,17 @@ mongodb@2.2.26:
     mongodb-core "2.1.10"
     readable-stream "2.2.7"
 
-mongoose-create-unique@^0.4.1:
+mongoose-create-unique@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/mongoose-create-unique/-/mongoose-create-unique-0.4.4.tgz#952135fce7bdd16091bb5d5c4a8d6be43481fb29"
 
-mongoose-keywords@^0.3.1:
+mongoose-keywords@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/mongoose-keywords/-/mongoose-keywords-0.3.2.tgz#4af1fb6db1008a1cb03962c6543d9bfb61db3221"
   dependencies:
     lodash "^4.11.2"
 
-mongoose@^4.4.19:
+mongoose@^4.9.8:
   version "4.9.8"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.9.8.tgz#ef64304231dc2455ab15a0c0cb6c149ce8c787bb"
   dependencies:
@@ -2537,7 +2537,7 @@ mongoose@^4.4.19:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-morgan@^1.7.0:
+morgan@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.8.1.tgz#f93023d3887bd27b78dfd6023cea7892ee27a4b1"
   dependencies:
@@ -2952,7 +2952,7 @@ qs@6.4.0, qs@^6.0.2, qs@^6.1.0, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-querymen@^2.0.0:
+querymen@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/querymen/-/querymen-2.1.1.tgz#ef9c4a78fdbe912c6f549cf9b26ee1cca06d4ee2"
   dependencies:
@@ -3132,7 +3132,7 @@ request-promise-core@1.1.1:
   dependencies:
     lodash "^4.13.1"
 
-request-promise@^4.1.1:
+request-promise@^4.1.1, request-promise@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.1.tgz#7eec56c89317a822cbfea99b039ce543c2e15f67"
   dependencies:
