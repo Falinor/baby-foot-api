@@ -8,6 +8,7 @@
     "test": "ava",
     "test:unit": "npm test \"src/**/!(index).test.js\"",
     "test:integration": "npm test \"src/**/index.test.js\"",
+    "test:watch": "npm test -- --watch",
     "coverage": "npm test",
     "postcoverage": "opn coverage/lcov-report/index.html",
     "dev": "nodemon -i \"*.test.js\" .",
@@ -15,10 +16,28 @@
     "docs": "apidoc -i src -o docs && apidoc-markdown -p docs -o DOCS.md",
     "postdocs": "opn docs/index.html"
   },
-  "ava": {},
+  "ava": {
+    "files": [
+      "src/**/*.test.js"
+    ],
+    "source": [
+      "src/**/!(*.test.js)"
+    ],
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "concurrency": 5,
+    "timeout": "5s",
+    "tap": true,
+    "powerAssert": true,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
   "devDependencies": {
     "apidoc": "^0.17.5",
     "apidoc-markdown": "^0.2.0",
+    "ava": "^0.19.1",
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
