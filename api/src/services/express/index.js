@@ -5,23 +5,23 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import { errorHandler as queryErrorHandler } from 'querymen'
 import { errorHandler as bodyErrorHandler } from 'bodymen'
-import { env } from '../../config'
+import config from '../../config'
 
 export default (routes) => {
-  const app = express()
+  const app = express();
 
   /* istanbul ignore next */
-  if (env === 'production' || env === 'development') {
-    app.use(cors())
-    app.use(compression())
-    app.use(morgan('dev'))
+  if (config.env === 'production' || config.env === 'development') {
+    app.use(cors());
+    app.use(compression());
+    app.use(morgan('dev'));
   }
 
-  app.use(bodyParser.urlencoded({ extended: false }))
-  app.use(bodyParser.json())
-  app.use(routes)
-  app.use(queryErrorHandler())
-  app.use(bodyErrorHandler())
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+  app.use(routes);
+  app.use(queryErrorHandler());
+  app.use(bodyErrorHandler());
 
-  return app
+  return app;
 }

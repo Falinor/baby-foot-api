@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-const router = new Router()
+const router = new Router();
 
 /**
  * @apiDefine master Master access only
@@ -26,4 +26,4 @@ const router = new Router()
  * @apiParam {String[]} [fields] Fields to be returned.
  */
 
-export default router
+export default router;
