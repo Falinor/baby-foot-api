@@ -1,4 +1,6 @@
-import { Router } from 'express'
+import { Router } from 'express';
+
+import match from './match';
 
 const router = new Router();
 
@@ -25,5 +27,6 @@ const router = new Router();
  * @apiParam {String[]} [sort=-createdAt] Order of returned items.
  * @apiParam {String[]} [fields] Fields to be returned.
  */
+router.use('/matches', match);
 
 export default router;
