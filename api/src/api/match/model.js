@@ -1,16 +1,30 @@
 import mongoose, { Schema } from 'mongoose';
 
-const matchSchema = new Schema({
-  red: {
-    trigrams: {
-      type: String
-    }
-  },
-  blue: {
-    trigrams: {
-      type: String
-    }
+import {
+  minArrayLengthValidator,
+  maxArrayLengthValidator
+} from '../../services/validators';
+
+const teamSchema = {
+  trigrams: {
+    type: [String],
+    required: true,
+    validate: [
+      {
+        validator: minArrayLengthValidator(1),
+        message: 'Array should contain atleast 1 element'
+      },
+      {
+        validator: maxArrayLengthValidator(2),
+        message: 'Array should contain not more than 2 elements'
+      }
+    ]
   }
+};
+
+const matchSchema = new Schema({
+  red: teamSchema,
+  blue: teamSchema
 }, {
   timestamps: true
 });
