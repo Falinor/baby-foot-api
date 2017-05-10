@@ -48,7 +48,7 @@ const matchSchema = new Schema({
 });
 
 matchSchema.methods = {
-  view (full) {
+  view(full) {
     const view = {
       // simple view
       id: this.id,
