@@ -15,3 +15,12 @@ export const minArrayLengthValidator = (minLength) => async (v) =>
  */
 export const maxArrayLengthValidator = (maxLength) => async (v) =>
   v.length <= maxLength;
+
+/**
+ * Checks whether a trigram is valid.
+ * @return {Promise<boolean>} True if the trigram contains 3 letters. False
+ * otherwise.
+ */
+export const trigramValidator = () => async (v) => {
+  return /^[A-Z]{3}$/.test(v);
+};
