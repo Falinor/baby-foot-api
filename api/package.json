@@ -25,6 +25,7 @@
     "source": [
       "src/**/!(*.test.js)"
     ],
+    "verbose": true,
     "failFast": true,
     "failWithoutAssertions": false,
     "concurrency": 5,
