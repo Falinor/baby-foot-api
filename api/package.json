@@ -27,7 +27,7 @@
     "failWithoutAssertions": false,
     "concurrency": 5,
     "timeout": "5s",
-    "tap": true,
+    "tap": false,
     "powerAssert": true,
     "require": [
       "babel-register"
