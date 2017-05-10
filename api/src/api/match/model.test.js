@@ -1,6 +1,25 @@
 import test from 'ava';
 
-test.todo('Create a match');
+import { Match } from '.';
+
+test.afterEach('Clean database', async (t) => {
+  return Match.remove({});
+});
+
+test('Create a match with valid parameters', async (t) => {
+  const match = await Match.create({
+    red: {
+      points: 10,
+      trigrams: ['GUE', 'RED']
+    },
+    blue: {
+      points: 0,
+      trigrams: ['ABC', 'DEF']
+    }
+  });
+  console.log(match);
+  t.fail();
+});
 
 test.todo('Find a match');
 
