@@ -13,8 +13,10 @@
     "postcoverage": "opn coverage/lcov-report/index.html",
     "dev": "nodemon -i \"*.test.js\" .",
     "lint": "eslint src",
-    "docs": "apidoc -i src -o docs && apidoc-markdown -p docs -o DOCS.md",
-    "postdocs": "opn docs/index.html"
+    "docs": "npm run docs:es && npm run docs:api && npm run postdocs",
+    "docs:es": "esdoc",
+    "docs:api": "apidoc -i src -o docs/api && apidoc-markdown -p docs/api -o DOCS.md",
+    "postdocs": "opn docs/api/index.html && opn docs/code/index.html"
   },
   "ava": {
     "files": [
@@ -39,6 +41,8 @@
     "apidoc-markdown": "^0.2.0",
     "ava": "^0.19.1",
     "babel-eslint": "^7.2.3",
+    "esdoc": "^0.5.2",
+    "esdoc-standard-plugin": "^0.0.3",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.2.0",
