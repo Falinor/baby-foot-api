@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import path from 'path';
-import _ from 'lodash';
+import { join } from 'path';
 
 /* istanbul ignore next */
 const requireProcessEnv = (name) => {
@@ -11,44 +10,18 @@ const requireProcessEnv = (name) => {
 };
 
 const config = {
-  all: {
-    env: process.env.NODE_ENV || 'development',
-    root: path.join(__dirname, '..'),
-    port: process.env.PORT || 9000,
-    ip: process.env.IP || '0.0.0.0',
-    // masterKey: requireProcessEnv('MASTER_KEY'),
-    mongo: {
-      options: {
-        db: {
-          safe: true
-        }
-      }
-    }
-  },
-  test: {
-    mongo: {
-      uri: 'mongodb://localhost/babyfoot-api-test',
-      options: {
-        debug: false
-      }
-    }
-  },
-  development: {
-    mongo: {
-      uri: 'mongodb://localhost/babyfoot-api-dev',
-      options: {
-        debug: true
-      }
-    }
-  },
-  production: {
-    ip: process.env.IP || undefined,
-    port: process.env.PORT || 8080,
-    mongo: {
-      uri: process.env.MONGODB_URI || 'mongodb://localhost/babyfoot-api'
-    }
+  env: process.env.NODE_ENV || 'development',
+  root: join(__dirname, '..'),
+  port: process.env.PORT || 9000,
+  ip: process.env.IP || '0.0.0.0',
+  // masterKey: requireProcessEnv('MASTER_KEY'),
+  db: {
+    name: process.env.DB_NAME || 'BabyFootDB',
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 2424,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD
   }
 };
 
-const fullConf = _.merge(config.all, config[config.all.env]);
-export default fullConf;
+export default config;

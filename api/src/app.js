@@ -1,13 +1,15 @@
-import http from 'http'
+import { createServer } from 'http';
+
+import api from './api';
 import config from './config';
-import mongoose from './services/mongoose'
 import express from './services/express'
-import api from './api'
+import db from './services/orientjs';
 
 const app = express(api);
-const server = http.createServer(app);
+const server = createServer(app);
 
-mongoose.connect(config.mongo.uri);
+// Connect to database
+db.open();
 
 setImmediate(() => {
   server.listen(config.port, config.ip, () => {
@@ -15,6 +17,12 @@ setImmediate(() => {
     in ${config.env}
     `);
   });
+});
+
+// Clean up before exiting
+process.on('exit', () => {
+  db.close();
+  process.exit(0);
 });
 
 export default app;
