@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./assets/scss/reset";
+
+// Import material theme
+@import "~@angular/material/prebuilt-themes/deeppurple-amber";
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
