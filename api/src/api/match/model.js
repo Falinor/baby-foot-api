@@ -1,3 +1,14 @@
+import { createVertex } from '../../services/arango/vertex';
+
+export const MATCH_COLLECTION = 'matches';
+
+const Match = createVertex(MATCH_COLLECTION);
+export default Match;
+
+
+
+
+/*
 import mongoose, { Schema } from 'mongoose';
 
 import {
@@ -69,3 +80,4 @@ const model = mongoose.model('Match', matchSchema);
 
 export const schema = model.schema;
 export default model;
+*/

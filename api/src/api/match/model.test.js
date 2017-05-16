@@ -1,25 +1,12 @@
 import test from 'ava';
 
-import { Match } from '.';
+import { Match } from './model';
 
 test.afterEach('Clean database', async (t) => {
-  return Match.remove({});
+  return Match.drop();
 });
 
-test('Create a match with valid parameters', async (t) => {
-  const match = await Match.create({
-    red: {
-      points: 10,
-      trigrams: ['GUE', 'RED']
-    },
-    blue: {
-      points: 0,
-      trigrams: ['ABC', 'DEF']
-    }
-  });
-  console.log(match);
-  t.fail();
-});
+test.todo('Create a match with valid parameters');
 
 test.todo('Find a match');
 

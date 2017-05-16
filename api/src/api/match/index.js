@@ -1,12 +1,11 @@
-import { middleware as body } from 'bodymen'
+import { middleware as body } from 'bodymen';
 import { Router } from 'express'
-import { middleware as query } from 'querymen'
+import { middleware as query } from 'querymen';
 
-import { create, index, show, destroy } from './controller'
-import { schema } from './model'
+import { create, index, show, destroy } from './controller';
+import { matchSchema } from './schema';
 
 const router = new Router();
-const { red, blue } = schema.tree;
 
 /**
  * @api {post} /matches Create match
@@ -20,7 +19,7 @@ const { red, blue } = schema.tree;
  * @apiError 404 Match not found.
  */
 router.post('/',
-  body({ red, blue }),
+  body(matchSchema),
   create);
 
 /**
@@ -43,8 +42,10 @@ router.get('/',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Match not found.
  */
+/*
 router.get('/:id',
   show);
+  */
 
 /**
  * @api {delete} /matches/:id Delete match
@@ -53,8 +54,10 @@ router.get('/:id',
  * @apiSuccess (Success 204) 204 No Content.
  * @apiError 404 Match not found.
  */
+/*
 router.delete('/:id',
   destroy);
+  */
 
-export Match, { schema } from './model';
+// export Match, { schema } from './model';
 export default router
