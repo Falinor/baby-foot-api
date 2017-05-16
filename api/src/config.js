@@ -16,11 +16,12 @@ const config = {
   ip: process.env.IP || '0.0.0.0',
   // masterKey: requireProcessEnv('MASTER_KEY'),
   db: {
-    name: process.env.DB_NAME || 'BabyFootDB',
+    database: process.env.DB_DATABASE || 'BabyFootDB',
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 2424,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD
+    username: process.env.DB_USERNAME || '',
+    password: process.env.DB_PASSWORD || '',
+    graphName: process.env.DB_GRAPH_NAME || 'BabyFootGraph'
   }
 };
 
