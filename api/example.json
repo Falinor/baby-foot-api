@@ -1,0 +1,19 @@
+{
+  "won": {
+    "color": "red",
+    "points": 10,
+    "players": [
+      "FHI",
+      "LCI"
+    ]
+  },
+  "lost": {
+    "color": "blue",
+    "points": 6,
+    "players": [
+      "GUE",
+      "RED"
+    ]
+  },
+  "playedOn": "..."
+}
