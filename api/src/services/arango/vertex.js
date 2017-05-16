@@ -22,5 +22,8 @@ export const createVertex = (name) => {
           .catch(console.error);
       });
   });
+
+  // Add eventual methods we would like to use in GraphVertexCollection instances
+
   return Vertex;
 };

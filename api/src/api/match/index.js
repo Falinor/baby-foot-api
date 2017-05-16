@@ -59,5 +59,6 @@ router.delete('/:id',
   destroy);
   */
 
-// export Match, { schema } from './model';
+export * from './controller';
+export * from './model';
 export default router
