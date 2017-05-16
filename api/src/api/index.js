@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
+import * as edges from './edges';
 import match from './match';
+import * as player from './player';
+import * as team from './team';
 
 const router = new Router();
 
