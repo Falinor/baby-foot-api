@@ -59,6 +59,4 @@ router.delete('/:id',
   destroy);
   */
 
-export * from './controller';
-export * from './model';
 export default router

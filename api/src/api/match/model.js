@@ -1,6 +1,10 @@
-import { createVertex } from '../../services/arango/vertex';
+import { createVertexCollection } from '../../services/arango/vertex';
 
 export const MATCH_COLLECTION = 'matches';
 
-const Match = createVertex(MATCH_COLLECTION);
-export default Match;
+export const matchCollection = async () => {
+  const Match = await createVertexCollection(MATCH_COLLECTION);
+  // Other custom methods
+  // ...
+  return Match;
+};

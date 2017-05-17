@@ -8,6 +8,8 @@ test.afterEach('Clean database', async (t) => {
 
 test.todo('Create a match with valid parameters');
 
+test.todo('Create a match if it does not exist');
+
 test.todo('Find a match');
 
 test.todo('Find a match by id');

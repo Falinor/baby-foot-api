@@ -3,19 +3,17 @@ import Match from './model';
 import Player from '../player/model';
 import Team from '../team/model';
 import { Won, Lost, In } from '../edges/index';
-import graph, { db } from '../../services/arango';
 
 // export const create = async ({ bodymen: { body } }, res, next) => {
 export const create = async ({ body }, res, next) => {
   try {
     // Save the match
-    console.log(Match.saveOrCreate());
     const match = await Match.save({ playedOn: new Date() });
     // Save the teams
     console.log(body);
     const teams = await Promise.all([
-      Team.save({ players: body.won.players }),
-      Team.save({ players: body.lost.players })
+      Team.getOrSave({ players: body.won.players }),
+      Team.getOrSave({ players: body.lost.players })
     ]);
     // Save the winners
     const winners = await Promise.all(
