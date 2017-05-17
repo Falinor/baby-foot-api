@@ -1,6 +1,8 @@
 import { Database } from 'arangojs';
 
-import emitter from './emitter';
+import { matchCollection } from '../../api/match/model';
+import { playerCollection } from '../../api/player/model';
+import { teamCollection } from '../../api/team/model';
 import config from '../../config';
 
 // Retrieve configuration
@@ -20,7 +22,7 @@ const initDb = async () => {
     console.log(`Database ${database} created.`);
   } catch (e) {
     if (e.code === 409) {
-      console.log(`Database ${database} already exists. Skipping...`);
+      console.log(`Database '${database}' already exists. Skipping...`);
     } else {
       console.log(e);
     }
@@ -34,10 +36,10 @@ const initDb = async () => {
 const initGraph = async () => {
   try {
     await graph.create({});
-    console.log(`Graph ${config.db.graphName} created.`);
+    console.log(`Graph '${config.db.graphName}' created.`);
   } catch (e) {
     if (e.code === 409) {
-      console.log(`Graph ${config.db.graphName} already exists. Skipping...`);
+      console.log(`Graph '${config.db.graphName}' already exists. Skipping...`);
     } else {
       console.error(e);
     }
@@ -45,23 +47,15 @@ const initGraph = async () => {
 };
 
 /**
- * Creates models by emitting an event.
+ * Creates models.
  * @return {Promise.<void>}
  */
-const initCollections = () => {
-  let count = 0;
-  return new Promise((resolve, reject) => {
-    emitter.on('endInitCollection', () => {
-      ++count;
-      // TODO(refactor)
-      if (count === 6) {
-        console.log('Collections initialized.');
-        resolve();
-      }
-    });
-    emitter.emit('initCollections');
-  });
-};
+const initCollections = async () =>
+  Promise.all([
+    matchCollection(),
+    playerCollection(),
+    teamCollection()
+  ]);
 
 /**
  * Initializes a database and a graph.

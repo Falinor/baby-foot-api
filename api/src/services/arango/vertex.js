@@ -1,29 +1,29 @@
 import graph from './index';
-import emitter from './emitter';
 
-export const createVertex = (name) => {
-  console.log(`Creating vertex collection ${name}.`);
+export const createVertexCollection = (name) => {
+  console.log(`Creating vertex collection '${name}'...`);
   const Vertex = graph.vertexCollection(name);
-  emitter.once('initCollections', () => {
+
+  // Add eventual methods we would like to use
+  // in GraphVertexCollection instances.
+  // HERE
+
+  return new Promise((resolve, reject) => {
     // Retrieve vertex collection
     Vertex.get()
       .then(() => {
         // It exists
         console.log(`Vertex collection '${name}' exists. Skipping...`);
-        emitter.emit('endInitCollection');
+        resolve(Vertex);
       })
       .catch(() => {
         // Vertex collection does not exist so we create it
         graph.addVertexCollection(name)
           .then(() => {
             console.log(`Vertex collection '${name}' created.`);
-            emitter.emit('endInitCollection');
+            resolve(Vertex);
           })
-          .catch(console.error);
+          .catch(reject);
       });
-  });
-
-  // Add eventual methods we would like to use in GraphVertexCollection instances
-
-  return Vertex;
+  })
 };

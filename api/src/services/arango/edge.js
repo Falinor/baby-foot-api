@@ -1,25 +1,33 @@
 import graph from './index';
-import emitter from './emitter';
 
 export const createEdge = (name, fromName, toName) => {
-  console.log(`Creating edge collection ${name}.`);
+  console.log(`Creating edge collection '${name}'...`);
   const Edge = graph.edgeCollection(name);
-  emitter.once('initCollections', () => {
+  const def = {
+    collection: name,
+    from: [fromName],
+    to: [toName]
+  };
+
+  // Add eventual methods we would like to use
+  // in GraphEdgeCollection instances.
+  // HERE
+
+  return new Promise((resolve, reject) => {
     Edge.get()
       .then(() => {
+        // It exists
         console.log(`Edge collection '${name}' exists. Skipping...`);
-        emitter.emit('endInitCollection');
+        resolve(Edge);
       })
       .catch(() => {
-        graph.addEdgeDefinition({
-          collection: name,
-          from: [fromName],
-          to: [toName]
-        }).then(() => {
-          console.log(`Edge collection '${name}' created.`);
-          emitter.emit('endInitCollection');
-        }).catch(console.error);
+        // Edge collection does not exist so we create it
+        graph.addEdgeDefinition(def)
+          .then(() => {
+            console.log(`Edge collection '${name}' created.`)
+            resolve(Edge);
+          })
+          .catch(reject);
       });
   });
-  return Edge;
 };
