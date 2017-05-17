@@ -28,7 +28,7 @@
       "src/**/!(*.test.js)"
     ],
     "verbose": true,
-    "failFast": true,
+    "failFast": false,
     "failWithoutAssertions": false,
     "concurrency": 5,
     "timeout": "5s",
