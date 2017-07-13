@@ -1,0 +1,10 @@
+get:
+  summary: Find players
+  description: >
+    Find players with pagination. ...
+  operationId: findPlayers
+  tags:
+    - Player edges
+  responses:
+    200:
+      description: OK

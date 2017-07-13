@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  api:
+    command: dev
+    volumes:
+      - ./src:/code/src
+    ports:
+      - "4000:4000"
+    links:
+      - db
+    environment:
+      - API_PORT=4000
+      - DB_DATABASE=BabyFootDb
+      - DB_HOST=http://db
+      - DB_PORT=8529
+
+  db:
+    image: arango:latest
+    ports:
+      - "8529:8529"
+    environment:
+      - ARANGO_NO_AUTH=1

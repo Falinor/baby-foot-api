@@ -3,3 +3,23 @@ version: '3'
 services:
   api:
     command: test:watch
+    volumes:
+      - ./src:/code/src
+    ports:
+      - "3000:3000"
+    links:
+      - dbtest
+    environment:
+      - API_PORT=3000
+      - DB_DATABASE=BabyFootTestDb
+      - DB_HOST=http://dbtest
+      - DB_PORT=8529
+      - DB_USERNAME=test
+      - DB_PASSWORD=test
+
+  dbtest:
+    image: arangodb:latest
+    ports:
+      - "8530:8529"
+    environment:
+      - ARANGO_NO_AUTH=1

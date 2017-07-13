@@ -1,0 +1,29 @@
+type: object
+properties:
+  _id:
+    type: string
+  _key:
+    type: string
+  red:
+    type: object
+    properties:
+      points:
+        type: number
+        minimum: 0
+        maximum: 42
+        example: 10
+  blue:
+    type: object
+    properties:
+      points:
+        type: number
+        minimum: 0
+        maximum: 42
+        example: 6
+  createdAt:
+    type: string
+    format: date-time
+required:
+  - points
+  - players
+  - createdAt

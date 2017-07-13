@@ -1,0 +1,20 @@
+type: object
+properties:
+  _id:
+    type: string
+  _key:
+    type: string
+  players:
+    type: array
+    items:
+      type: string
+      pattern: /^[A-Z]{3}$/
+      minItems: 1
+      maxItems: 2
+      uniqueItems: true
+  createdAt:
+    type: string
+    format: date-time
+required:
+  - players
+  - createdAt

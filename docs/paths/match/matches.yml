@@ -1,0 +1,24 @@
+get:
+  summary: Find matches
+  description: >
+    A detailed description of the operation
+    using GitHub flavoured markdown
+  operationId: findMatches
+  tags:
+    - Matches
+  responses:
+    200:
+      description: OK
+
+post:
+  summary: Create a match
+  description: >
+    A detailed description
+  operationId: createMatch
+  tags:
+    - Matches
+  responses:
+    201:
+      description: Created
+    400:
+      description: Bad request

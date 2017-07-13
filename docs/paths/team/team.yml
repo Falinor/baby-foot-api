@@ -1,0 +1,12 @@
+get:
+  summary: Get a team by ID
+  description: >
+    Description
+  operationId: findTeamByID
+  tags:
+    - Teams
+  responses:
+    200:
+      description: OK
+    404:
+      description: Not found

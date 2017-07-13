@@ -1,0 +1,32 @@
+/matches:
+  $ref: ./match/matches.yml
+
+/matches/{id}:
+  $ref: ./match/match.yml
+
+/matches/{id}/red:
+  $ref: ./match/team.yml
+
+/matches/{id}/blue:
+  $ref: ./match/team.yml
+
+/teams:
+  $ref: ./team/teams.yml
+
+/teams/{id}:
+  $ref: ./team/team.yml
+
+/teams/{id}/players:
+  $ref: ./team/players.yml
+
+/players:
+  $ref: ./player/players.yml
+
+/players/{id}:
+  $ref: ./player/player.yml
+
+/players/{id}/teams:
+  $ref: ./player/teams.yml
+
+/players/{id}/matches:
+  $ref: ./player/matches.yml

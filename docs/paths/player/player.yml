@@ -1,0 +1,12 @@
+get:
+  summary: Get a player by ID
+  description: >
+    Get a player by ID.
+  operationId: findPlayerByID
+  tags:
+    - Players
+  responses:
+    200:
+      description: OK
+    404:
+      description: Not found

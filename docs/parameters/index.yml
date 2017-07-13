@@ -1,0 +1,20 @@
+skipParam:
+  name: skip
+  in: query
+  description: Number of items to skip
+  type: integer
+  format: int32
+
+limitParam:
+  name: limit
+  in: query
+  description: Max items to return
+  type: integer
+  format: int32
+
+# sortParam:
+  # name: sort
+  # in: query
+  # description: Fields to sort by
+  # type: string
+

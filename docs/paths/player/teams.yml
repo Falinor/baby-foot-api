@@ -1,0 +1,12 @@
+get:
+  summary: Get the teams associated with a player.
+  description: >
+    Retrieves the teams of which the given player is a member.
+  operationId: findTeamsFromPlayer
+  tags:
+    - Player edges
+  responses:
+    200:
+      description: OK
+    404:
+      description: Not found

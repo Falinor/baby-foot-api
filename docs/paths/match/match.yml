@@ -1,0 +1,12 @@
+get:
+  summary: Get a match by ID
+  description: >
+    Description
+  operationId: findMatchByID
+  tags:
+    - Matches
+  responses:
+    200:
+      description: OK
+    404:
+      description: Not found

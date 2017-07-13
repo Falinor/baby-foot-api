@@ -10,5 +10,7 @@ RUN yarn
 
 COPY . $APP
 
+VOLUME [ "$APP/src" ]
+
 ENTRYPOINT [ "yarn" ]
 CMD [ "start" ]

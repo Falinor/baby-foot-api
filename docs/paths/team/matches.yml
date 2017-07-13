@@ -1,0 +1,12 @@
+get:
+  summary: Find matches associated with a team.
+  description: >
+    Find all the matches a team has competed.
+  operationId: findMatchesFromTeam
+  tags:
+    - Team edges
+  responses:
+    200:
+      description: OK
+    404:
+      description: Not found
