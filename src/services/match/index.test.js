@@ -102,4 +102,11 @@ test('GET /matches/:id - 200 OK', async t => {
 
 test.todo('GET /matches/:id - 400 Bad request');
 
-test.todo('GET /matches/:id - 404 Not found');
+test('GET /matches/:id - 404 Not found', async t => {
+  const res = await request(t.context.api)
+    .get('/matches/1234')
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json');
+  t.is(typeof res, 'object');
+  t.is(res.status, 404);
+});
