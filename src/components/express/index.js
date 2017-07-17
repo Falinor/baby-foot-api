@@ -24,7 +24,12 @@ export default (routes) => {
   app.use('/docs', swagger.serve(), swagger.setup());
   app.use('/', (req, res) => res.status(200).json('Welcome!'));
 
-  // app.use(error());
+  app.use((err, req, res, next) => {
+    res.status(err.code || 500).json({
+      name: err.name,
+      message: err.message
+    });
+  });
 
   return app;
 }
