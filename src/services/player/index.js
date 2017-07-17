@@ -1,34 +1,48 @@
 import { Router } from 'express';
 
-import controller from './controller';
+import createController from './controller';
+import createModel from './model';
 
-export default (graph) => {
+export default (store) => {
   const router = new Router();
-  const ctrl = controller(graph);
+  const model = createModel(store);
+  const controller = createController(model);
 
   /**
    *
    */
   router.get('/players',
-    ctrl.find
+    controller.find
   );
 
   /**
    *
    */
   router.get('/players/:trigram',
-    ctrl.get
+    controller.get
   );
 
   /**
    *
    */
   router.get('/players/:trigram/teams',
-    ctrl.teams
+    controller.teams
+  );
+
+  router.get('/players/:trigram/wins',
+    // ...
   );
 
   router.get('/players/:trigram/wins/count',
-    ctrl.winCount
+    // ...
+  );
+
+  router.get('/players/:trigram/losses',
+    // ...
+  );
+
+  router.get('/players/:trigram/losses/count',
+    // ...
   );
 
   return router;

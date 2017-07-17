@@ -1,14 +1,12 @@
 import test from 'ava';
+import sinon from 'sinon';
 
 import createRouter from './index';
 
 test('Should create a router instance', async t => {
-  const arango = {
-    graph: {
-      vertexCollection: (name) => {},
-      edgeCollection: (name) => {}
-    }
+  const graph = {
+    vertexCollection: sinon.stub()
   };
-  const router = createRouter(arango);
+  const router = createRouter(graph);
   t.truthy(router);
 });
