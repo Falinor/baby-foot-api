@@ -33,7 +33,7 @@ test('Should fail to find a vertex', async t => {
   t.is(error.message, 'Could not find vertex');
 });
 
-test('Should save an entity', async t => {
+test('Should create an entity', async t => {
   const store = {
     save: sinon.stub().returns(
       Promise.resolve({ vertex: 42 })

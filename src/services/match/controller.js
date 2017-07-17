@@ -1,32 +1,6 @@
-import { notFound, success } from '../../components/response';
+import { success } from '../../components/response';
 
-/**
- *
- * @param model {object}
- */
-export const create = (model) => async (req, res, next) =>
-  model.save(req.body)
-    .then(data => Object.assign(data, req.body))
-    .then(success(res, 201))
-    .catch(next);
-
-/**
- *
- * @param model
- */
-export const find = (model) => async (req, res, next) =>
-  model.find(req.body, req.query)
-    .then(success(res))
-    .catch(next);
-
-/**
- *
- * @param model
- */
-export const get = (model) => async (req, res, next) =>
-  model.vertex(req.params.id)
-    .then(success(res))
-    .catch(next);
+import { create, find, get } from '../../components/controller';
 
 /**
  *
@@ -51,6 +25,8 @@ export const winners = (model) => async ({ params }, res, next) => {
 export const losers = (model) => async ({ params }, res, next) => {
   res.status(500).json('Not implemented');
 };
+
+export { create, find, findOne, get } from '../../components/controller';
 
 export default (model) => ({
   create: create(model),
