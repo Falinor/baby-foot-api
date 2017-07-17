@@ -10,7 +10,7 @@ services:
     links:
       - db
     environment:
-      - API_PORT=4000
+      - PORT=4000
       - DB_DATABASE=BabyFootDb
       - DB_HOST=http://db
       - DB_PORT=8529
