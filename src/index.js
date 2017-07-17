@@ -5,13 +5,15 @@ import config from './config/index';
 import express from './components/express'
 import arango from './components/arango';
 
-const db = arango();
-
 // Connect to databaseName
 arango()
-  .then(db => {
-    const graph = db.graph(config.db.graphName);
-    const routes = router({ db, graph });
+  .then(db => db.init())
+  .then(graph => {
+    // TODO: init collections
+    return graph;
+  })
+  .then(graph => {
+    const routes = router(graph);
     const app = express(routes);
     const server = http.createServer(app);
     server.listen(config.port, config.ip, () => {
