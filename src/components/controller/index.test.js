@@ -12,14 +12,17 @@ test.beforeEach('Create a response stub', async t => {
   const res = {};
   res.status = sinon.stub().returns(res);
   res.json = sinon.stub().returns(res);
-  const next = sinon.stub().returns({});
+  const next = sinon.stub();
   t.context = { req, res, next };
 });
 
 test('Should create a controller instance', async t => {
   const controller = createController();
   t.truthy(controller);
+  t.truthy(controller.create);
   t.truthy(controller.find);
+  t.truthy(controller.findOne);
+  t.truthy(controller.get);
 });
 
 test('Should create an entity', async t => {

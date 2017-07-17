@@ -8,7 +8,6 @@ export const create = (model) => async (req, res, next) =>
 
 export const find = (model) => async (req, res, next) =>
   model.find(req.query)
-    .then(cursor => cursor.all())
     .then(success(res))
     .catch(next);
 
@@ -23,8 +22,8 @@ export const get = (model) => async (req, res, next) =>
     .catch(next);
 
 export default (model) => ({
+  create: create(model),
   find: find(model),
   findOne: findOne(model),
-  get: get(model),
-  create: create(model)
+  get: get(model)
 });
