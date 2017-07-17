@@ -1,0 +1,10 @@
+get:
+  summary: Find teams associated with a match
+  description: >
+    Test
+  operationId: findTeamsFromMatch
+  tags:
+    - Match edges
+  responses:
+    200:
+      description: OK

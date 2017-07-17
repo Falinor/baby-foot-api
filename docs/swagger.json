@@ -64,6 +64,21 @@
         }
       }
     },
+    "/matches/{id}/teams": {
+      "get": {
+        "summary": "Find teams associated with a match",
+        "description": "Test\n",
+        "operationId": "findTeamsFromMatch",
+        "tags": [
+          "Match edges"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/matches/{id}/red": {
       "get": {
         "summary": "Get a team from a match",

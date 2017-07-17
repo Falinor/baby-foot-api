@@ -4,6 +4,9 @@
 /matches/{id}:
   $ref: ./match/match.yml
 
+/matches/{id}/teams:
+  $ref: ./match/teams.yml
+
 /matches/{id}/red:
   $ref: ./match/team.yml
 
