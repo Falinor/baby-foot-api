@@ -1,6 +1,13 @@
 import test from 'ava';
 
-import createModel from './model';
+import createModel, { find, findOne, vertex, save } from './model';
+
+test('Should export default model functions', async t => {
+  t.is(typeof find, 'function');
+  t.is(typeof findOne, 'function');
+  t.is(typeof vertex, 'function');
+  t.is(typeof save, 'function');
+});
 
 test('Should create a createModel instance', async t => {
   const model = createModel({});

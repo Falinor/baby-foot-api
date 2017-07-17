@@ -16,7 +16,7 @@ test.beforeEach('Create stubs', async t => {
   t.context = { req, res, next };
 });
 
-test('Should create a controller instance', async t => {
+test('Should create a createController instance', async t => {
   const controller = createController({});
   t.is(typeof controller, 'object');
   t.truthy(controller.create);

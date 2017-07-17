@@ -10,12 +10,12 @@ export default (store) => {
   const model = createModel(store);
   const controller = createController(model);
 
-  router.post('/matches',
-    controller.create
-  );
-
   router.get('/matches',
     controller.find
+  );
+
+  router.post('/matches',
+    controller.create
   );
 
   router.get('/matches/:id',
@@ -26,12 +26,16 @@ export default (store) => {
     controller.teams
   );
 
-  router.get('/matches/:id/winners',
-    controller.winners
+  router.get('/matches/:id/red',
+    // TODO
   );
 
-  router.get('/matches/:id/losers',
-    controller.losers
+  router.post('/matches/:id/red',
+    // TODO
+  );
+
+  router.get('/matches/:id/blue',
+    // TODO
   );
 
   return router;
