@@ -21,6 +21,18 @@ test('Should return a vertex', async t => {
   t.is(result, 42);
 });
 
+test('Should fail to find a vertex', async t => {
+  const store = {
+    vertex: sinon.stub().returns(
+      Promise.reject(new Error('Could not find vertex'))
+    )
+  };
+  const vertex = model.vertex(store);
+  const error = await t.throws(vertex('handle'));
+  t.is(typeof error, 'object');
+  t.is(error.message, 'Could not find vertex');
+});
+
 test('Should save an entity', async t => {
   const store = {
     save: sinon.stub().returns(
