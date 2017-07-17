@@ -13,7 +13,7 @@ const init = (db) => async (options = config.db) => {
     db.useDatabase(options.databaseName);
     const graph = db.graph(options.graphName);
     await graph.create({});
-    return { db, graph };
+    return graph;
   } catch (err) {
     logger.error(err);
     process.exit(1);

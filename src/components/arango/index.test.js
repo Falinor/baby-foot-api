@@ -16,7 +16,7 @@ test('Should init a test database', async t => {
   const db = await arango();
   const databaseName = `database-${uuid()}`;
   const graphName = `graph-${uuid()}`;
-  const { graph } = await db.init({
+  const graph = await db.init({
     databaseName,
     graphName
   });
