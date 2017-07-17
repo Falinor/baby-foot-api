@@ -2,15 +2,18 @@ import test from 'ava';
 import sinon from 'sinon';
 
 import createController, { create, find, get } from './controller';
-import * as model from './model';
 
 test.beforeEach('Create stubs', async t => {
+  const req = sinon.stub().returns({
+    query: sinon.stub(),
+    body: sinon.stub(),
+    params: sinon.stub()
+  });
   const res = {};
   res.json = sinon.stub().returns(res);
   res.status = sinon.stub().returns(res);
-  t.context = {
-    res
-  };
+  const next = sinon.stub();
+  t.context = { req, res, next };
 });
 
 test('Should create a controller instance', async t => {
@@ -52,7 +55,9 @@ test('Should find matches', async t => {
   const res = t.context.res;
   const model = {
     find: sinon.stub().returns(
-      Promise.resolve({ data: 42 })
+      Promise.resolve([
+        { data: 42 }
+      ])
     )
   };
   await find(model)({}, res, () => {});
@@ -60,7 +65,7 @@ test('Should find matches', async t => {
   t.true(res.status.calledOnce);
   t.true(res.status.calledWithExactly(200));
   t.true(res.json.calledOnce);
-  t.true(res.json.calledWithExactly({ data: 42 }));
+  t.true(res.json.calledWithExactly([{ data: 42 }]));
 });
 
 test('Should find a match', async t => {
@@ -81,13 +86,7 @@ test('Should find a match', async t => {
   t.true(res.json.calledWithExactly({ data: 42 }));
 });
 
-test('Should fail to find a match', async t => {
-  const model = {
-    vertex: sinon.stub().returns(
-      Promise.reject()
-    )
-  };
-});
+test.todo('Should fail to find a match');
 
 test.todo('Should find the teams associated with a match');
 
