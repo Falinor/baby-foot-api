@@ -4,7 +4,12 @@ export const vertex = (store) => async (docHandle) =>
 
 export const save = (store) => async (data, fromId, toId) =>
   store.save(data, fromId, toId)
-    .then(res => res.vertex);
+    .then(res => res.vertex)
+    .catch(err => {
+      const error = new Error('Document not found');
+      error.code = 404;
+      throw error;
+    });
 
 export const createModel = (store) => ({
   vertex: vertex(store),

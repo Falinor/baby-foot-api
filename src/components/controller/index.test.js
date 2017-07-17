@@ -56,9 +56,7 @@ test('Should fail to create an entity', async t => {
 test('Should find all entities and call res.status and res.json', async t => {
   const model = {
     find: sinon.stub().returns(
-      Promise.resolve({
-        all: () => []
-      })
+      Promise.resolve([])
     )
   };
   const controller = createController(model);
