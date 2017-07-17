@@ -1,7 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
 
-import { create, find, get } from './controller';
+import createController, { create, find, get } from './controller';
 import * as model from './model';
 
 test.beforeEach('Create stubs', async t => {
@@ -11,6 +11,15 @@ test.beforeEach('Create stubs', async t => {
   t.context = {
     res
   };
+});
+
+test('Should create a controller instance', async t => {
+  const controller = createController({});
+  t.is(typeof controller, 'object');
+  t.truthy(controller.create);
+  t.truthy(controller.find);
+  t.truthy(controller.get);
+  t.truthy(controller.teams);
 });
 
 test('Should create a match', async t => {
@@ -70,6 +79,14 @@ test('Should find a match', async t => {
   t.true(res.status.calledWithExactly(200));
   t.true(res.json.calledOnce);
   t.true(res.json.calledWithExactly({ data: 42 }));
+});
+
+test('Should fail to find a match', async t => {
+  const model = {
+    vertex: sinon.stub().returns(
+      Promise.reject()
+    )
+  };
 });
 
 test.todo('Should find the teams associated with a match');
