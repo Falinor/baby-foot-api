@@ -1,5 +1,11 @@
 import { success } from '../response';
 
+export const create = (model) => async (req, res, next) =>
+  model.save(req.body)
+    .then(data => Object.assign(data, req.body))
+    .then(success(res, 201))
+    .catch(next);
+
 export const find = (model) => async (req, res, next) =>
   model.find(req.query)
     .then(cursor => cursor.all())
@@ -11,19 +17,14 @@ export const findOne = (model) => async (req, res, next) =>
     .then(success(res))
     .catch(next);
 
-export const vertex = (model) => async (req, res, next) =>
+export const get = (model) => async (req, res, next) =>
   model.vertex(req.params.id)
-    .then(success(res))
-    .catch(next);
-
-export const save = (model) => async (req, res, next) =>
-  model.save(req.body)
     .then(success(res))
     .catch(next);
 
 export default (model) => ({
   find: find(model),
   findOne: findOne(model),
-  vertex: vertex(model),
-  save: save(model)
+  get: get(model),
+  create: create(model)
 });
