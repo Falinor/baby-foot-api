@@ -12,16 +12,42 @@ test.beforeEach('Create a response stub', async t => {
   const res = {};
   res.status = sinon.stub().returns(res);
   res.json = sinon.stub().returns(res);
-  t.context = {
-    req,
-    res
-  };
+  const next = sinon.stub().returns({});
+  t.context = { req, res, next };
 });
 
 test('Should create a controller instance', async t => {
   const controller = createController();
   t.truthy(controller);
   t.truthy(controller.find);
+});
+
+test('Should create an entity', async t => {
+  const model = {
+    save: sinon.stub().returns(
+      Promise.resolve({ data: 42 })
+    )
+  };
+  const controller = createController(model);
+  const { req, res, next } = t.context;
+  await controller.create(req, res, next);
+  t.true(res.status.calledOnce);
+  t.true(res.status.calledWithExactly(201));
+  t.true(res.json.calledOnce);
+  t.true(res.json.calledWithExactly({ data: 42 }));
+  t.true(next.notCalled);
+});
+
+test('Should fail to create an entity', async t => {
+  const model = {
+    save: sinon.stub().returns(
+      Promise.reject(new Error('Could not create entity'))
+    )
+  };
+  const controller = createController(model);
+  const { req, res, next } = t.context;
+  await controller.create(req, res, next);
+  t.true(next.calledOnce);
 });
 
 test('Should find all entities and call res.status and res.json', async t => {
@@ -33,13 +59,14 @@ test('Should find all entities and call res.status and res.json', async t => {
     )
   };
   const controller = createController(model);
-  const res = t.context.res;
+  const { req, res, next } = t.context;
   // Call the actual function
-  await controller.find({}, res, () => {});
+  await controller.find(req, res, next);
   t.true(res.status.calledOnce);
   t.true(res.status.calledWithExactly(200));
   t.true(res.json.calledOnce);
   t.true(res.json.calledWithExactly([]));
+  t.true(next.notCalled);
 });
 
 test('Should find one entity and call res.status and res.json', async t => {
@@ -49,40 +76,27 @@ test('Should find one entity and call res.status and res.json', async t => {
     )
   };
   const controller = createController(model);
-  const res = t.context.res;
-  await controller.findOne({}, res, () => {});
+  const { req, res, next } = t.context;
+  await controller.findOne(req, res, next);
   t.true(res.status.calledOnce);
   t.true(res.status.calledWithExactly(200));
   t.true(res.json.calledOnce);
   t.true(res.json.calledWithExactly({}));
+  t.true(next.notCalled);
 });
 
-test('Should get a vertex', async t => {
+test('Should get a get', async t => {
   const model = {
     vertex: sinon.stub().returns(
       Promise.resolve({})
     )
   };
   const controller = createController(model);
-  const { req, res } = t.context;
-  await controller.vertex(req, res, () => {});
+  const { req, res, next } = t.context;
+  await controller.get(req, res, next);
   t.true(res.status.calledOnce);
   t.true(res.status.calledWithExactly(200));
   t.true(res.json.calledOnce);
   t.true(res.json.calledWithExactly({}));
-});
-
-test('Should save an entity', async t => {
-  const model = {
-    save: sinon.stub().returns(
-      Promise.resolve({})
-    )
-  };
-  const controller = createController(model);
-  const { req, res } = t.context;
-  await controller.save(req, res, () => {});
-  t.true(res.status.calledOnce);
-  t.true(res.status.calledWithExactly(200));
-  t.true(res.json.calledOnce);
-  t.true(res.json.calledWithExactly({}));
+  t.true(next.notCalled);
 });
