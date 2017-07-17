@@ -17,24 +17,22 @@ test.before('Create a match instance', async () => {
     createdAt: new Date()
   };
   db = await arango();
-  const result = await db.init({
+  graph = await db.init({
     databaseName: 'database-match-test',
     graphName: 'graph-match-index'
   });
-  graph = result.graph;
-  await graph.create({});
 });
 
 test.beforeEach('Create an API', async t => {
   const storeName = `match-${uuid()}`;
-  await graph.addVertexCollection(storeName);
   const store = graph.vertexCollection(storeName);
+  await store.create();
+  await graph.addVertexCollection(storeName);
   const routes = router(store);
   t.context = {
     api: express(routes),
     store
   };
-  await db.listCollections(true);
 });
 
 test.afterEach.always('Drop the collection', async t => {
@@ -42,8 +40,8 @@ test.afterEach.always('Drop the collection', async t => {
 });
 
 test.after.always('Clean up the database', async () => {
-  db.useDatabase('_system');
   await graph.drop(true);
+  db.useDatabase('_system');
   await db.dropDatabase('database-match-test');
 });
 
