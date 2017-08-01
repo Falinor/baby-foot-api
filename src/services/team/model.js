@@ -1,6 +1,6 @@
 import graph, { createVertexCollection } from '../../components/arango';
 
-export const TEAM_COLLECTION = 'teams';
+export const TEAM_COLLECTION = 'getTeams';
 
 export const createTeamCollection = async () => {
   return createVertexCollection(TEAM_COLLECTION);

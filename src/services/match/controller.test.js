@@ -22,7 +22,7 @@ test('Should create a createController instance', async t => {
   t.truthy(controller.create);
   t.truthy(controller.find);
   t.truthy(controller.get);
-  t.truthy(controller.teams);
+  t.truthy(controller.getTeams);
 });
 
 test('Should create a match', async t => {

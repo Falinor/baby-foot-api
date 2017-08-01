@@ -25,7 +25,7 @@ export default (store) => {
   /**
    *
    */
-  router.get('/players/:trigram/teams',
+  router.get('/players/:trigram/getTeams',
     controller.teams
   );
 

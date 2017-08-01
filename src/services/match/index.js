@@ -5,9 +5,9 @@ import createModel from './model';
 
 // Add the match schema to AJV for further validation
 
-export default (store) => {
+export default (matchStore, playedStore, teamStore) => {
   const router = new Router();
-  const model = createModel(store);
+  const model = createModel(matchStore, playedStore, teamStore);
   const controller = createController(model);
 
   router.get('/matches',
@@ -23,19 +23,11 @@ export default (store) => {
   );
 
   router.get('/matches/:id/teams',
-    controller.teams
+    controller.getTeams
   );
 
-  router.get('/matches/:id/red',
-    // TODO
-  );
-
-  router.post('/matches/:id/red',
-    // TODO
-  );
-
-  router.get('/matches/:id/blue',
-    // TODO
+  router.post('/matches/:id/teams',
+    controller.createTeams
   );
 
   return router;
