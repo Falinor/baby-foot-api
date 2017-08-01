@@ -1,5 +1,5 @@
 get:
-  summary: Find teams associated with a match
+  summary: Find getTeams associated with a match
   description: >
     Test
   operationId: findTeamsFromMatch

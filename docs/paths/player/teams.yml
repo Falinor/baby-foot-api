@@ -1,5 +1,5 @@
 get:
-  summary: Get the teams associated with a player.
+  summary: Get the getTeams associated with a player.
   description: >
     Retrieves the teams of which the given player is a member.
   operationId: findTeamsFromPlayer

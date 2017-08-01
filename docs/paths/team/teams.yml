@@ -1,5 +1,5 @@
 get:
-  summary: Find teams
+  summary: Find getTeams
   description: >
     Find teams with pagination. One can pass query parameters
     in order to filter, sort or limit the entities.
