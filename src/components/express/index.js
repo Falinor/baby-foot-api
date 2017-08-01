@@ -4,6 +4,7 @@ import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
 
+import logger from '../logger';
 import swagger from '../swagger';
 import config from '../../config/index'
 

@@ -8,16 +8,20 @@ import config from '../../config';
  * @param db {object} The database connection object.
  */
 const init = (db) => async (options = config.db) => {
-  try {
-    await db.createDatabase(options.databaseName);
-    db.useDatabase(options.databaseName);
-    const graph = db.graph(options.graphName);
-    await graph.create({});
-    return graph;
-  } catch (err) {
-    logger.error(err);
-    process.exit(1);
-  }
+  return db.createDatabase(options.databaseName)
+    .catch(() => logger.info(`Database ${options.databaseName} exists.`))
+    .then(() => db.useDatabase(options.databaseName))
+    .then(() => db.graph(options.graphName))
+    .then(async graph => {
+      await graph.create({
+        edgeDefinitions: []
+      });
+      return graph;
+    })
+    .catch(() => {
+      logger.info(`Graph ${options.graphName} exists.`);
+      return db.graph(options.graphName);
+    });
 };
 
 /**
