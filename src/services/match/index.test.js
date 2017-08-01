@@ -24,18 +24,12 @@ const players = [
   { trigram: 'JKL' }
 ];
 
-test.before('Create a match instance', async () => {
-
-});
-
 test.beforeEach('Create an API', async t => {
   const db = await arango();
   const databaseName = `database-match-${uuid()}`;
   const graph = await db.init({
     databaseName,
     graphName: `graph-match-${uuid()}`
-    // databaseName: 'database-match-test',
-    // graphName: 'graph-match-index'
   });
   // Create match store
   const matchStoreName = `match-${uuid()}`;
