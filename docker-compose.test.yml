@@ -11,15 +11,12 @@ services:
       - db
     environment:
       - PORT=3000
+      - DB_URL=http://test:test@db:8529
       - DB_DATABASE=BabyFootTestDb
-      - DB_HOST=http://dbtest
-      - DB_PORT=8529
-      - DB_USERNAME=test
-      - DB_PASSWORD=test
 
   db:
     image: arangodb:latest
     ports:
-      - "8530:8529"
+      - "8529:8529"
     environment:
       - ARANGO_NO_AUTH=1
