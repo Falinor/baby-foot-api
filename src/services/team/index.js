@@ -1,24 +1,20 @@
 import { Router } from 'express';
 
-import { index, losses, show, wins } from './controller';
+import createController from './controller';
+import createModel from './model';
 
-const router = new Router();
+export default (teamStore) => {
+  const router = new Router();
+  const model = createModel(teamStore);
+  const controller = createController(model);
 
-router.get('/',
-  index
-);
+  router.get('/teams',
+    controller.find
+  );
 
-router.get('/:id',
-  show
-);
+  router.get('/teams/:id',
+    controller.get
+  );
 
-router.get('/:id/wins',
-  wins
-);
-
-router.get('/:id/losses',
-  losses
-);
-
-export { TEAM_COLLECTION, createTeamCollection } from './model';
-export default router;
+  return router;
+};
