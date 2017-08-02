@@ -1,17 +1,8 @@
-import graph, { createVertexCollection } from '../../components/arango';
+import { find, vertex } from '../../components/model';
 
-export const TEAM_COLLECTION = 'getTeams';
+export { find, vertex } from '../../components/model';
 
-export const createTeamCollection = async () => {
-  return createVertexCollection(TEAM_COLLECTION);
-};
-
-export const getOrSaveTeam = async (body) => {
-  // FIXME
-  const Team = graph().vertexCollection(TEAM_COLLECTION);
-  try {
-    return Team.save(body);
-  } catch (e) {
-    // FIXME: return the existing team
-  }
-};
+export default (teamStore) => ({
+  find: find(teamStore),
+  vertex: vertex(teamStore)
+});
