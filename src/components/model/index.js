@@ -16,7 +16,7 @@ export const find = (store) => async (example, opts) =>
  * @return {function} An asynchronous function that takes an example as
  * parameter.
  */
-export const findOne = (store) => (example) =>
+export const findOne = (store) => async (example) =>
   store.firstExample(example);
 
 export { vertex, save };
