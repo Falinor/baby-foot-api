@@ -3,30 +3,25 @@ import { Router } from 'express';
 import createController from './controller';
 import createModel from './model';
 
-export default (store) => {
+export default (playerStore) => {
   const router = new Router();
-  const model = createModel(store);
+  const model = createModel(playerStore);
   const controller = createController(model);
 
-  /**
-   *
-   */
   router.get('/players',
     controller.find
   );
 
-  /**
-   *
-   */
   router.get('/players/:trigram',
-    controller.get
+    controller.findOneByTrigram
   );
 
-  /**
-   *
-   */
-  router.get('/players/:trigram/getTeams',
-    controller.teams
+  router.get('/players/:trigram/teams',
+    // ...
+  );
+
+  router.get('/players/:trigram/matches',
+    // ...
   );
 
   router.get('/players/:trigram/wins',
