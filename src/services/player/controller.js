@@ -1,8 +1,14 @@
-import { find, get } from '../../components/controller';
+import { find } from '../../components/controller';
+import { success } from '../../components/response';
 
-export { find, get } from '../../components/controller';
+export const findOneByTrigram = (model) => async (req, res, next) =>
+  model.findOne({ trigram: req.params.trigram.toUpperCase() })
+    .then(success(res))
+    .catch(next);
+
+export { find } from '../../components/controller';
 
 export default (model) => ({
   find: find(model),
-  get: get(model)
+  findOneByTrigram: findOneByTrigram(model)
 });
