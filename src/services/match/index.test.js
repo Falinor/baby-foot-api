@@ -99,7 +99,7 @@ test('POST /matches - 201 Created', async t => {
 test.todo('POST /matches - 400 Bad request');
 
 test('GET /matches/:id - 200 OK', async t => {
-  // Save a match
+  // Create a match
   const saved = await t.context.matchStore.save(match);
   t.is(saved.error, false);
   t.is(saved.code, 202);
@@ -136,7 +136,7 @@ test('GET /matches/:id/teams - 200 OK', async t => {
   t.is(savedMatch.error, false);
   t.is(savedMatch.code, 202);
   t.is(typeof savedMatch.vertex, 'object');
-  // Create getTeams associated with a match
+  // Create teams associated with a match
   const [redTeam, blueTeam] = await Promise.all([
     t.context.teamStore.save(teams.red),
     t.context.teamStore.save(teams.blue)
@@ -172,7 +172,14 @@ test('GET /matches/:id/teams - 200 OK', async t => {
   });
 });
 
-test.todo('GET /matches/:id/teams - 404 Not found');
+test('GET /matches/:id/teams - 404 Not found', async t => {
+  const res = await request(t.context.api)
+    .get(`/matches/1234/teams`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json');
+  t.is(typeof res, 'object');
+  t.is(res.status, 404);
+});
 
 test('POST /matches/:id/teams - 201 Created', async t => {
   // Create a match
@@ -189,6 +196,12 @@ test('POST /matches/:id/teams - 201 Created', async t => {
   t.is(res.status, 201);
   t.true(Array.isArray(res.body));
   t.is(res.body.length, 2);
+  res.body.forEach(team => {
+    t.is(typeof team, 'object');
+    t.is(typeof team._id, 'string');
+    t.is(typeof team._key, 'string');
+    t.is(typeof team._rev, 'string');
+  });
 });
 
 test.todo('GET /matches/:id/red - 200 OK');
