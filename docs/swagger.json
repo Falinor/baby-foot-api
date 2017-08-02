@@ -66,7 +66,7 @@
     },
     "/matches/{id}/teams": {
       "get": {
-        "summary": "Find teams associated with a match",
+        "summary": "Find getTeams associated with a match",
         "description": "Test\n",
         "operationId": "findTeamsFromMatch",
         "tags": [
@@ -149,7 +149,7 @@
     },
     "/teams": {
       "get": {
-        "summary": "Find teams",
+        "summary": "Find getTeams",
         "description": "Find teams with pagination. One can pass query parameters in order to filter, sort or limit the entities.\n",
         "operationId": "findTeams",
         "tags": [
@@ -252,7 +252,7 @@
     },
     "/players/{id}/teams": {
       "get": {
-        "summary": "Get the teams associated with a player.",
+        "summary": "Get the getTeams associated with a player.",
         "description": "Retrieves the teams of which the given player is a member.\n",
         "operationId": "findTeamsFromPlayer",
         "tags": [

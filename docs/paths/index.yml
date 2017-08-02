@@ -5,7 +5,7 @@
   $ref: ./match/match.yml
 
 /matches/{id}/teams:
-  $ref: ./match/getTeams.yml
+  $ref: ./match/teams.yml
 
 /matches/{id}/red:
   $ref: ./match/team.yml
@@ -14,7 +14,7 @@
   $ref: ./match/team.yml
 
 /teams:
-  $ref: ./team/getTeams.yml
+  $ref: ./team/teams.yml
 
 /teams/{id}:
   $ref: ./team/team.yml
@@ -29,7 +29,7 @@
   $ref: ./player/player.yml
 
 /players/{id}/teams:
-  $ref: ./player/getTeams.yml
+  $ref: ./player/teams.yml
 
 /players/{id}/matches:
   $ref: ./player/matches.yml
