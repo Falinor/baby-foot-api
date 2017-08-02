@@ -22,11 +22,22 @@ export default (routes) => {
   app.use(bodyParser.json());
   app.use(routes);
 
+  // Expose documentation
   app.use('/docs', swagger.serve(), swagger.setup());
-  app.use('/', (req, res) => res.status(200).json('Welcome!'));
+  // Root API endpoint
+  app.get('/', (req, res) => res.status(200).json('Welcome!'));
+  // 404 handler
+  app.all('*', (req, res, next) => {
+    next({
+      code: 404,
+      name: 'PathNotFound',
+      message: 'Path not found'
+    });
+  });
 
   app.use((err, req, res, next) => {
     res.status(err.code || 500).json({
+      code: err.code,
       name: err.name,
       message: err.message
     });
