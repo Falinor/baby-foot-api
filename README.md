@@ -23,3 +23,8 @@ None yet!
 ### Proposed features
 
 - Link to AskBob API for players (tooltip)
+
+## Architecture
+
+The technical architecture of the project is contained in
+*architecture-draft.xml*. It may be open with the Chrome application *draw.io*.
