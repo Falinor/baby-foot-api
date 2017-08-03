@@ -16,5 +16,17 @@ export default (teamStore) => {
     controller.get
   );
 
+  router.get('/teams/:id/matches',
+    // ...
+  );
+
+  router.get('/teams/:id/players',
+    // ...
+  );
+
+  router.post('/teams/:id/players',
+    // ...
+  );
+
   return router;
 };
