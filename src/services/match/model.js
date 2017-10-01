@@ -11,12 +11,12 @@ export const linkTeamsToMatch = (playedStore) => async (data, from, to) =>
   playedStore.save(data, from, to);
 
 export { find, findOne, save, vertex };
-export default (matchStore, playedStore, teamStore) => ({
-  find: find(matchStore),
-  findOne: findOne(matchStore),
-  save: save(matchStore),
-  vertex: vertex(matchStore),
-  createTeam: createTeam(teamStore),
-  getTeams: getTeams(playedStore),
-  linkTeamsToMatch: linkTeamsToMatch(playedStore)
+export default (stores) => ({
+  find: find(stores.matchStore),
+  findOne: findOne(stores.matchStore),
+  save: save(stores.matchStore),
+  vertex: vertex(stores.matchStore),
+  createTeam: createTeam(stores.teamStore),
+  getTeams: getTeams(stores.playedStore),
+  linkTeamsToMatch: linkTeamsToMatch(stores.playedStore)
 });

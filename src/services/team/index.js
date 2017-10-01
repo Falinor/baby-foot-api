@@ -3,9 +3,9 @@ import { Router } from 'express';
 import createController from './controller';
 import createModel from './model';
 
-export default (teamStore) => {
+export default (stores) => {
   const router = new Router();
-  const model = createModel(teamStore);
+  const model = createModel(stores);
   const controller = createController(model);
 
   router.get('/teams',
@@ -17,14 +17,10 @@ export default (teamStore) => {
   );
 
   router.get('/teams/:id/matches',
-    // ...
+    controller.getMatches
   );
 
   router.get('/teams/:id/players',
-    // ...
-  );
-
-  router.post('/teams/:id/players',
     // ...
   );
 

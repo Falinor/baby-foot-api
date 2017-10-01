@@ -14,15 +14,14 @@ test.beforeEach('Create an API', async t => {
     databaseName,
     graphName: `graph-match-${uuid()}`
   });
-  const { teamStore } = await seed(graph);
+  const { teamStore, playedStore, matchStore } = await seed(graph);
   // Create routes
-  const routes = router(teamStore);
+  const routes = router(teamStore, playedStore, matchStore);
   // Create context
   t.context = {
     api: express(routes),
     teamStore,
     db,
-    graph,
     databaseName
   };
 });
@@ -45,7 +44,7 @@ test('GET /teams - 200 OK', async t => {
   t.is(typeof res, 'object');
   t.is(res.status, 200);
   t.true(Array.isArray(res.body));
-  t.true(res.body.length >= 0);
+  t.true(res.body.length > 0);
   res.body.forEach(team => {
     t.is(typeof team._key, 'string');
     t.is(typeof team._id, 'string');
@@ -86,8 +85,16 @@ test('GET /teams/:id/matches - 200 OK', async t => {
   t.is(typeof res, 'object');
   t.is(res.status, 200);
   t.true(Array.isArray(res.body));
-  t.true(res.body.length >= 0);
-  console.log(res.body);
+  t.true(res.body.length > 0);
+  res.body.forEach(match => {
+    t.is(typeof match._id, 'string');
+    t.is(typeof match._key, 'string');
+    t.is(typeof match._rev, 'string');
+    t.is(typeof match.red, 'object');
+    t.is(typeof match.blue, 'object');
+    t.is(typeof match.red.points, 'number');
+    t.is(typeof match.blue.points, 'number');
+  });
 });
 
 test.todo('GET /teams/:id/matches - 404 Not found');

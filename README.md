@@ -28,3 +28,8 @@ None yet!
 
 The technical architecture of the project is contained in
 *architecture-draft.xml*. It may be open with the Chrome application *draw.io*.
+
+# TODO
+
+Create a player first, then a team, then a match? (preferred option)
+Or create a match first, then a team, then a player?

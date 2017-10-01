@@ -12,6 +12,10 @@ export default (playerStore) => {
     controller.find
   );
 
+  router.post('/players/:trigram',
+    // ...
+  );
+
   router.get('/players/:trigram',
     controller.findOneByTrigram
   );

@@ -5,6 +5,7 @@ import uuid from 'uuid';
 import arango from '../../components/arango';
 import express from '../../components/express';
 import router from './index';
+import seed from '../../test/utils';
 
 test.beforeEach('Create an API', async t => {
   const db = await arango();
@@ -13,14 +14,8 @@ test.beforeEach('Create an API', async t => {
     databaseName,
     graphName: `graph-player-${uuid()}`
   });
-  // Create players store
-  const playerStoreName = `player-${uuid()}`;
-  const playerStore = graph.vertexCollection(playerStoreName);
-  await graph.addVertexCollection(playerStoreName);
-  // Create a player record
-  await playerStore.save({
-    trigram: 'ABC'
-  });
+  // Seed database
+  const { playerStore } = await seed(graph);
   // Create routes
   const routes = router(playerStore);
   // Set context
@@ -33,8 +28,7 @@ test.beforeEach('Create an API', async t => {
   };
 });
 
-test.afterEach.always('Clean the database', async t => {
-  await t.context.graph.drop(true);
+test.afterEach.always('Clean up the database', async t => {
   t.context.db.useDatabase('_system');
   await t.context.db.dropDatabase(t.context.databaseName);
 });
@@ -47,17 +41,21 @@ test('GET /players - 200 OK', async t => {
   t.is(typeof res, 'object');
   t.is(res.status, 200);
   t.true(Array.isArray(res.body));
-  t.is(res.body.length, 1);
-  const [player] = res.body;
-  t.is(typeof player._key, 'string');
-  t.is(typeof player._id, 'string');
-  t.is(typeof player._rev, 'string');
-  t.is(player.trigram, 'ABC');
+  t.true(res.body.length > 0);
+  res.body.forEach(player => {
+    t.is(typeof player._key, 'string');
+    t.is(typeof player._id, 'string');
+    t.is(typeof player._rev, 'string');
+    t.is(typeof player.trigram, 'string');
+    t.regex(player.trigram, /^[A-Z]{3}$/);
+  });
 });
 
 test('GET /players/:trigram - 200 OK', async t => {
+  // Fetch a random player
+  const player = await t.context.playerStore.any();
   const res = await request(t.context.api)
-    .get('/players/abc')
+    .get(`/players/${player.trigram}`)
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json');
   t.is(typeof res, 'object');
@@ -65,7 +63,8 @@ test('GET /players/:trigram - 200 OK', async t => {
   t.is(typeof res.body._key, 'string');
   t.is(typeof res.body._id, 'string');
   t.is(typeof res.body._rev, 'string');
-  t.is(res.body.trigram, 'ABC');
+  t.is(typeof res.body.trigram, 'string');
+  t.regex(res.body.trigram, /^[A-Z]{3}$/);
 });
 
 test('GET /players/:trigram - 404 Not found', async t => {

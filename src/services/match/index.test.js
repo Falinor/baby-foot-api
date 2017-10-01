@@ -5,24 +5,7 @@ import uuid from 'uuid';
 import arango from '../../components/arango';
 import express from '../../components/express';
 import router from './index';
-
-// let db;
-// let graph;
-const match = {
-  red: { points: 10 },
-  blue: { points: 7 },
-  createdAt: new Date()
-};
-const teams = {
-  red: {},
-  blue: {}
-};
-const players = [
-  { trigram: 'ABC' },
-  { trigram: 'DEF' },
-  { trigram: 'GHI' },
-  { trigram: 'JKL' }
-];
+import seed from '../../test/utils';
 
 test.beforeEach('Create an API', async t => {
   const db = await arango();
@@ -31,23 +14,9 @@ test.beforeEach('Create an API', async t => {
     databaseName,
     graphName: `graph-match-${uuid()}`
   });
-  // Create match store
-  const matchStoreName = `match-${uuid()}`;
-  const matchStore = graph.vertexCollection(matchStoreName);
-  await graph.addVertexCollection(matchStoreName);
-  // Create team store
-  const teamStoreName = `team-${uuid()}`;
-  const teamStore = graph.vertexCollection(teamStoreName);
-  await graph.addVertexCollection(teamStoreName);
-  // Create "played" edge store
-  const playedStoreName = `played-${uuid()}`;
-  const playedStore = graph.edgeCollection(playedStoreName);
-  await graph.addEdgeDefinition({
-    collection: playedStoreName,
-    from: [teamStoreName],
-    to: [matchStoreName]
-  })
-  const routes = router(matchStore, playedStore, teamStore);
+  // Seed database
+  const { matchStore, playedStore, teamStore } = await seed(graph);
+  const routes = router({ matchStore, playedStore, teamStore });
   t.context = {
     api: express(routes),
     matchStore,
@@ -60,16 +29,11 @@ test.beforeEach('Create an API', async t => {
 });
 
 test.afterEach.always('Clean up the database', async t => {
-  await t.context.graph.drop(true);
   t.context.db.useDatabase('_system');
   await t.context.db.dropDatabase(t.context.databaseName);
 });
 
 test('GET /matches - 200 OK', async t => {
-  const saved = await t.context.matchStore.save(match);
-  t.is(saved.error, false);
-  t.is(saved.code, 202);
-  t.is(typeof saved.vertex, 'object');
   const res = await request(t.context.api)
     .get('/matches')
     .set('Accept', 'application/json')
@@ -77,10 +41,15 @@ test('GET /matches - 200 OK', async t => {
   t.is(typeof res, 'object');
   t.is(res.status, 200);
   t.true(Array.isArray(res.body));
-  t.true(res.body.length >= 0);
+  t.true(res.body.length > 0);
 });
 
 test('POST /matches - 201 Created', async t => {
+  const match = {
+    red: { points: 10 },
+    blue: { points: 6 },
+    createdAt: new Date()
+  };
   const res = await request(t.context.api)
     .post('/matches')
     .send(match)
@@ -99,13 +68,10 @@ test('POST /matches - 201 Created', async t => {
 test.todo('POST /matches - 400 Bad request');
 
 test('GET /matches/:id - 200 OK', async t => {
-  // Create a match
-  const saved = await t.context.matchStore.save(match);
-  t.is(saved.error, false);
-  t.is(saved.code, 202);
-  t.is(typeof saved.vertex, 'object');
+  // Fetch a random match
+  const match = await t.context.matchStore.any();
   const res = await request(t.context.api)
-    .get(`/matches/${saved.vertex._key}`)
+    .get(`/matches/${match._key}`)
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json');
   t.is(typeof res, 'object');
@@ -131,31 +97,10 @@ test('GET /matches/:id - 404 Not found', async t => {
 });
 
 test('GET /matches/:id/teams - 200 OK', async t => {
-  // Create a match
-  const savedMatch = await t.context.matchStore.save(match);
-  t.is(savedMatch.error, false);
-  t.is(savedMatch.code, 202);
-  t.is(typeof savedMatch.vertex, 'object');
-  // Create teams associated with a match
-  const [redTeam, blueTeam] = await Promise.all([
-    t.context.teamStore.save(teams.red),
-    t.context.teamStore.save(teams.blue)
-  ])
-  // Create edges
-  await Promise.all([
-    t.context.playedStore.save(
-      { color: 'red' },
-      redTeam.vertex._id,
-      savedMatch.vertex._id
-    ),
-    t.context.playedStore.save(
-      { color: 'blue' },
-      blueTeam.vertex._id,
-      savedMatch.vertex._id
-    )
-  ]);
+  // Fetch a random match
+  const match = await t.context.matchStore.any();
   const res = await request(t.context.api)
-    .get(`/matches/${savedMatch.vertex._key}/teams`)
+    .get(`/matches/${match._key}/teams`)
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json');
   t.is(typeof res, 'object');
@@ -182,14 +127,10 @@ test('GET /matches/:id/teams - 404 Not found', async t => {
 });
 
 test('POST /matches/:id/teams - 201 Created', async t => {
-  // Create a match
-  const savedMatch = await t.context.matchStore.save(match);
-  t.is(savedMatch.error, false);
-  t.is(savedMatch.code, 202);
-  t.is(typeof savedMatch.vertex, 'object');
-  // Send request to the API
+  // Fetch a random match
+  const match = await t.context.matchStore.any();
   const res = await request(t.context.api)
-    .post(`/matches/${savedMatch.vertex._key}/teams`)
+    .post(`/matches/${match._key}/teams`)
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json');
   t.is(typeof res, 'object');

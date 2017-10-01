@@ -18,7 +18,7 @@ test('Should export default model functions', async t => {
 });
 
 test('Should create a createModel instance', async t => {
-  const model = createModel({}, {});
+  const model = createModel({});
   t.is(typeof model.find, 'function');
   t.is(typeof model.findOne, 'function');
   t.is(typeof model.save, 'function');

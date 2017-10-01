@@ -10,20 +10,3 @@ get:
       description: OK
     404:
       description: Not found
-
-post:
-  summary: Create the members of a team.
-  description: >
-    Create the players associated with a team. This endpoint will
-    create one or two players from a given array of players in the
-    request body.
-  operationId: createPlayersByTeam
-  tags:
-    - Team edges
-  responses:
-    201:
-      description: OK
-    400:
-      description: Bad request
-    404:
-      description: Not found

@@ -29,7 +29,7 @@
       "!node_modules",
       "!dist"
     ],
-    "verbose": true,
+    "verbose": false,
     "failFast": false,
     "failWithoutAssertions": true,
     "concurrency": 5,

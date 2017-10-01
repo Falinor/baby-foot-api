@@ -12,10 +12,26 @@ export default (graph) => {
   const playerStore = graph.vertexCollection('players');
   // Create edge collections
   const playedStore = graph.edgeCollection('played');
+  const memberStore = graph.edgeCollection('member');
 
-  router.use(match(matchStore, playedStore, teamStore));
-  router.use(team(teamStore));
-  router.use(player(playerStore));
+  // Use match router
+  router.use(match({
+    matchStore,
+    playedStore,
+    teamStore
+  }));
+  // Use team router
+  router.use(team({
+    matchStore,
+    teamStore,
+    playerStore,
+    playedStore,
+    memberStore
+  }));
+  // Use player router
+  router.use(player({
+    playerStore
+  }));
 
   return router;
 };

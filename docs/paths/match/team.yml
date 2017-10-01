@@ -10,16 +10,3 @@ get:
       description: OK
     404:
       description: Not found
-
-post:
-  summary: Create a team from a match
-  description: >
-    Creates a team associated with this match.
-  operationId: createTeamFromMatch
-  tags:
-    - Match edges
-  responses:
-    201:
-      description: Created
-    400:
-      description: Bad request

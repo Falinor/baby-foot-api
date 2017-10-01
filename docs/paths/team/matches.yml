@@ -10,3 +10,8 @@ get:
       description: OK
     404:
       description: Not found
+
+post:
+  summary: Create a match associated with a team.
+  description: >
+    Create a

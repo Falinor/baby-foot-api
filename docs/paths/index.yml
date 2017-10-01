@@ -19,6 +19,9 @@
 /teams/{id}:
   $ref: ./team/team.yml
 
+/teams/{id}/matches:
+  $ref: ./team/matches.yml
+
 /teams/{id}/players:
   $ref: ./team/players.yml
 
