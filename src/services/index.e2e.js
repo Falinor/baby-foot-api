@@ -3,7 +3,7 @@ import sinon from 'sinon';
 
 import createRouter from './index';
 
-test('Should create a router instance', async t => {
+test.serial('Should create a router instance', async t => {
   const graph = {
     vertexCollection: sinon.stub(),
     edgeCollection: sinon.stub()

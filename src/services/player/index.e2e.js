@@ -1,19 +1,20 @@
 import test from 'ava';
 import request from 'supertest';
-import uuid from 'uuid';
 
 import arango from '../../components/arango';
 import express from '../../components/express';
 import router from './index';
 import seed from '../../test/utils';
 
+let db;
+let graph;
+
+test.before('Connect to database', async () => {
+  db = await arango();
+  graph = await db.init();
+});
+
 test.beforeEach('Create an API', async t => {
-  const db = await arango();
-  const databaseName = `database-player-${uuid()}`;
-  const graph = await db.init({
-    databaseName,
-    graphName: `graph-player-${uuid()}`
-  });
   // Seed database
   const { playerStore } = await seed(graph);
   // Create routes
@@ -21,19 +22,15 @@ test.beforeEach('Create an API', async t => {
   // Set context
   t.context = {
     api: express(routes),
-    playerStore,
-    db,
-    graph,
-    databaseName
+    playerStore
   };
 });
 
-test.afterEach.always('Clean up the database', async t => {
-  t.context.db.useDatabase('_system');
-  await t.context.db.dropDatabase(t.context.databaseName);
+test.afterEach.always('Clean up the database', async () => {
+  await db.truncate();
 });
 
-test('GET /players - 200 OK', async t => {
+test.serial('GET /players - 200 OK', async t => {
   const res = await request(t.context.api)
     .get('/players')
     .set('Accept', 'application/json')
@@ -51,7 +48,7 @@ test('GET /players - 200 OK', async t => {
   });
 });
 
-test('GET /players/:trigram - 200 OK', async t => {
+test.serial('GET /players/:trigram - 200 OK', async t => {
   // Fetch a random player
   const player = await t.context.playerStore.any();
   const res = await request(t.context.api)
@@ -67,7 +64,7 @@ test('GET /players/:trigram - 200 OK', async t => {
   t.regex(res.body.trigram, /^[A-Z]{3}$/);
 });
 
-test('GET /players/:trigram - 404 Not found', async t => {
+test.serial('GET /players/:trigram - 404 Not found', async t => {
   const res = await request(t.context.api)
     .get('/players/xyz')
     .set('Accept', 'application/json')

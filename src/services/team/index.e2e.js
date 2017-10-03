@@ -1,42 +1,40 @@
 import test from 'ava';
 import request from 'supertest';
-import uuid from 'uuid';
 
 import arango from '../../components/arango';
 import express from '../../components/express';
 import router from './index';
 import seed from '../../test/utils';
 
+let db;
+let graph;
+
+test.before('Connect to database', async () => {
+  db = await arango();
+  graph = await db.init();
+});
+
 test.beforeEach('Create an API', async t => {
-  const db = await arango();
-  const databaseName = `database-team-${uuid()}`;
-  const graph = await db.init({
-    databaseName,
-    graphName: `graph-match-${uuid()}`
-  });
-  const { teamStore, playedStore, matchStore } = await seed(graph);
+  const { teamStore } = await seed(graph);
   // Create routes
-  const routes = router(teamStore, playedStore, matchStore);
+  const routes = router(db);
   // Create context
   t.context = {
     api: express(routes),
-    teamStore,
-    db,
-    databaseName
+    teamStore
   };
 });
 
-test.afterEach.always('Clean up the database', async t => {
-  t.context.db.useDatabase('_system');
-  await t.context.db.dropDatabase(t.context.databaseName);
+test.afterEach.always('Clean up the database', async () => {
+  await db.truncate();
 });
 
-test('Should create an API', async t => {
-  const routes = router({});
+test.serial('Should create an API', async t => {
+  const routes = router(db);
   t.is(typeof routes, 'function');
 });
 
-test('GET /teams - 200 OK', async t => {
+test.serial('GET /teams - 200 OK', async t => {
   const res = await request(t.context.api)
     .get('/teams')
     .set('Accept', 'application/json')
@@ -52,7 +50,7 @@ test('GET /teams - 200 OK', async t => {
   });
 });
 
-test('GET /teams/:id - 200 OK', async t => {
+test.serial('GET /teams/:id - 200 OK', async t => {
   // Fetch a random team
   const team = await t.context.teamStore.any();
   const res = await request(t.context.api)
@@ -66,7 +64,7 @@ test('GET /teams/:id - 200 OK', async t => {
   t.is(typeof res.body._rev, 'string');
 });
 
-test('GET /teams/:id - 404 Not found', async t => {
+test.serial('GET /teams/:id - 404 Not found', async t => {
   const res = await request(t.context.api)
     .get('/teams/1234')
     .set('Accept', 'application/json')
@@ -75,9 +73,9 @@ test('GET /teams/:id - 404 Not found', async t => {
   t.is(res.status, 404);
 });
 
-test('GET /teams/:id/matches - 200 OK', async t => {
+test.serial('GET /teams/:id/matches - 200 OK', async t => {
   // Fetch a random team
-  const team = await t.context.teamStore.any();
+  const team = await teamStore.any();
   const res = await request(t.context.api)
     .get(`/teams/${team._key}/matches`)
     .set('Accept', 'application/json')
