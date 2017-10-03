@@ -45,9 +45,3 @@ test('Should get the matches that a team played', async t => {
     createdAt
   });
 });
-
-test('Should get the members of a team', async t => {
-  const model = createModel({
-    // ...
-  });
-});

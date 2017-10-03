@@ -1,15 +1,35 @@
 import test from 'ava';
+import sinon from 'sinon';
 
-import createModel, { find, findOne } from './model';
+import createModel, { find, findOne, findTeams } from './model';
 
 test('Should export default model functions', async t => {
   t.is(typeof find, 'function');
   t.is(typeof findOne, 'function');
+  t.is(typeof findTeams, 'function');
 });
 
 test('Should create a model instance', async t => {
-  const model = createModel({});
+  const stub = {
+    graph: sinon.stub().returns({
+      vertexCollection: sinon.stub()
+    })
+  };
+  const model = createModel(stub);
   t.is(typeof model, 'object');
   t.is(typeof model.find, 'function');
   t.is(typeof model.findOne, 'function');
+  t.is(typeof model.findTeams, 'function');
+});
+
+test('Should find teams the player is a member of', async t => {
+  const stub = {
+    query: sinon.stub().resolves({
+      all: sinon.stub().resolves([1, 2])
+    })
+  };
+  const teams = await findTeams(stub)(123);
+  t.true(stub.query.calledOnce);
+  t.true(Array.isArray(teams));
+  t.deepEqual(teams, [1, 2]);
 });

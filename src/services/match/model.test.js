@@ -35,7 +35,7 @@ test('Should find teams associated with a match', async t => {
       ])
     )
   };
-  const model = createModel({}, playedStore);
+  const model = createModel({ playedStore });
   const teams = await model.getTeams('1234');
   t.true(Array.isArray(teams));
   t.is(teams.length, 2);

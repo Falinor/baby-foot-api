@@ -20,5 +20,6 @@ export { find, vertex } from '../../components/model';
 export default (stores) => ({
   find: find(stores.teamStore),
   getMatches: getMatches(stores.playedStore, stores.matchStore),
+  getPlayers: getPlayers(),
   vertex: vertex(stores.teamStore)
 });
