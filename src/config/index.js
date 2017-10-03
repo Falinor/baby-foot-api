@@ -22,6 +22,13 @@ export default {
     password: process.env.DB_PASSWORD,
     databaseName: process.env.DB_NAME || 'BabyFootDB',
     graphName: process.env.DB_GRAPH_NAME || 'BabyFootGraph',
-    retryConnection: true
+    retryConnection: true,
+    collections: {
+      matches: 'matches',
+      teams: 'teams',
+      players: 'players',
+      played: 'played',
+      member: 'member'
+    }
   }
 };
