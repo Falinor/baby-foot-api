@@ -3,9 +3,9 @@ import { Router } from 'express';
 import createController from './controller';
 import createModel from './model';
 
-export default (playerStore) => {
+export default (db) => {
   const router = new Router();
-  const model = createModel(playerStore);
+  const model = createModel(db);
   const controller = createController(model);
 
   router.get('/players',

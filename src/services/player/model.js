@@ -1,8 +1,6 @@
 import { find, findOne } from '../../components/model';
 import config from '../../config';
 
-const COLLECTION = 'players';
-
 /**
  * Find teams a player has been member of.
  * @param db {Object} The database instance.
@@ -23,10 +21,11 @@ export const findTeams = (db) => async (playerId) => {
 export { find, findOne } from '../../components/model';
 
 export default (db) => {
-  const store = db.graph(config.db.graphName).vertexCollection(COLLECTION);
+  const playerStore = db.graph(config.db.graphName)
+    .vertexCollection(config.db.collections.players);
   return {
-    find: find(store),
-    findOne: findOne(store),
+    find: find(playerStore),
+    findOne: findOne(playerStore),
     findTeams: findTeams(db)
   };
 };

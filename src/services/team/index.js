@@ -3,9 +3,9 @@ import { Router } from 'express';
 import createController from './controller';
 import createModel from './model';
 
-export default (stores) => {
+export default (db) => {
   const router = new Router();
-  const model = createModel(stores);
+  const model = createModel(db);
   const controller = createController(model);
 
   router.get('/teams',
@@ -17,7 +17,7 @@ export default (stores) => {
   );
 
   router.get('/teams/:id/matches',
-    controller.getMatches
+    // ...
   );
 
   router.get('/teams/:id/players',

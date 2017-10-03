@@ -2,8 +2,7 @@ import { find, get } from '../../components/controller';
 import { success } from '../../components/response';
 
 export const getMatches = (model) => async (req, res, next) =>
-  model.vertex(req.params.id)
-    .then(team => model.getMatches(team._id))
+  model.getMatches(req.params.id)
     .then(success(res))
     .catch(next);
 
