@@ -1,33 +1,7 @@
-import uuid from 'uuid';
+import config from '../config';
+import data from './data';
 
-/**
- * Matches to be imported.
- * @type {Array<object>} An array of matches.
- */
-export const matches = [
-  { red: { points: 10 }, blue: { points: 7 }, createdAt: new Date() },
-  { red: { points: 6 }, blue: { points: 10 }, createdAt: new Date() },
-];
-
-/**
- * Teams to be imported.
- * @type {Array<object>}
- */
-export const teams = [
-  {},
-  {}
-];
-
-/**
- *
- * @type {Array<object>}
- */
-export const players = [
-  { trigram: 'ABC' },
-  { trigram: 'DEF' },
-  { trigram: 'GHI' },
-  { trigram: 'JKL' }
-];
+const { collections } = config.db.collections;
 
 /**
  * Seed the database with test data.
@@ -36,35 +10,28 @@ export const players = [
  * resolving to an object containing the brand new collections.
  */
 export const seed = async (graph) => {
-  // Create match store
-  const matchStoreName = `match-${uuid()}`;
-  const matchStore = await createVertexStore(graph, matchStoreName);
-  // Create team store
-  const teamStoreName = `team-${uuid()}`;
-  const teamStore = await createVertexStore(graph, teamStoreName);
-  // Create player store
-  const playerStoreName = `player-${uuid()}`;
-  const playerStore = await createVertexStore(graph, playerStoreName);
-  // Create played store which contains edges from team to match
+  const matchStore = await createVertexStore(graph, collections.matches);
+  const teamStore = await createVertexStore(graph, collections.teams);
+  const playerStore = await createVertexStore(graph, collections.players);
   const playedStore = await createEdgeStore(
     graph,
-    `played-${uuid()}`,
-    [teamStoreName],
-    [matchStoreName]
+    collections.played,
+    [collections.teams],
+    [collections.matches]
   );
   // Create member store which contains edges from player to team
   const memberStore = await createEdgeStore(
     graph,
-    `member-${uuid()}`,
-    [playerStoreName],
-    [teamStoreName]
+    collections.members,
+    [collections.players],
+    [collections.teams]
   );
   // Seed the stores
   await Promise.all([
-    matchStore.import(matches),
-    teamStore.import(teams),
-    playerStore.import(players)
-  ], { waitForSyc: true });
+    matchStore.import(data.matches),
+    teamStore.import(data.teams),
+    playerStore.import(data.players)
+  ]);
   const dbMatches = await matchStore.list();
   const dbTeams = await teamStore.list();
   const dbPlayers = await playerStore.list();
@@ -81,7 +48,7 @@ export const seed = async (graph) => {
     { _from: dbPlayers[1], _to: dbTeams[0] },
     { _from: dbPlayers[2], _to: dbTeams[1] },
     { _from: dbPlayers[3], _to: dbTeams[1] }
-  ], { waitForSyc: true });
+  ], { waitForSync: true });
   // Return all the collections
   return { matchStore, teamStore, playerStore, playedStore, memberStore };
 };
