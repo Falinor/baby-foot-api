@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { config } from './index';
+import config from './index';
 
 test('Should return the config object', async t => {
   t.truthy(config.env);

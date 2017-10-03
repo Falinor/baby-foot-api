@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { join } from 'path';
+import path from 'path';
 
 /* istanbul ignore next */
 const requireProcessEnv = (name) => {
   if (!process.env[name]) {
-    throw new Error('You must set the ' + name + ' environment variable');
+    throw new Error(`You must set the ${name} environment variable`);
   }
   return process.env[name];
 };
 
-export const config = {
+export default {
   env: process.env.NODE_ENV || 'development',
-  root: join(__dirname, '..', '..'),
+  root: path.join(__dirname, '..', '..'),
   port: process.env.PORT || 9000,
   ip: process.env.IP || '0.0.0.0',
   // masterKey: requireProcessEnv('MASTER_KEY'),
@@ -25,5 +25,3 @@ export const config = {
     retryConnection: true
   }
 };
-
-export default config;
