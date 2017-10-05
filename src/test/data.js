@@ -12,8 +12,8 @@ export const matches = [
  * @type {Array<object>}
  */
 export const teams = [
-  {},
-  {}
+  { createdAt: new Date() },
+  { createdAt: new Date() }
 ];
 
 /**
@@ -21,10 +21,10 @@ export const teams = [
  * @type {Array<object>}
  */
 export const players = [
-  { trigram: 'ABC' },
-  { trigram: 'DEF' },
-  { trigram: 'GHI' },
-  { trigram: 'JKL' }
+  { _key: 'abc', trigram: 'ABC' },
+  { _key: 'def', trigram: 'DEF' },
+  { _key: 'ghi', trigram: 'GHI' },
+  { _key: 'jkl', trigram: 'JKL' }
 ];
 
 export default { matches, teams, players };

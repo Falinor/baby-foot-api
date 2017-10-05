@@ -1,7 +1,8 @@
+import logger from '../components/logger';
 import config from '../config';
 import data from './data';
 
-const { collections } = config.db.collections;
+const collections = config.db.collections;
 
 /**
  * Seed the database with test data.
@@ -22,7 +23,7 @@ export const seed = async (graph) => {
   // Create member store which contains edges from player to team
   const memberStore = await createEdgeStore(
     graph,
-    collections.members,
+    collections.member,
     [collections.players],
     [collections.teams]
   );
@@ -41,7 +42,7 @@ export const seed = async (graph) => {
     { color: 'blue', _from: dbTeams[1], _to: dbMatches[0] },
     { color: 'red', _from: dbTeams[0], _to: dbMatches[1] },
     { color: 'blue', _from: dbTeams[1], _to: dbMatches[1] }
-  ], { waitForSyc: true });
+  ], { waitForSync: true });
   // Create edges between players and teams
   await memberStore.import([
     { _from: dbPlayers[0], _to: dbTeams[0] },
@@ -60,10 +61,10 @@ export const seed = async (graph) => {
  * @return {Promise<"arangojs".GraphVertexCollection>} A promise resolving
  * to the brand new collection.
  */
-const createVertexStore = async (graph, name) => {
-  await graph.addVertexCollection(name);
-  return graph.vertexCollection(name);
-};
+const createVertexStore = async (graph, name) =>
+  graph.addVertexCollection(name)
+    .catch(() => logger.info(`Vertex collection ${name} exists. Skipping.`))
+    .then(() => graph.vertexCollection(name));
 
 /**
  * Create an edge store and add it to the graph, given its name, the source
@@ -76,13 +77,13 @@ const createVertexStore = async (graph, name) => {
  * @return {"arangojs".GraphEdgeCollection>} A promise resolving to the
  * brand new collection.
  */
-const createEdgeStore = async (graph, name, from, to) => {
-  await graph.addEdgeDefinition({
+const createEdgeStore = async (graph, name, from, to) =>
+  graph.addEdgeDefinition({
     collection: name,
     from,
     to
-  });
-  return graph.edgeCollection(name);
-};
+  })
+    .catch(() => logger.info(`Edge collection ${name} exists. Skipping.`))
+    .then(() => graph.edgeCollection(name));
 
 export default seed;
