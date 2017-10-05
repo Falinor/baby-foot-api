@@ -5,9 +5,9 @@ import createModel from './model';
 
 // Add the match schema to AJV for further validation
 
-export default (stores) => {
+export default (db) => {
   const router = new Router();
-  const model = createModel(stores);
+  const model = createModel(db);
   const controller = createController(model);
 
   router.get('/matches',
@@ -19,7 +19,7 @@ export default (stores) => {
   );
 
   router.get('/matches/:id/teams',
-    controller.getTeams
+    // ...
   );
 
   return router;
