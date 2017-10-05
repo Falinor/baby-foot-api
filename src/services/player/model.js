@@ -5,13 +5,14 @@ import config from '../../config';
  * Find teams a player has been member of.
  * @param db {Object} The database instance.
  */
-export const findTeams = (db) => async (playerId) => {
+export const findTeams = (db) => async (trigram) => {
   const query = `
-    FOR p IN 1..1 OUTBOUND @playerId GRAPH @graph
-    RETURN p
+    LET player = DOCUMENT(@id)
+    FOR teams IN OUTBOUND player GRAPH @graph
+    RETURN teams
   `;
   const bindVars = {
-    playerId,
+    id: `${config.db.collections.players}/${trigram}`,
     graph: config.db.graphName
   };
   return db.query(query, bindVars)

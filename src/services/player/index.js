@@ -21,7 +21,7 @@ export default (db) => {
   );
 
   router.get('/players/:trigram/teams',
-    // ...
+    controller.findTeams
   );
 
   router.get('/players/:trigram/matches',
