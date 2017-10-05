@@ -13,9 +13,7 @@ const init = (db) => async (options = config.db) => {
     .then(() => db.useDatabase(options.databaseName))
     .then(() => db.graph(options.graphName))
     .then(async graph => {
-      await graph.create({
-        edgeDefinitions: []
-      });
+      await graph.create({});
       return graph;
     })
     .catch(() => {
