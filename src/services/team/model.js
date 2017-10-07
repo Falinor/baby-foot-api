@@ -7,7 +7,8 @@ export const getPlayers = (db) => async (teamHandle) =>
 export { find, vertex } from '../../components/model';
 
 export default (db) => {
-  const teamStore = db.graph(config.db.graphName).vertexCollection('teams');
+  const teamStore = db.graph(config.db.graphName)
+    .vertexCollection(config.db.collections.teams);
   return {
     find: find(teamStore),
     getPlayers: getPlayers(db),

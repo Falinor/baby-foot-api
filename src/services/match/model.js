@@ -1,8 +1,6 @@
 import { find, findOne, save, vertex } from '../../components/model';
 import config from '../../config';
 
-
-
 export { find, findOne, save, vertex };
 
 export default (db) => {

@@ -12,12 +12,8 @@ export default (db) => {
     controller.find
   );
 
-  router.post('/players/:trigram',
-    // ...
-  );
-
   router.get('/players/:trigram',
-    controller.findOneByTrigram
+    controller.findOne
   );
 
   router.get('/players/:trigram/teams',
@@ -25,7 +21,7 @@ export default (db) => {
   );
 
   router.get('/players/:trigram/matches',
-    // ...
+    // controller.findMatches
   );
 
   router.get('/players/:trigram/wins',
