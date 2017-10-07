@@ -105,6 +105,19 @@ test.serial('GET /players/:trigram/teams - 200 OK', async t => {
   t.true(res.body.length > 0);
 });
 
+test.serial('GET /players/:trigram/matches - 200 OK', async t => {
+  // Fetch a random player
+  const players = await t.context.playerStore.any();
+  const res = await request(t.context.api)
+    .get(`/players/${player.trigram}/matches`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json');
+  t.is(typeof res, 'object');
+  t.is(res.status, 200);
+  t.true(Array.isArray(res.body));
+  t.true(res.body.length > 0);
+});
+
 test.todo('GET /players/:trigram/wins/count - 200 OK');
 
 test.todo('GET /players/:trigram/losses/count - 200 OK');
