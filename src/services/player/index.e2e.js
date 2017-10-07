@@ -92,7 +92,7 @@ test.serial('GET /players/:trigram - 404 Not found', async t => {
   t.is(res.status, 404);
 });
 
-test.only.serial('GET /players/:trigram/teams - 200 OK', async t => {
+test.serial('GET /players/:trigram/teams - 200 OK', async t => {
   // Fetch a random player
   const player = await t.context.playerStore.any();
   const res = await request(t.context.api)
