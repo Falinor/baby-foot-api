@@ -11,8 +11,21 @@ export const findOne = (model) => async (req, res, next) =>
     .then(success(res))
     .catch(next);
 
+/**
+ *
+ * @param model
+ */
 export const findTeams = (model) => async (req, res, next) =>
   model.findTeams(req.params.trigram.toLowerCase())
+    .then(success(res))
+    .catch(next);
+
+/**
+ *
+ * @param model
+ */
+export const findMatches = (model) => async (req, res, next) =>
+  model.findMatches(req.params.trigram.toLowerCase())
     .then(success(res))
     .catch(next);
 
@@ -21,5 +34,6 @@ export { find } from '../../components/controller';
 export default (model) => ({
   find: find(model),
   findOne: findOne(model),
-  findTeams: findTeams(model)
+  findTeams: findTeams(model),
+  findMatches: findMatches(model)
 });
