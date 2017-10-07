@@ -22,7 +22,7 @@ test('Should create a model instance', async t => {
   t.is(typeof model.findTeams, 'function');
 });
 
-test('Should find teams the player is a member of', async t => {
+test('Should find a player\'s team', async t => {
   const stub = {
     query: sinon.stub().resolves({
       all: sinon.stub().resolves([1, 2])

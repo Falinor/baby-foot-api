@@ -1,7 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
 
-import createController, { find, findOneByTrigram } from './controller';
+import createController, { find, findOne } from './controller';
 
 const req = {
   params: { trigram: 'ABC' }
@@ -13,14 +13,14 @@ const next = sinon.stub();
 
 test('Should export default controller functions', async t => {
   t.is(typeof find, 'function');
-  t.is(typeof findOneByTrigram, 'function');
+  t.is(typeof findOne, 'function');
 });
 
 test('Should create a controller instance', async t => {
   const controller = createController({});
   t.is(typeof controller, 'object');
   t.is(typeof controller.find, 'function');
-  t.is(typeof controller.findOneByTrigram, 'function');
+  t.is(typeof controller.findOne, 'function');
 });
 
 test('Should find a player by trigram', async t => {
@@ -30,7 +30,7 @@ test('Should find a player by trigram', async t => {
     }))
   };
   const controller = createController(model);
-  await controller.findOneByTrigram(req, res, next);
+  await controller.findOne(req, res, next);
   t.true(model.findOne.calledOnce);
   t.true(res.status.calledOnce);
   t.true(res.status.calledWithExactly(200));
