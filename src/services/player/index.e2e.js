@@ -107,7 +107,7 @@ test.serial('GET /players/:trigram/teams - 200 OK', async t => {
 
 test.serial('GET /players/:trigram/matches - 200 OK', async t => {
   // Fetch a random player
-  const players = await t.context.playerStore.any();
+  const player = await t.context.playerStore.any();
   const res = await request(t.context.api)
     .get(`/players/${player.trigram}/matches`)
     .set('Accept', 'application/json')
