@@ -1,8 +1,8 @@
 get:
-  summary: Find getTeams associated with a match
+  summary: Find the teams that played this match
   description: >
     Test
-  operationId: findTeamsFromMatch
+  operationId: findTeams
   tags:
     - Match edges
   responses:

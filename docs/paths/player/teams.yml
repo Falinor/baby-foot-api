@@ -1,5 +1,5 @@
 get:
-  summary: Get the teams associated with a player.
+  summary: Find the teams associated with a player.
   description: >
     Retrieves the teams of which the given player is a member.
   operationId: findTeamsFromPlayer
@@ -14,7 +14,7 @@ get:
 post:
   summay: Create a team.
   description: >
-    A baby-foot team is composed of two players. This endpoint creates a team
+    A team is composed of two players. This endpoint creates a team
     in which a player can play. A team cannot exist without players, that is why
     it must be saved using a player, it cannot be standalone.
   operationId: createTeamFromPlayer

@@ -12,6 +12,8 @@ properties:
         minimum: 0
         maximum: 42
         example: 10
+    required:
+      - points
   blue:
     type: object
     properties:
@@ -20,10 +22,12 @@ properties:
         minimum: 0
         maximum: 42
         example: 6
+    required:
+      - points
   createdAt:
     type: string
     format: date-time
 required:
-  - points
-  - players
+  - red
+  - blue
   - createdAt

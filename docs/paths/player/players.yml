@@ -1,7 +1,7 @@
 get:
   summary: Find players
   description: >
-    Find players with pagination. ...
+    Find players.
   operationId: findPlayers
   tags:
     - Player edges

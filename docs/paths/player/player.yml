@@ -1,8 +1,8 @@
 get:
-  summary: Get a player by ID
+  summary: Get a player by trigram
   description: >
-    Get a player by ID.
-  operationId: findPlayerByID
+    Get a player by trigram.
+  operationId: findPlayerByTrigram
   tags:
     - Players
   responses:

@@ -2,7 +2,7 @@ get:
   summary: Get a match by ID
   description: >
     Description
-  operationId: findMatchByID
+  operationId: getMatch
   tags:
     - Matches
   responses:
