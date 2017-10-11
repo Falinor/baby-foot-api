@@ -1,12 +1,13 @@
 import test from 'ava';
 import sinon from 'sinon';
 
-import createModel, { find, getPlayers, vertex } from './model';
+import createModel, { find, getPlayers, save, vertex } from './model';
 
 test('Should export default model functions', async t => {
   t.is(typeof find, 'function');
-  t.is(typeof vertex, 'function');
   t.is(typeof getPlayers, 'function');
+  t.is(typeof save, 'function');
+  t.is(typeof vertex, 'function');
 });
 
 test('Should create a model instance', async t => {
@@ -20,4 +21,5 @@ test('Should create a model instance', async t => {
   t.is(typeof model.find, 'function');
   t.is(typeof model.vertex, 'function');
   t.is(typeof model.getPlayers, 'function');
+  t.is(typeof model.save, 'function');
 });
