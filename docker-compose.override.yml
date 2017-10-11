@@ -10,10 +10,10 @@ services:
     links:
       - db
     environment:
-      - PORT=4000
-      - DB_DATABASE=BabyFootDb
-      - DB_HOST=http://db
-      - DB_PORT=8529
+      PORT: 4000
+      DB_DATABASE: BabyFootDb
+      DB_HOST: http://db
+      DB_PORT: 8529
 
   db:
     image: arango:latest
