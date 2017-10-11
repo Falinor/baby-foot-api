@@ -1,10 +1,10 @@
 import config from '../../config';
-import { find, vertex } from '../../components/model';
+import { find, save, vertex } from '../../components/model';
 
 export const getPlayers = (db) => async (teamHandle) =>
   console.log('getPlayers');
 
-export { find, vertex } from '../../components/model';
+export { find, save, vertex } from '../../components/model';
 
 export default (db) => {
   const teamStore = db.graph(config.db.graphName)
@@ -12,6 +12,7 @@ export default (db) => {
   return {
     find: find(teamStore),
     getPlayers: getPlayers(db),
+    save: save(teamStore),
     vertex: vertex(teamStore)
-  }
+  };
 };
