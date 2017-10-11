@@ -7,12 +7,6 @@
 /matches/{id}/teams:
   $ref: ./match/teams.yml
 
-/matches/{id}/red:
-  $ref: ./match/team.yml
-
-/matches/{id}/blue:
-  $ref: ./match/team.yml
-
 /teams:
   $ref: ./team/teams.yml
 

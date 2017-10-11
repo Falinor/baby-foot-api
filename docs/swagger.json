@@ -28,29 +28,13 @@
             "description": "OK"
           }
         }
-      },
-      "post": {
-        "summary": "Create a match",
-        "description": "A detailed description\n",
-        "operationId": "createMatch",
-        "tags": [
-          "Matches"
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        }
       }
     },
     "/matches/{id}": {
       "get": {
         "summary": "Get a match by ID",
         "description": "Description\n",
-        "operationId": "findMatchByID",
+        "operationId": "getMatch",
         "tags": [
           "Matches"
         ],
@@ -66,90 +50,22 @@
     },
     "/matches/{id}/teams": {
       "get": {
-        "summary": "Find getTeams associated with a match",
+        "summary": "Find the teams that played this match",
         "description": "Test\n",
-        "operationId": "findTeamsFromMatch",
+        "operationId": "findTeams",
         "tags": [
           "Match edges"
         ],
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/matches/{id}/red": {
-      "get": {
-        "summary": "Get a team from a match",
-        "description": "Retrieves a team associated with this match.\n",
-        "operationId": "getTeamFromMatch",
-        "tags": [
-          "Match edges"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a team from a match",
-        "description": "Creates a team associated with this match.\n",
-        "operationId": "createTeamFromMatch",
-        "tags": [
-          "Match edges"
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/matches/{id}/blue": {
-      "get": {
-        "summary": "Get a team from a match",
-        "description": "Retrieves a team associated with this match.\n",
-        "operationId": "getTeamFromMatch",
-        "tags": [
-          "Match edges"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a team from a match",
-        "description": "Creates a team associated with this match.\n",
-        "operationId": "createTeamFromMatch",
-        "tags": [
-          "Match edges"
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad request"
           }
         }
       }
     },
     "/teams": {
       "get": {
-        "summary": "Find getTeams",
+        "summary": "Find teams",
         "description": "Find teams with pagination. One can pass query parameters in order to filter, sort or limit the entities.\n",
         "operationId": "findTeams",
         "tags": [
@@ -180,6 +96,28 @@
         }
       }
     },
+    "/teams/{id}/matches": {
+      "get": {
+        "summary": "Find matches associated with a team.",
+        "description": "Find all the matches a team has competed.\n",
+        "operationId": "findMatchesFromTeam",
+        "tags": [
+          "Team edges"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a match associated with a team.",
+        "description": "Create a\n"
+      }
+    },
     "/teams/{id}/players": {
       "get": {
         "summary": "Find the members of a team.",
@@ -196,31 +134,12 @@
             "description": "Not found"
           }
         }
-      },
-      "post": {
-        "summary": "Create the members of a team.",
-        "description": "Create the players associated with a team. This endpoint will create one or two players from a given array of players in the request body.\n",
-        "operationId": "createPlayersByTeam",
-        "tags": [
-          "Team edges"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "404": {
-            "description": "Not found"
-          }
-        }
       }
     },
     "/players": {
       "get": {
         "summary": "Find players",
-        "description": "Find players with pagination. ...\n",
+        "description": "Find players.\n",
         "operationId": "findPlayers",
         "tags": [
           "Player edges"
@@ -234,9 +153,9 @@
     },
     "/players/{id}": {
       "get": {
-        "summary": "Get a player by ID",
-        "description": "Get a player by ID.\n",
-        "operationId": "findPlayerByID",
+        "summary": "Get a player by trigram",
+        "description": "Get a player by trigram.\n",
+        "operationId": "findPlayerByTrigram",
         "tags": [
           "Players"
         ],
@@ -252,7 +171,7 @@
     },
     "/players/{id}/teams": {
       "get": {
-        "summary": "Get the getTeams associated with a player.",
+        "summary": "Find the teams associated with a player.",
         "description": "Retrieves the teams of which the given player is a member.\n",
         "operationId": "findTeamsFromPlayer",
         "tags": [
@@ -266,13 +185,32 @@
             "description": "Not found"
           }
         }
+      },
+      "post": {
+        "summay": "Create a team.",
+        "description": "A team is composed of two players. This endpoint creates a team in which a player can play. A team cannot exist without players, that is why it must be saved using a player, it cannot be standalone.\n",
+        "operationId": "createTeamFromPlayer",
+        "tags": [
+          "Player edges"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
       }
     },
     "/players/{id}/matches": {
       "get": {
         "summary": "Find matches associated with a player.",
         "description": "Find all the matches a player has competed.\n",
-        "operationId": "findMatchesFromPlayer",
+        "operationId": "findPlayerMatches",
         "tags": [
           "Player edges"
         ],
@@ -306,7 +244,10 @@
               "maximum": 42,
               "example": 10
             }
-          }
+          },
+          "required": [
+            "points"
+          ]
         },
         "blue": {
           "type": "object",
@@ -317,7 +258,10 @@
               "maximum": 42,
               "example": 6
             }
-          }
+          },
+          "required": [
+            "points"
+          ]
         },
         "createdAt": {
           "type": "string",
@@ -325,8 +269,8 @@
         }
       },
       "required": [
-        "points",
-        "players",
+        "red",
+        "blue",
         "createdAt"
       ]
     },
@@ -339,23 +283,12 @@
         "_key": {
           "type": "string"
         },
-        "players": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "/^[A-Z]{3}$/",
-            "minItems": 1,
-            "maxItems": 2,
-            "uniqueItems": true
-          }
-        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
         }
       },
       "required": [
-        "players",
         "createdAt"
       ]
     },
