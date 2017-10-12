@@ -75,7 +75,7 @@ test.serial('GET /teams/:id - 404 Not found', async t => {
 
 test.serial('GET /teams/:id/matches - 200 OK', async t => {
   // Fetch a random team
-  const team = await teamStore.any();
+  const team = await t.context.teamStore.any();
   const res = await request(t.context.api)
     .get(`/teams/${team._key}/matches`)
     .set('Accept', 'application/json')
