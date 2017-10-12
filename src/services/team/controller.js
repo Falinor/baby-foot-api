@@ -1,15 +1,22 @@
-import { find, get } from '../../components/controller';
+import { create, find, get } from '../../components/controller';
 import { success } from '../../components/response';
 
-export const getMatches = (model) => async (req, res, next) =>
-  model.getMatches(req.params.id)
+export const findMatches = (model) => async (req, res, next) =>
+  model.findMatches(req.params.id)
     .then(success(res))
     .catch(next);
 
-export { find, get } from '../../components/controller';
+export const findPlayers = (model) => async (req, res, next) =>
+  model.findPlayers(req.params.id)
+    .then(success(res))
+    .catch(next);
+
+export { create, find, get } from '../../components/controller';
 
 export default (model) => ({
+  create: create(model),
   find: find(model),
-  get: get(model),
-  getMatches: getMatches(model)
+  findMatches: findMatches(model),
+  findPlayers: findPlayers(model),
+  get: get(model)
 });
