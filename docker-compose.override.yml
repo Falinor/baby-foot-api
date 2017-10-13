@@ -15,6 +15,15 @@ services:
       DB_HOST: http://db
       DB_PORT: 8529
 
+  docs:
+    image: swaggerapi/swagger-ui:latest
+    ports:
+      - "4001:8080"
+    volumes:
+      - ./docs:/docs
+    environment:
+      SWAGGER_JSON: /docs/swagger.json
+
   db:
     image: arango:latest
     ports:
