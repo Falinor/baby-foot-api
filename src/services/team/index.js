@@ -12,12 +12,16 @@ export default (db) => {
     controller.find
   );
 
+  router.post('/teams',
+    // controller.create
+  );
+
   router.get('/teams/:id',
     controller.get
   );
 
   router.get('/teams/:id/matches',
-    // ...
+    // controller.findMatches
   );
 
   router.get('/teams/:id/players',
