@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "npm run docs && npm run dev",
-    "dev": "nodemon -i src/\"*.test.js\" -w docs -w src --exec babel-node src/index.js",
+    "dev": "nodemon -i src/\"*.test.js\" -w src --exec babel-node src/index.js",
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
     "test": "NODE_ENV=test LOG_LEVEL=warn ava",
@@ -17,7 +17,7 @@
     "lint": "eslint src",
     "docs": "npm run docs:api && npm run postdocs",
     "docs:es": "esdoc",
-    "docs:api": "json-refs resolve docs/swagger.yml > docs/swagger.json",
+    "docs:api": "nodemon -w docs -e yml --exec 'json-refs resolve docs/swagger.yml > docs/swagger.json'",
     "postdocs": "opn docs/index.html"
   },
   "ava": {
