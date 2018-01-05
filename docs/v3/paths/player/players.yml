@@ -1,0 +1,18 @@
+summary: Manipulate player entities
+
+get:
+  summary: Find all players
+  description: TODO
+  operationId: findPlayers
+  tags:
+    - Players
+  parameters:
+    - $ref: '#/components/parameters/skip'
+    - $ref: '#/components/parameters/limit'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Players'

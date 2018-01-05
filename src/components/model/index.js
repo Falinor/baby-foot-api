@@ -6,7 +6,7 @@ import { save, vertex } from './vertex';
  * @return {function} An asynchronous function that takes an example and options
  * as parameter.
  */
-export const find = (store) => async (example, opts) =>
+export const find = store => async (example, opts) =>
   store.byExample(example, opts)
     .then(cursor => cursor.all());
 
@@ -16,14 +16,14 @@ export const find = (store) => async (example, opts) =>
  * @return {function} An asynchronous function that takes an example as
  * parameter.
  */
-export const findOne = (store) => async (example) =>
+export const findOne = store => async example =>
   store.firstExample(example);
 
 export { vertex, save };
 
-export default (store) => ({
+export default store => ({
   find: find(store),
   findOne: findOne(store),
   vertex: vertex(store),
-  save: save(store)
+  save: save(store),
 });

@@ -7,20 +7,18 @@ import config from '../../config';
  * Initializes database, graph and collections.
  * @param db {object} The database connection object.
  */
-const init = (db) => async (options = config.db) => {
-  return db.createDatabase(options.databaseName)
-    .catch(() => logger.info(`Database ${options.databaseName} exists.`))
-    .then(() => db.useDatabase(options.databaseName))
-    .then(() => db.graph(options.graphName))
-    .then(async graph => {
-      await graph.create({});
-      return graph;
-    })
-    .catch(() => {
-      logger.info(`Graph ${options.graphName} exists.`);
-      return db.graph(options.graphName);
-    });
-};
+const init = db => async (options = config.db) => db.createDatabase(options.databaseName)
+  .catch(() => logger.info(`Database ${options.databaseName} exists.`))
+  .then(() => db.useDatabase(options.databaseName))
+  .then(() => db.graph(options.graphName))
+  .then(async (graph) => {
+    await graph.create({});
+    return graph;
+  })
+  .catch(() => {
+    logger.info(`Graph ${options.graphName} exists.`);
+    return db.graph(options.graphName);
+  });
 
 /**
  *

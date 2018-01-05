@@ -3,7 +3,7 @@ import uuid from 'uuid';
 
 import arango from './index';
 
-test('Should create a database instance', async t => {
+test('Should create a database instance', async (t) => {
   const db = await arango();
   t.is(typeof db, 'object');
   t.truthy(db.useDatabase);
@@ -11,14 +11,14 @@ test('Should create a database instance', async t => {
   // etc.
 });
 
-test('Should init a test database', async t => {
+test('Should init a test database', async (t) => {
   // Init
   const db = await arango();
   const databaseName = `database-${uuid()}`;
   const graphName = `graph-${uuid()}`;
   const graph = await db.init({
     databaseName,
-    graphName
+    graphName,
   });
   // Test
   const dbInfo = await db.get();
@@ -31,5 +31,5 @@ test('Should init a test database', async t => {
   // Clean up
   await graph.drop();
   db.useDatabase('_system');
-  await db.dropDatabase(databaseName)
+  await db.dropDatabase(databaseName);
 });

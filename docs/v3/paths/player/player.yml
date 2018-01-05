@@ -1,0 +1,19 @@
+summary: Manipulate a player entity
+
+get:
+  summary: Find a player by ID
+  description: |
+    The ID can be a trigram or quadrigram e.g. 'abc'.
+  operationId: findPlayerById
+  tags:
+    - Players
+  parameters:
+    - name: id
+      in: path
+      description: The user ID
+      schema:
+        type: string
+        pattern: ^[a-z]{3,4}$
+  responses:
+    '200':
+      description: OK

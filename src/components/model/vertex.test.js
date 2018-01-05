@@ -3,16 +3,14 @@ import sinon from 'sinon';
 
 import * as model from './vertex';
 
-test('Should return a createModel instance', async t => {
+test('Should return a createModel instance', async (t) => {
   t.truthy(model.vertex);
   t.truthy(model.save);
 });
 
-test('Should return a vertex', async t => {
+test('Should return a vertex', async (t) => {
   const store = {
-    vertex: sinon.stub().returns(
-      Promise.resolve({ vertex: 42 })
-    )
+    vertex: sinon.stub().returns(Promise.resolve({ vertex: 42 })),
   };
   const vertex = model.vertex(store);
   const result = await vertex('handle');
@@ -21,11 +19,9 @@ test('Should return a vertex', async t => {
   t.is(result, 42);
 });
 
-test('Should fail to find a vertex', async t => {
+test('Should fail to find a vertex', async (t) => {
   const store = {
-    vertex: sinon.stub().returns(
-      Promise.reject(new Error('Could not find vertex'))
-    )
+    vertex: sinon.stub().returns(Promise.reject(new Error('Could not find vertex'))),
   };
   const vertex = model.vertex(store);
   const error = await t.throws(vertex('handle'));
@@ -33,11 +29,9 @@ test('Should fail to find a vertex', async t => {
   t.is(error.message, 'Could not find vertex');
 });
 
-test('Should create an entity', async t => {
+test('Should create an entity', async (t) => {
   const store = {
-    save: sinon.stub().returns(
-      Promise.resolve({ vertex: 42 })
-    )
+    save: sinon.stub().returns(Promise.resolve({ vertex: 42 })),
   };
   const save = model.save(store);
   const result = await save('data', 'fromId', 'toId');

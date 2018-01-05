@@ -5,7 +5,7 @@ export const success = (res, status = 200) => (entity) => {
   return null;
 };
 
-export const notFound = (res) => () => {
+export const notFound = res => () => {
   res.status(404).end();
   return null;
 };

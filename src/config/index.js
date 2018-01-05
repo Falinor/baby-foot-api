@@ -28,7 +28,7 @@ export default {
       teams: 'teams',
       players: 'players',
       played: 'played',
-      member: 'member'
-    }
-  }
+      member: 'member',
+    },
+  },
 };

@@ -13,5 +13,5 @@ const showExplorer = false;
 
 export default {
   serve: () => ui.serve,
-  setup: () => ui.setup(doc, showExplorer)
+  setup: () => ui.setup(doc, showExplorer),
 };

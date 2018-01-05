@@ -3,11 +3,11 @@ import sinon from 'sinon';
 
 import createController from './index';
 
-test.beforeEach('Create a response stub', async t => {
+test.beforeEach('Create a response stub', async (t) => {
   const req = {
     params: { _id: '42' },
     query: { limit: 10 },
-    body: { data: 42 }
+    body: { data: 42 },
   };
   const res = {};
   res.status = sinon.stub().returns(res);
@@ -16,7 +16,7 @@ test.beforeEach('Create a response stub', async t => {
   t.context = { req, res, next };
 });
 
-test('Should create a controller instance', async t => {
+test('Should create a controller instance', async (t) => {
   const controller = createController();
   t.truthy(controller);
   t.truthy(controller.create);
@@ -25,11 +25,9 @@ test('Should create a controller instance', async t => {
   t.truthy(controller.get);
 });
 
-test('Should create an entity', async t => {
+test('Should create an entity', async (t) => {
   const model = {
-    save: sinon.stub().returns(
-      Promise.resolve({ data: 42 })
-    )
+    save: sinon.stub().returns(Promise.resolve({ data: 42 })),
   };
   const controller = createController(model);
   const { req, res, next } = t.context;
@@ -41,11 +39,9 @@ test('Should create an entity', async t => {
   t.true(next.notCalled);
 });
 
-test('Should fail to create an entity', async t => {
+test('Should fail to create an entity', async (t) => {
   const model = {
-    save: sinon.stub().returns(
-      Promise.reject(new Error('Could not create entity'))
-    )
+    save: sinon.stub().returns(Promise.reject(new Error('Could not create entity'))),
   };
   const controller = createController(model);
   const { req, res, next } = t.context;
@@ -53,11 +49,9 @@ test('Should fail to create an entity', async t => {
   t.true(next.calledOnce);
 });
 
-test('Should find all entities and call res.status and res.json', async t => {
+test('Should find all entities and call res.status and res.json', async (t) => {
   const model = {
-    find: sinon.stub().returns(
-      Promise.resolve([])
-    )
+    find: sinon.stub().returns(Promise.resolve([])),
   };
   const controller = createController(model);
   const { req, res, next } = t.context;
@@ -70,11 +64,9 @@ test('Should find all entities and call res.status and res.json', async t => {
   t.true(next.notCalled);
 });
 
-test('Should find one entity and call res.status and res.json', async t => {
+test('Should find one entity and call res.status and res.json', async (t) => {
   const model = {
-    findOne: sinon.stub().returns(
-      Promise.resolve({})
-    )
+    findOne: sinon.stub().returns(Promise.resolve({})),
   };
   const controller = createController(model);
   const { req, res, next } = t.context;
@@ -86,11 +78,9 @@ test('Should find one entity and call res.status and res.json', async t => {
   t.true(next.notCalled);
 });
 
-test('Should get a get', async t => {
+test('Should get a get', async (t) => {
   const model = {
-    vertex: sinon.stub().returns(
-      Promise.resolve({})
-    )
+    vertex: sinon.stub().returns(Promise.resolve({})),
   };
   const controller = createController(model);
   const { req, res, next } = t.context;

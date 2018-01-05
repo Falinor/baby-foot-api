@@ -1,5 +1,30 @@
 # Baby-foot API and dashboard
 
+## Installation
+
+With npm:
+
+```text
+$ npm install
+```
+
+With yarn:
+
+```text
+$ yarn [install]
+```
+
+## API documentation
+
+You can serve API documentation locally using Docker:
+
+```text
+$ docker pull swaggerapi/swagger-ui
+$ docker run -p 80:8080 -e SWAGGER_JSON=/docs/openapi.json -v $PWD/docs/v3:/docs swaggerapi/swagger-ui
+```
+
+You may change the port *80* if it does not fit your needs or is already in use.
+
 ## Features
 
 Here are the live, in development and proposed features. Do not hesitate to

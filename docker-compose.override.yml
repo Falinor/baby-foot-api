@@ -20,9 +20,9 @@ services:
     ports:
       - "4001:8080"
     volumes:
-      - ./docs:/docs
+      - ./docs/v3/openapi.json:/docs/openapi.json
     environment:
-      SWAGGER_JSON: /docs/swagger.json
+      SWAGGER_JSON: /docs/openapi.json
 
   db:
     image: arango:latest
