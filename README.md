@@ -27,7 +27,7 @@ You may change the port *80* if it does not fit your needs or is already in use.
 
 ## Features
 
-Here are the live, in development and proposed features. Do not hesitate to
+Here are the live, in-development and proposed features. Do not hesitate to
 propose a feature by opening an issue or send a pull-request with yours. Enjoy!
 
 ### Live
@@ -36,12 +36,12 @@ None yet!
 
 ### In active development
 
-- Top ranked players
+- Top 10 players
   - Win rate by player
-- Top ranked teams
+- Top 10 teams
   - Win rate by team
 - Individual rank and scores
-- Latest matches
+- The last 10 matches
 - Analytics dashboard
   - Count of matches played
 
@@ -53,8 +53,3 @@ None yet!
 
 The technical architecture of the project is contained in
 *architecture-draft.xml*. It may be open with the Chrome application *draw.io*.
-
-# TODO
-
-Create a player first, then a team, then a match? (preferred option)
-Or create a match first, then a team, then a player?

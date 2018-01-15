@@ -1,5 +1,5 @@
 /**
- * @module Player use-case interactor
+ * @module GetPlayer use-case interactor
  */
 
 import { EventEmitter } from 'events';
@@ -8,6 +8,10 @@ class GetPlayer extends EventEmitter {
   constructor(playerRepository) {
     super();
     this.playerRepository = playerRepository;
+    this.outputs = {
+      SUCCESS: 'success',
+      ERROR: 'error',
+    };
   }
 
   /**
@@ -16,9 +20,9 @@ class GetPlayer extends EventEmitter {
   async execute(id) {
     try {
       const player = await this.playerRepository.findById(id);
-      this.emit('success', player);
+      this.emit(this.outputs.SUCCESS, player);
     } catch (err) {
-      this.emit('error', err);
+      this.emit(this.outputs.ERROR, err);
     }
   }
 }

@@ -1,12 +1,10 @@
 type: object
 properties:
-  _id:
+  id:
     type: string
-  _key:
-    type: string
-  trigram:
-    type: string
-    pattern: ^[A-Z]{3}$
+    readOnly: string
+  rank:
+    type: integer
   createdAt:
     type: string
     format: date-time

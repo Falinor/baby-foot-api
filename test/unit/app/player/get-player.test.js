@@ -9,6 +9,8 @@ test('Should create a getPlayer use case', async (t) => {
   t.is(typeof getPlayer, 'object');
   t.is(typeof getPlayer.execute, 'function');
   t.is(typeof getPlayer.on, 'function');
+  t.is(typeof getPlayer.outputs, 'object');
+  t.deepEqual(getPlayer.outputs, { SUCCESS: 'success', ERROR: 'error' });
   t.is(repo, getPlayer.playerRepository);
 });
 
@@ -20,7 +22,7 @@ test('Should execute the use case and emit a success event', async (t) => {
     findById: sinon.stub().resolves(expected),
   };
   const getPlayer = createGetPlayer(repo);
-  getPlayer.on('success', (player) => {
+  getPlayer.on(getPlayer.outputs.SUCCESS, (player) => {
     t.is(player, expected);
   });
   await getPlayer.execute('ABC');
@@ -31,14 +33,10 @@ test('Should execute the use case and emit an error event', async (t) => {
     findById: sinon.stub().throws(),
   };
   const getPlayer = createGetPlayer(repo);
-  getPlayer.on('error', (err) => {
+  getPlayer.on(getPlayer.outputs.ERROR, (err) => {
     t.is(typeof err, 'object');
     t.is(typeof err.name, 'string');
     t.is(typeof err.message, 'string');
   });
   await getPlayer.execute('ABC');
 });
-
-/*
-
-*/

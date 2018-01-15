@@ -1,7 +1,9 @@
-export const find = (playerStore) =>
-  async (search, options = {}) => {};
+export const find = playerStore =>
+  async (search = {}, options = {}) => {
+    return playerStore.find(search);
+  };
 
-export const findById = (playerStore) =>
+export const findById = playerStore =>
   async (id) => {
     return playerStore.findOne({ _id: id });
   };

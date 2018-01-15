@@ -1,11 +1,10 @@
 type: object
 properties:
-  _id:
+  id:
     type: string
     readOnly: true
-  _key:
-    type: string
-    readOnly: true
+  rank:
+    type: integer
   createdAt:
     type: string
     format: date-time
