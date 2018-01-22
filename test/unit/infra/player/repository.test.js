@@ -1,10 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
 
-import createRepository, {
-  find,
-  findById,
-} from '../../../../src/infra/player/repository';
+import createRepository from '../../../../src/infra/player/repository';
 
 test('Should create a player repository', async (t) => {
   const repo = createRepository();
@@ -18,5 +15,5 @@ test('Should find players', async (t) => {
   const repo = createRepository({ find });
   await repo.find();
   t.true(find.calledOnce);
-  t.true(find.calledWithExactly());
+  t.true(find.calledWithExactly({}));
 });
