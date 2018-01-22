@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "private": true,
   "scripts": {
-    "dev": "nodemon -w src --exec babel-node src/index.js",
+    "dev": "npm run test:unit:watch",
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
     "start": "npm run dev",
@@ -13,7 +13,7 @@
     "test:api:watch": "npm run test:api -- --watch",
     "test:unit": "npm test -- \"test/unit/**/*.test.js\"",
     "test:unit:watch": "npm run test:unit -- --watch",
-    "coverage": "npm test",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm run test:unit",
     "postcoverage": "opn coverage/lcov-report/index.html",
     "lint": "eslint src",
     "docs": "npm run docs:api && npm run postdocs",
@@ -43,6 +43,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "nodemon": "^1.11.0",
+    "nyc": "^11.4.1",
     "opn-cli": "^3.1.0",
     "sinon": "^2.2.0",
     "supertest": "^3.0.0"
