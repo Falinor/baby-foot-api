@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm run test:unit:watch",
     "build": "babel src -d dist",
+    "release": "standard-version",
     "serve": "node dist/index.js",
     "start": "npm run dev",
     "test": "ava",
