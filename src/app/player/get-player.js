@@ -4,7 +4,7 @@
 
 import { EventEmitter } from 'events';
 
-class GetPlayer extends EventEmitter {
+class GetPlayerUseCase extends EventEmitter {
   constructor(playerRepository) {
     super();
     this.playerRepository = playerRepository;
@@ -27,4 +27,4 @@ class GetPlayer extends EventEmitter {
   }
 }
 
-export default playerRepo => new GetPlayer(playerRepo);
+export default playerRepo => new GetPlayerUseCase(playerRepo);
