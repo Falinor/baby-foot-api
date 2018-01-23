@@ -1,3 +1,14 @@
+export const inputMatch = {
+  red: {
+    points: 10,
+    players: ['ABC', 'DEF'],
+  },
+  blue: {
+    points: 6,
+    players: ['GHI', 'JKL'],
+  },
+};
+
 /**
  * Matches to be imported.
  * @type {Array<object>} An array of matches.
