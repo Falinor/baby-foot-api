@@ -1,42 +1,42 @@
 import test from 'ava';
 import sinon from 'sinon';
 
-import createGetPlayer from '../../../../src/app/player/get-player';
+import createGetPlayerUseCase from '../../../../src/app/player/get-player';
 
-test('Should create a getPlayer use case', async (t) => {
+test('Should create a GetPlayer use case', async (t) => {
   const repo = {};
-  const getPlayer = createGetPlayer(repo);
-  t.is(typeof getPlayer, 'object');
-  t.is(typeof getPlayer.execute, 'function');
-  t.is(typeof getPlayer.on, 'function');
-  t.is(typeof getPlayer.outputs, 'object');
-  t.deepEqual(getPlayer.outputs, { SUCCESS: 'success', ERROR: 'error' });
-  t.is(repo, getPlayer.playerRepository);
+  const getPlayerUseCase = createGetPlayerUseCase(repo);
+  t.is(typeof getPlayerUseCase, 'object');
+  t.is(typeof getPlayerUseCase.execute, 'function');
+  t.is(typeof getPlayerUseCase.on, 'function');
+  t.is(typeof getPlayerUseCase.outputs, 'object');
+  t.deepEqual(getPlayerUseCase.outputs, { SUCCESS: 'success', ERROR: 'error' });
+  t.is(repo, getPlayerUseCase.playerRepository);
 });
 
-test('Should execute the use case and emit a success event', async (t) => {
+test('Should get a player and emit a success event', async (t) => {
   const expected = {
     id: 'ABC', // trigram
   };
   const repo = {
     findById: sinon.stub().resolves(expected),
   };
-  const getPlayer = createGetPlayer(repo);
-  getPlayer.on(getPlayer.outputs.SUCCESS, (player) => {
+  const getPlayerUseCase = createGetPlayerUseCase(repo);
+  getPlayerUseCase.on(getPlayerUseCase.outputs.SUCCESS, (player) => {
     t.is(player, expected);
   });
-  await getPlayer.execute('ABC');
+  await getPlayerUseCase.execute('ABC');
 });
 
-test('Should execute the use case and emit an error event', async (t) => {
+test('Should get a player and emit an error event', async (t) => {
   const repo = {
     findById: sinon.stub().throws(),
   };
-  const getPlayer = createGetPlayer(repo);
-  getPlayer.on(getPlayer.outputs.ERROR, (err) => {
+  const getPlayerUseCase = createGetPlayerUseCase(repo);
+  getPlayerUseCase.on(getPlayerUseCase.outputs.ERROR, (err) => {
     t.is(typeof err, 'object');
     t.is(typeof err.name, 'string');
     t.is(typeof err.message, 'string');
   });
-  await getPlayer.execute('ABC');
+  await getPlayerUseCase.execute('ABC');
 });
