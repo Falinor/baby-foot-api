@@ -20,18 +20,19 @@ class AddMatchUseCase extends EventEmitter {
         this.playerRepository.insertMany(match.blue.players),
       ]);
       // Create teams
-      const [redTeam, blueTeam] = await this.teamRepository.insertMany([
+      const [redTeamId, blueTeamId] = await this.teamRepository.insertMany([
         { redPlayers },
         { bluePlayers },
       ]);
       // Create match
-      const createdMatch = await this.matchRepository.insertOne({
+      const matchId = await this.matchRepository.insertOne({
         match,
-        redTeam,
-        blueTeam,
+        redTeamId,
+        blueTeamId,
       });
+      this.emit(this.outputs.SUCCESS, matchId);
     } catch (err) {
-      this.emit(this.outputs.ERROR);
+      this.emit(this.outputs.ERROR, err);
     }
   }
 }
