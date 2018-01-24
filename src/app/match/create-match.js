@@ -15,17 +15,19 @@ class AddMatchUseCase extends EventEmitter {
   async execute(match) {
     try {
       // Create players
-      const [redPlayers, bluePlayers] = await Promise.all([
-        this.playerRepository.insertMany(match.red.players),
-        this.playerRepository.insertMany(match.blue.players),
+      const redPlayerPromises = match.red.players.map(async p => this.playerRepository.create(p));
+      const bluePlayerPromises = match.blue.players.map(async p => this.playerRepository.create(p));
+      const [redPlayerIds, bluePlayerIds] = await Promise.all([
+        Promise.all(redPlayerPromises),
+        Promise.all(bluePlayerPromises),
       ]);
       // Create teams
-      const [redTeamId, blueTeamId] = await this.teamRepository.insertMany([
-        { redPlayers },
-        { bluePlayers },
+      const [redTeamId, blueTeamId] = await Promise.all([
+        this.teamRepository.create(redPlayerIds),
+        this.teamRepository.create(bluePlayerIds),
       ]);
       // Create match
-      const matchId = await this.matchRepository.insertOne({
+      const matchId = await this.matchRepository.create({
         match,
         redTeamId,
         blueTeamId,
