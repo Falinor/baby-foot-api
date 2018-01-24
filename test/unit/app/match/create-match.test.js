@@ -24,23 +24,45 @@ test('Should create an AddMatch use case', async (t) => {
 test('Should create a match and emit a success event', async (t) => {
   const repos = {
     playerRepository: {
-      insertMany: sinon.stub().resolves(),
+      create: sinon.stub()
+        .onFirstCall().resolves(1)
+        .onSecondCall().resolves(2)
+        .onThirdCall().resolves(3)
+        // Index starts at 0
+        .onCall(3).resolves(4),
     },
     teamRepository: {
-      insertMany: sinon.stub().resolves(),
+      create: sinon.stub()
+        .onFirstCall().resolves(5)
+        .onSecondCall().resolves(6),
     },
     matchRepository: {
-      insertOne: sinon.stub().resolves(),
+      create: sinon.stub().resolves(7),
     },
   };
   const addMatchUseCase = createAddMatchUseCase(repos);
   addMatchUseCase.on(addMatchUseCase.outputs.SUCCESS, (id) => {
-    t.is(typeof id, 'string');
+    t.is(id, 7);
   });
   await addMatchUseCase.execute(inputMatch);
-  t.true(repos.playerRepository.insertMany.calledTwice);
-  t.true(repos.teamRepository.insertMany.calledOnce);
-  t.true(repos.matchRepository.insertOne.calledOnce);
+  t.is(repos.playerRepository.create.callCount, 4);
+  t.true(repos.teamRepository.create.calledTwice);
+  t.true(repos.matchRepository.create.calledOnce);
 });
 
-test.todo('Should fail to create a match and emit an error event');
+test('Should fail to create a match and emit an error event', async (t) => {
+  const repos = {
+    matchRepository: null,
+    teamRepository: null,
+    playerRepository: {
+      create: sinon.stub().throws(),
+    },
+  };
+  const addMatchUseCase = createAddMatchUseCase(repos);
+  addMatchUseCase.on(addMatchUseCase.outputs.ERROR, (err) => {
+    t.is(typeof err, 'object');
+    t.is(typeof err.name, 'string');
+    t.is(typeof err.message, 'string');
+  });
+  await t.notThrows(addMatchUseCase.execute(inputMatch));
+});
