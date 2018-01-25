@@ -10,7 +10,7 @@ export const show = getPlayerUseCase =>
         ctx.body = player;
       })
       .on(ERROR, (err) => {
-        throw err;
+        ctx.throw(400, err.message);
       });
     // Execute the use case
     return getPlayerUseCase.execute(ctx.params.id);
