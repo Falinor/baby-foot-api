@@ -1,7 +1,7 @@
-import getPlayerUseCase from './get-player';
+import createGetPlayerUseCase from './get-player';
 
-export { default as getPlayerUseCase } from './get-player';
+export { default as createGetPlayerUseCase } from './get-player';
 
 export default {
-  getPlayerUseCase,
+  createGetPlayerUseCase,
 };
