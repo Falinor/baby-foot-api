@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-export default (routes, logger) => {
+export default (logger, routes = null) => {
   const app = new Koa();
 
   // Use error handler
@@ -18,7 +18,7 @@ export default (routes, logger) => {
     next();
   });
   // Register routes
-  app.use(routes);
+  if (routes) app.use(routes);
 
   return app;
 };
