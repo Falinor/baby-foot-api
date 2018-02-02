@@ -17,18 +17,22 @@ export const matches = [
   {
     red: {
       points: 10,
+      players: ['ABC', 'DEF'],
     },
     blue: {
       points: 7,
+      players: ['GHI', 'JKL'],
     },
     createdAt: new Date(),
   },
   {
     red: {
       points: 6,
+      players: ['ABC', 'DEF'],
     },
     blue: {
       points: 10,
+      players: ['GHI', 'JKL'],
     },
     createdAt: new Date(),
   },
@@ -54,4 +58,4 @@ export const players = [
   { id: 'JKL' },
 ];
 
-export default { matches, teams, players };
+export default { inputMatch, matches, teams, players };
