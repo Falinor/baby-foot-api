@@ -27,4 +27,4 @@ class GetPlayerUseCase extends EventEmitter {
   }
 }
 
-export default playerRepo => new GetPlayerUseCase(playerRepo);
+export default playerRepository => new GetPlayerUseCase(playerRepository);

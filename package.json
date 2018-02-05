@@ -8,7 +8,7 @@
     "build": "babel src -d dist",
     "release": "standard-version --no-verify",
     "serve": "node dist/index.js",
-    "start": "npm run dev",
+    "start": "babel-node src/index.js",
     "test": "ava",
     "test:api": "npm test -- \"test/api/**/*.test.js\"",
     "test:api:watch": "npm run test:api -- --watch",
