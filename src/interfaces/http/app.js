@@ -14,7 +14,7 @@ export default (logger, routes = null) => {
   });
   // Set content type to JSON
   app.use(async (ctx, next) => {
-    ctx.set('Content-Type', 'application/json');
+    ctx.type = 'application/json';
     next();
   });
   // Register routes
