@@ -13,20 +13,24 @@ const container = createContainer({
 test('Should create a container', async (t) => {
   t.is(typeof container, 'object');
   t.is(typeof container.registrations, 'object');
-  t.is(typeof container.registrations.playerController, 'object');
+});
+
+test('Should resolve a CreateMatch use case', async (t) => {
+  const createMatchUseCase = container.resolve('createMatch');
+  t.is(typeof createMatchUseCase, 'object');
+});
+
+test('Should resolve a FindMatches use case', async (t) => {
+  const findMatchesUseCase = container.resolve('findMatches');
+  t.is(typeof findMatchesUseCase, 'object');
 });
 
 test('Should resolve a GetPlayer use case', async (t) => {
-  const getPlayerUseCase = container.resolve('getPlayerUseCase');
+  const getPlayerUseCase = container.resolve('getPlayer');
   t.is(typeof getPlayerUseCase, 'object');
 });
 
 test('Should resolve a player repository', async (t) => {
   const playerRepository = container.resolve('playerRepository');
   t.is(typeof playerRepository, 'object');
-});
-
-test('Should resolve a player controller', async (t) => {
-  const playerCtrl = container.resolve('playerController');
-  t.is(typeof playerCtrl, 'object');
 });
