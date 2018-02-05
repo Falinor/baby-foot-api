@@ -13,7 +13,7 @@ export default (environment = process.env) => ({
     level: environment.LOG_LEVEL || 'debug',
   },
   db: {
-    url: requireProcessEnv(environment, 'DB_URL'),
+    url: environment.DB_URL,
     retryConnection: !!environment.DB_RETRY_CONNECTION || true,
   },
 });
