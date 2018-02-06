@@ -70,7 +70,7 @@ test('Should create a match repository', async (t) => {
 
 test('Should create a match', async (t) => {
   const insertOne = sinon.stub().resolves(inputMatch);
-  const matchRepository = createMatchRepository({insertOne});
+  const matchRepository = createMatchRepository({ insertOne });
   await matchRepository.create(inputMatch);
   t.true(insertOne.calledOnce);
   t.true(insertOne.calledWithExactly(inputMatch));
