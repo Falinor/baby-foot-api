@@ -5,7 +5,7 @@ import createApp from './interfaces/http/app';
 
 /**
  * Create a DI container.
- * @param config
+ * @param config {Object} - A configuration object
  * @return {AwilixContainer}
  */
 export default config => createContainer()
