@@ -1,16 +1,15 @@
-const toEntity = (matchDBO) => {
-  // TODO
-  return matchDBO;
-};
+export const toEntity = matchDBO => ({
+  // eslint-disable-next-line
+  id: matchDBO._id,
+  red: matchDBO.red,
+  blue: matchDBO.blue,
+});
 
-const toDBO = (matchEntity) => {
-  // TODO
-  return matchEntity;
-};
+export const toDBO = matchEntity => matchEntity;
 
 const create = store =>
   async (match) => {
-    // TODO
+    // TODO: validate input data
     // Transform entity into DB object
     const matchDBO = toDBO(match);
     return store.insertOne(matchDBO);

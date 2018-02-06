@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const requireProcessEnv = (env, name) => {
   if (!env[name]) {
     throw new Error(`You must set the ${name} environment variable`);
