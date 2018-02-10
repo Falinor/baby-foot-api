@@ -41,6 +41,7 @@
     "ava": "^0.21.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "coveralls": "^3.0.0",
     "esdoc": "^1.0.1",
     "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -58,12 +59,12 @@
     "ajv": "^5.2.2",
     "arangojs": "^5.7.0",
     "awilix": "^3.0.1",
-    "awilix-koa": "^2.1.0",
     "bunyan": "^1.8.12",
+    "eslint-plugin-ava": "^4.5.0",
     "http-status": "^1.0.1",
     "json-refs": "^3.0.0",
     "koa": "^2.4.1",
-    "koa-router": "^7.3.0",
+    "koa-router": "^7.4.0",
     "morgan": "^1.8.2"
   }
 }
