@@ -30,14 +30,15 @@
     "tap": false,
     "powerAssert": true,
     "require": [
-      "babel-register"
-    ],
-    "babel": "inherit"
+      "@babel/register"
+    ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.39",
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
+    "@babel/register": "^7.0.0-beta.39",
     "ava": "^0.21.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
     "coveralls": "^3.0.0",
     "esdoc": "^1.0.1",
     "eslint": "^4.14.0",
@@ -55,7 +56,6 @@
   },
   "dependencies": {
     "ajv": "^5.2.2",
-    "arangojs": "^5.7.0",
     "awilix": "^3.0.1",
     "bunyan": "^1.8.12",
     "http-status": "^1.0.1",
