@@ -9,4 +9,9 @@ dist
 npm-debug.log
 .nyc_output
 coverage
-cassettes
+
+Thumbs.db
+db.json
+*.log
+public/
+.deploy*/
