@@ -1,6 +1,6 @@
 FROM kkarczmarczyk/node-yarn:latest
 
-LABEL maintainer "Andrea Gueugnaut <agueugnaut@octo.com>"
+LABEL maintainer="Andrea Gueugnaut <agueugnaut@octo.com>"
 
 ENV APP /code
 ENV PORT 3000
