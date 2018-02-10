@@ -2,7 +2,7 @@ version: '3'
 
 services:
   api:
-    command: test:watch
+    command: test:api
     volumes:
       - ./src:/code/src
     ports:
@@ -10,13 +10,10 @@ services:
     links:
       - db
     environment:
-      - PORT=3000
-      - DB_URL=http://test:test@db:8529
-      - DB_DATABASE=BabyFootTestDb
+      PORT: 3000
+      DB_URL: http://db:27017/baby-foot-test
 
   db:
-    image: arangodb:latest
+    image: mongo:latest
     ports:
-      - "8529:8529"
-    environment:
-      - ARANGO_NO_AUTH=1
+      - "27017:27017"
