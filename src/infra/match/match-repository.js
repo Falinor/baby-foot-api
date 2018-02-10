@@ -7,16 +7,16 @@ export const toEntity = matchDBO => ({
 
 export const toDBO = matchEntity => matchEntity;
 
-const create = store =>
+const create = matchStore =>
   async (match) => {
     // TODO: validate input data
     // Transform entity into DB object
     const matchDBO = toDBO(match);
-    return store.insertOne(matchDBO);
+    return matchStore.insertOne(matchDBO);
   };
 
-export default store => ({
+export default matchStore => ({
   toEntity,
   toDBO,
-  create: create(store),
+  create: create(matchStore),
 });

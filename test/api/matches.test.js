@@ -1,12 +1,18 @@
 import test from 'ava';
+import { asValue } from 'awilix';
+import mongo from 'mongodb';
 import request from 'supertest';
 
-import createApp from '../../src/interfaces/http/app';
-import routes from '../../src/interfaces/http/match';
+import createConfig from '../../src/config';
+import createContainer from '../../src/container';
 
-test.beforeEach('Create context', (t) => {
+test.beforeEach('Create context', async (t) => {
+  const config = createConfig();
+  const container = createContainer(config);
+  const db = await mongo.connect(config.db.url);
+  container.register('matchStore', asValue(db.collection('Matches')));
   t.context = {
-    app: createApp(console, routes),
+    app: container.cradle.app,
   };
 });
 
