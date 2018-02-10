@@ -1,7 +1,19 @@
 import test from 'ava';
+import sinon from 'sinon';
 
-import player from '../../../../../src/interfaces/http/player';
+import createPlayerRouter from '../../../../../src/interfaces/http/player';
+
+test.beforeEach('Create context', async (t) => {
+  const show = sinon.spy();
+  t.context = {
+    show,
+    router: createPlayerRouter({ show }),
+  };
+});
 
 test('Should create player routes', async (t) => {
-  t.is(typeof player, 'object');
+  const { router, show } = t.context;
+  console.log(router);
+  t.is(typeof router, 'object');
+  t.is(router.opts.prefix, '/players');
 });

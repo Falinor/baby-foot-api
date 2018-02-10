@@ -1,6 +1,15 @@
 import test from 'ava';
 import request from 'supertest';
 
+import createApp from '../../src/interfaces/http/app';
+import routes from '../../src/interfaces/http/match';
+
+test.beforeEach('Create context', (t) => {
+  t.context = {
+    app: createApp(console, routes),
+  };
+});
+
 test('GET /matches -> 200 OK', async (t) => {
   const { app } = t.context;
   const res = await request(app)
