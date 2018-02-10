@@ -1,6 +1,6 @@
 {
   "name": "babyfoot-api-docs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "src/index.html",
   "private": true,
   "scripts": {
