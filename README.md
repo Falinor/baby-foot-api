@@ -1,5 +1,8 @@
 # Baby-foot API and dashboard
 
+[![Build Status](https://travis-ci.org/Falinor/baby-foot-api.svg?branch=master)](https://travis-ci.org/Falinor/baby-foot-api)
+[![Coverage Status](https://coveralls.io/repos/github/Falinor/baby-foot-api/badge.svg?branch=master)](https://coveralls.io/github/Falinor/baby-foot-api?branch=master)
+
 ## Installation
 
 With npm:
