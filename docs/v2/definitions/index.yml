@@ -1,8 +1,0 @@
-Match:
-  $ref: ./match.yml
-
-Team:
-  $ref: ./team.yml
-
-Player:
-  $ref: ./player.yml
