@@ -9,11 +9,7 @@ services: mongodb
 
 before_script:
   - sleep 15
-  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
-
-environment:
-  DB_USER: travis
-  DB_PASSWORD: test
+  - mongo baby-foot-test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 
 after_success:
   - './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'
