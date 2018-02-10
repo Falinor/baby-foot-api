@@ -1,7 +1,6 @@
-import { createController } from 'awilix-koa';
+import Router from 'koa-router';
 
-import controller from './controller';
-
-export default createController(controller)
-  .prefix('/players')
-  .get('/:id', 'show'); // Maps GET /players to controller.show
+export default playerController =>
+  new Router()
+    .prefix('/players')
+    .get('/:id', playerController.show);

@@ -1,7 +1,6 @@
-import { createController } from 'awilix-koa';
+import Router from 'koa-router';
 
-import controller from './controller';
-
-export default createController(controller)
-  .prefix('/matches')
-  .get('', 'index');
+export default matchController =>
+  new Router()
+    .prefix('/matches')
+    .get('', matchController.index);
