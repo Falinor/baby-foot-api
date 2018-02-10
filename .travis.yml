@@ -5,15 +5,10 @@ node_js:
   - 8
   - 9
 
-services: mongodb
-
-before_script:
-  - sleep 15
-  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
-
-environment:
-  DB_USER: travis
-  DB_PASSWORD: test
-
-after_success:
-  - './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  keep-history: true
+  on:
+    branch: gh-pages
