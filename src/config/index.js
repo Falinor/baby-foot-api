@@ -15,7 +15,8 @@ export default (environment = process.env) => ({
     level: environment.LOG_LEVEL || 'debug',
   },
   db: {
-    url: environment.DB_URL || 'mongodb://localhost:27017/baby-foot',
+    url: environment.DB_URL || 'mongodb://localhost:27017',
+    name: environment.DB_NAME || 'baby-foot',
     retryConnection: !!environment.DB_RETRY_CONNECTION || true,
   },
 });
