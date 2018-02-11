@@ -9,7 +9,8 @@ import createContainer from '../../src/container';
 test.beforeEach('Create context', async (t) => {
   const config = createConfig();
   const container = createContainer(config);
-  const db = await mongo.connect(config.db.url);
+  const mongoClient = await mongo.connect(config.db.url);
+  const db = mongoClient.db(config.db.name);
   container.register('matchStore', asValue(db.collection('Matches')));
   t.context = {
     app: container.cradle.app,
