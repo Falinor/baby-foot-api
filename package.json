@@ -10,7 +10,7 @@
     "serve": "node dist/index.js",
     "start": "babel-node src/index.js",
     "test": "npm run test:unit && npm run test:api",
-    "test:api": "cross-env BABEL_ENV=test ava \"test/api/**/*.test.js\"",
+    "test:api": "cross-env BABEL_ENV=test ava --serial \"test/api/**/matches.test.js\"",
     "test:api:watch": "npm run test:api -- --watch",
     "test:unit": "cross-env BABEL_ENV=test ava \"test/unit/**/*.test.js\"",
     "test:unit:watch": "npm run test:unit -- --watch",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.39",
     "@babel/core": "^7.0.0-beta.39",
+    "@babel/node": "^7.0.0-beta.39",
     "@babel/preset-env": "^7.0.0-beta.39",
     "@babel/register": "^7.0.0-beta.39",
     "ava": "^0.21.0",

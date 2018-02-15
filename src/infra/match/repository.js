@@ -7,6 +7,9 @@ export const toEntity = matchDBO => ({
 
 export const toDBO = matchEntity => matchEntity;
 
+const find = matchStore =>
+  async () => matchStore.find().toArray();
+
 const create = matchStore =>
   async (match) => {
     // TODO: validate input data
@@ -19,4 +22,5 @@ export default matchStore => ({
   toEntity,
   toDBO,
   create: create(matchStore),
+  find: find(matchStore),
 });
