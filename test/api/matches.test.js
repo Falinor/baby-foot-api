@@ -8,19 +8,22 @@ import createContainer from '../../src/container';
 
 test.beforeEach('Create context', async (t) => {
   const config = createConfig();
-  const container = createContainer(config);
   const mongoClient = await mongo.connect(config.db.url);
   const db = mongoClient.db(config.db.name);
+  const container = createContainer(config);
   container.register('matchStore', asValue(db.collection('Matches')));
+  const { app, matchRouter } = container.cradle;
+  app.use(matchRouter.routes());
+  app.use(matchRouter.allowedMethods());
   t.context = {
-    app: container.cradle.app,
+    app: app.callback(),
   };
 });
 
-test('GET /matches -> 200 OK', async (t) => {
+test.serial('GET /matches -> 200 OK', async (t) => {
   const { app } = t.context;
   const res = await request(app)
-    .get('/');
+    .get('/matches');
   t.is(typeof res, 'object');
   t.is(res.status, 200);
   const matches = res.body;
@@ -49,10 +52,10 @@ test('GET /matches -> 200 OK', async (t) => {
   return Promise.all(promises);
 });
 
-test('POST /matches -> 201 Created', async (t) => {
+test.serial.skip('POST /matches -> 201 Created', async (t) => {
   const { app } = t.context;
   const res = await request(app)
-    .post('/')
+    .post('/matches')
     .send({
       red: {
         points: 10,
