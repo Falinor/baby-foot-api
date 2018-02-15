@@ -6,16 +6,15 @@ export default (logger, routes = null) => {
   // Use error handler
   app.use(async (ctx, next) => {
     try {
-      next();
+      await next();
     } catch (err) {
       logger.error(err);
-      ctx.body = err;
     }
   });
   // Set content type to JSON
   app.use(async (ctx, next) => {
     ctx.type = 'application/json';
-    next();
+    await next();
   });
   // Register routes
   if (routes) app.use(routes);

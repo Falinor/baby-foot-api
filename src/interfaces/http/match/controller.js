@@ -10,11 +10,11 @@ export const index = findMatchesUseCase =>
         ctx.body = matches;
       })
       .on(ERROR, (err) => {
-        ctx.throw(400, err.message);
+        ctx.throw(Http.BAD_REQUEST, err.message);
       });
     return findMatchesUseCase.execute();
   };
 
-export default ({ findMatchesUseCase }) => ({
-  index: index(findMatchesUseCase),
+export default ({ findMatches }) => ({
+  index: index(findMatches),
 });

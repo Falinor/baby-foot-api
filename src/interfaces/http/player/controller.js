@@ -16,6 +16,6 @@ export const show = getPlayerUseCase =>
     return getPlayerUseCase.execute(ctx.params.id);
   };
 
-export default ({ getPlayerUseCase }) => ({
-  show: show(getPlayerUseCase),
+export default ({ getPlayer }) => ({
+  show: show(getPlayer),
 });
