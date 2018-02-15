@@ -1,22 +1,37 @@
+import { asValue } from 'awilix';
+import mongo from 'mongodb';
+
 import createConfig from './config';
 import createContainer from './container';
-import playerRoutes from './interfaces/http/player';
 
 const config = createConfig();
 const container = createContainer(config);
 // Resolve app and logger into the DI container
-const { app, logger } = container.cradle;
+const { app, logger, matchRouter } = container.cradle;
 
 // Scope-per-request middleware
-app.use((ctx, next) => {
-  ctx.state.container = container.createScope();
-  return next();
-});
+// app.use((ctx, next) => {
+//   ctx.state.container = container.createScope();
+//   return next();
+// });
 
-// Register routes
-app.use(playerRoutes.routes());
-app.use(playerRoutes.allowedMethods());
+mongo.connect(config.db.url)
+  .then(client => client.db(config.db.name))
+  .then((db) => {
+    container
+      .register('matchStore', asValue(db.collection('Matches')));
+  })
+  .then(() => {
+    // Register routes
+    app.use(matchRouter.routes());
+    app.use(matchRouter.allowedMethods());
+    // Start the API
+    app.listen(config.port, () => {
+      logger.info(`API listening on port ${config.port}.`);
+    });
+  })
+  .catch((err) => {
+    logger.error(err);
+  });
 
-app.listen(config.port, () => {
-  logger.info(`API listening on port ${config.port}.`);
-});
+export default app;
