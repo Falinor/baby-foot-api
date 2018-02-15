@@ -13,7 +13,6 @@ test.beforeEach('Create context', async (t) => {
 
 test('Should create player routes', async (t) => {
   const { router, show } = t.context;
-  console.log(router);
   t.is(typeof router, 'object');
   t.is(router.opts.prefix, '/players');
 });
