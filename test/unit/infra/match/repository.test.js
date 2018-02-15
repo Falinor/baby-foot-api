@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import createMatchRepository, {
   toDBO,
   toEntity,
-} from '../../../../src/infra/match/match-repository';
+} from '../../../../src/infra/match/repository';
 import { inputMatch } from '../../../data';
 
 test('Should convert an entity to a database object', async (t) => {
