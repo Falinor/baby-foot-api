@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 class CreateMatchUseCase extends EventEmitter {
-  constructor({ matchRepository, teamRepository, playerRepository }) {
+  constructor(matchRepository, teamRepository, playerRepository) {
     super();
     this.matchRepository = matchRepository;
     this.teamRepository = teamRepository;
@@ -39,4 +39,5 @@ class CreateMatchUseCase extends EventEmitter {
   }
 }
 
-export default repositories => new CreateMatchUseCase(repositories);
+export default (matchRepository, teamRepository, playerRepository) =>
+  new CreateMatchUseCase(matchRepository, teamRepository, playerRepository);

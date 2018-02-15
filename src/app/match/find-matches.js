@@ -10,10 +10,10 @@ class FindMatchesUseCase extends EventEmitter {
     };
   }
 
-  async execute(search, opts) {
+  async execute() {
     try {
       // Find matches
-      const matches = await this.matchRepository.find(search, opts);
+      const matches = await this.matchRepository.find();
       this.emit(this.outputs.SUCCESS, matches);
     } catch (err) {
       this.emit(this.outputs.ERROR, err);
