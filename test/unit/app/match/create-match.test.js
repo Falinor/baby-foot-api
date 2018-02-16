@@ -5,49 +5,53 @@ import createAddMatchUseCase from '../../../../src/app/match/create-match';
 import { inputMatch } from '../../../data';
 
 test('Should create an AddMatch use case', async (t) => {
-  const repos = {
-    matchRepository: {},
-    teamRepository: {},
-    playerRepository: {},
-  };
-  const addMatchUseCase = createAddMatchUseCase(repos);
+  const matchRepository = {};
+  const teamRepository = {};
+  const playerRepository = {};
+  const addMatchUseCase = createAddMatchUseCase(
+    matchRepository,
+    teamRepository,
+    playerRepository,
+  );
   t.is(typeof addMatchUseCase, 'object');
   t.is(typeof addMatchUseCase.execute, 'function');
   t.is(typeof addMatchUseCase.on, 'function');
   t.is(typeof addMatchUseCase.outputs, 'object');
-  t.deepEqual(addMatchUseCase.outputs, { SUCCESS: 'success', ERROR: 'error' });
-  t.is(repos.matchRepository, addMatchUseCase.matchRepository);
-  t.is(repos.teamRepository, addMatchUseCase.teamRepository);
-  t.is(repos.playerRepository, addMatchUseCase.playerRepository);
+  t.deepEqual(addMatchUseCase.outputs, {SUCCESS: 'success', ERROR: 'error'});
+  t.is(matchRepository, addMatchUseCase.matchRepository);
+  t.is(teamRepository, addMatchUseCase.teamRepository);
+  t.is(playerRepository, addMatchUseCase.playerRepository);
 });
 
 test('Should create a match and emit a success event', async (t) => {
-  const repos = {
-    playerRepository: {
-      create: sinon.stub()
-        .onFirstCall().resolves(1)
-        .onSecondCall().resolves(2)
-        .onThirdCall().resolves(3)
-        // Index starts at 0
-        .onCall(3).resolves(4),
-    },
-    teamRepository: {
-      create: sinon.stub()
-        .onFirstCall().resolves(5)
-        .onSecondCall().resolves(6),
-    },
-    matchRepository: {
-      create: sinon.stub().resolves(7),
-    },
+  const playerRepository = {
+    create: sinon.stub()
+      .onFirstCall().resolves(1)
+      .onSecondCall().resolves(2)
+      .onThirdCall().resolves(3)
+      // Index starts at 0
+      .onCall(3).resolves(4),
   };
-  const addMatchUseCase = createAddMatchUseCase(repos);
+  const teamRepository = {
+    create: sinon.stub()
+      .onFirstCall().resolves(5)
+      .onSecondCall().resolves(6),
+  };
+  const matchRepository = {
+    create: sinon.stub().resolves(7),
+  };
+  const addMatchUseCase = createAddMatchUseCase(
+    matchRepository,
+    teamRepository,
+    playerRepository,
+  );
   addMatchUseCase.on(addMatchUseCase.outputs.SUCCESS, (id) => {
     t.is(id, 7);
   });
   await addMatchUseCase.execute(inputMatch);
-  t.is(repos.playerRepository.create.callCount, 4);
-  t.true(repos.teamRepository.create.calledTwice);
-  t.true(repos.matchRepository.create.calledOnce);
+  t.is(playerRepository.create.callCount, 4);
+  t.true(teamRepository.create.calledTwice);
+  t.true(matchRepository.create.calledOnce);
 });
 
 test('Should fail to create a match and emit an error event', async (t) => {
