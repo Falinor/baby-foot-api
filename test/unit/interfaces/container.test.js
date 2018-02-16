@@ -20,64 +20,64 @@ container
   .register('teamStore', asValue(fakeStore))
   .register('playerStore', asValue(fakeStore));
 
-test('Should create a container', async (t) => {
+test('Should create a container', (t) => {
   t.is(typeof container, 'object');
   t.is(typeof container.registrations, 'object');
 });
 
-test('Should resolve a config object', async (t) => {
+test('Should resolve a config object', (t) => {
   const config = container.resolve('config');
   t.is(typeof config, 'object');
 });
 
-test('Should resolve an app object', async (t) => {
+test('Should resolve an app object', (t) => {
   const app = container.resolve('app');
   t.is(typeof app, 'object');
 });
 
-test('Should resolve a logger object', async (t) => {
+test('Should resolve a logger object', (t) => {
   const logger = container.resolve('logger');
   t.is(typeof logger, 'object');
 });
 
 // Match use cases
-test('Should resolve a CreateMatch use case', async (t) => {
+test('Should resolve a CreateMatch use case', (t) => {
   const createMatchUseCase = container.resolve('createMatch');
   t.is(typeof createMatchUseCase, 'object');
 });
 
-test('Should resolve a FindMatches use case', async (t) => {
+test('Should resolve a FindMatches use case', (t) => {
   const findMatchesUseCase = container.resolve('findMatches');
   t.is(typeof findMatchesUseCase, 'object');
   t.is(typeof findMatchesUseCase.execute, 'function');
 });
 
 // Player use cases
-test('Should resolve a GetPlayer use case', async (t) => {
+test('Should resolve a GetPlayer use case', (t) => {
   const getPlayerUseCase = container.resolve('getPlayer');
   t.is(typeof getPlayerUseCase, 'object');
   t.is(typeof getPlayerUseCase.execute, 'function');
 });
 
 // Repositories
-test('Should resolve a match repository', async (t) => {
+test('Should resolve a match repository', (t) => {
   const matchRepository = container.resolve('matchRepository');
   t.is(typeof matchRepository, 'object');
   t.is(typeof matchRepository.find, 'function');
   t.is(typeof matchRepository.create, 'function');
 });
 
-test('Should resolve a player repository', async (t) => {
+test('Should resolve a player repository', (t) => {
   const playerRepository = container.resolve('playerRepository');
   t.is(typeof playerRepository, 'object');
 });
 
-test('Should resolve a match controller', async (t) => {
+test('Should resolve a match controller', (t) => {
   const matchController = container.resolve('matchController');
   t.is(typeof matchController, 'object');
 });
 
-test('Should resolve a match router', async (t) => {
+test('Should resolve a match router', (t) => {
   const matchRouter = container.resolve('matchRouter');
   t.is(typeof matchRouter, 'object');
 });
