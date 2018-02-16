@@ -1,6 +1,6 @@
 import Http from 'http-status';
 
-export const index = async (ctx) => {
+const index = async (ctx) => {
   const { findMatches } = ctx.state.container.cradle;
   const { SUCCESS, ERROR } = findMatches.outputs;
   // Register handlers
