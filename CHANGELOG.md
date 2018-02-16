@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/Falinor/baby-foot-api/compare/v0.10.0...v0.11.0) (2018-02-16)
+
+
+### Bug Fixes
+
+* **config:** replace http by mongodb protocol ([8017deb](https://github.com/Falinor/baby-foot-api/commit/8017deb))
+* **index:** app now starts correctly ([1fbab79](https://github.com/Falinor/baby-foot-api/commit/1fbab79))
+* **match:** pass use cases per request ([d1fcb88](https://github.com/Falinor/baby-foot-api/commit/d1fcb88))
+
+
+### Features
+
+* **config:** add DB_NAME environment variable ([792f130](https://github.com/Falinor/baby-foot-api/commit/792f130))
+* **config:** add DB_URL default value ([09fa619](https://github.com/Falinor/baby-foot-api/commit/09fa619))
+* **container:** add player and team repositories ([c9eef01](https://github.com/Falinor/baby-foot-api/commit/c9eef01))
+* **container:** register elements manually to avoid errors ([46760b1](https://github.com/Falinor/baby-foot-api/commit/46760b1))
+* **index:** update entrypoint ([0cfdff6](https://github.com/Falinor/baby-foot-api/commit/0cfdff6))
+* **match:** add routing ([3ee3fc7](https://github.com/Falinor/baby-foot-api/commit/3ee3fc7))
+* **match:** split parameters proxy in a sequence of parameters ([5d99bd3](https://github.com/Falinor/baby-foot-api/commit/5d99bd3))
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/Falinor/baby-foot-api/compare/v0.9.0...v0.10.0) (2018-02-10)
 
