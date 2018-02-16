@@ -8,6 +8,8 @@ import {
 import bunyan from 'bunyan';
 
 import createMatchRepository from './infra/match/repository';
+import createPlayerRepository from './infra/player/repository';
+import createTeamRepository from './infra/team/repository';
 import createApp from './interfaces/http/app';
 import createMatchController from './interfaces/http/match/controller';
 import createMatchRouter from './interfaces/http/match';
@@ -37,8 +39,8 @@ export default config =>
     })
     // Register repositories
     .register('matchRepository', asFunction(createMatchRepository))
-    // .register('teamRepository', asFunction(createTeamRepository))
-    // .register('teamRepository', asFunction(createPlayerRepository))
+    .register('teamRepository', asFunction(createTeamRepository))
+    .register('playerRepository', asFunction(createPlayerRepository))
     // Register controllers
     .register(
       'matchController',
