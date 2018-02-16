@@ -14,7 +14,7 @@
     "test:api:watch": "npm run test:api -- --watch",
     "test:unit": "cross-env BABEL_ENV=test ava \"test/unit/**/*.test.js\"",
     "test:unit:watch": "npm run test:unit -- --watch",
-    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm run test:unit",
+    "coverage": "nyc -r lcov -r text-lcov -a npm run test:unit",
     "postcoverage": "opn coverage/lcov-report/index.html",
     "lint": "eslint src",
     "docs": "esdoc && opn docs/index.html",
