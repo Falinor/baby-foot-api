@@ -6,8 +6,6 @@ import createContainer from './container';
 
 const config = createConfig();
 const container = createContainer(config);
-// Resolve app and logger into the DI container
-const { app, logger, matchRouter } = container.cradle;
 
 // Scope-per-request middleware
 // app.use((ctx, next) => {
@@ -15,13 +13,19 @@ const { app, logger, matchRouter } = container.cradle;
 //   return next();
 // });
 
+const { logger } = container.cradle;
+
 mongo.connect(config.db.url)
   .then(client => client.db(config.db.name))
   .then((db) => {
     container
-      .register('matchStore', asValue(db.collection('Matches')));
+      .register('matchStore', asValue(db.collection('Matches')))
+      .register('teamStore', asValue(db.collection('Teams')))
+      .register('playerStore', asValue(db.collection('Players')));
   })
   .then(() => {
+    // Resolve app and logger into the DI container
+    const { app, matchRouter } = container.cradle;
     // Register routes
     app.use(matchRouter.routes());
     app.use(matchRouter.allowedMethods());
@@ -33,5 +37,3 @@ mongo.connect(config.db.url)
   .catch((err) => {
     logger.error(err);
   });
-
-export default app;
