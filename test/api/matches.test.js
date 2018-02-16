@@ -5,14 +5,20 @@ import request from 'supertest';
 
 import createConfig from '../../src/config';
 import createContainer from '../../src/container';
+import { scopePerRequest } from '../../src/utils';
 
 test.beforeEach('Create context', async (t) => {
   const config = createConfig();
+  // Connect to the database
   const mongoClient = await mongo.connect(config.db.url);
   const db = mongoClient.db(config.db.name);
   const container = createContainer(config);
   container.register('matchStore', asValue(db.collection('Matches')));
+  // Resolve an API instance and a match router
   const { app, matchRouter } = container.cradle;
+  // Add a scoped container
+  app.use(scopePerRequest(container));
+  // Register match routes
   app.use(matchRouter.routes());
   app.use(matchRouter.allowedMethods());
   t.context = {
