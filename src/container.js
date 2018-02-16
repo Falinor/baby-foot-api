@@ -11,8 +11,8 @@ import createMatchRepository from './infra/match/repository';
 import createPlayerRepository from './infra/player/repository';
 import createTeamRepository from './infra/team/repository';
 import createApp from './interfaces/http/app';
-import createMatchController from './interfaces/http/match/controller';
 import createMatchRouter from './interfaces/http/match';
+import matchController from './interfaces/http/match/controller';
 
 /**
  * Create a DI container.
@@ -35,20 +35,19 @@ export default config =>
     ], {
       cwd: __dirname,
       formatName: 'camelCase',
-      resolverOptions: { lifetime: Lifetime.TRANSIENT },
+      resolverOptions: {
+        lifetime: Lifetime.SCOPED,
+      },
     })
     // Register repositories
     .register('matchRepository', asFunction(createMatchRepository))
     .register('teamRepository', asFunction(createTeamRepository))
     .register('playerRepository', asFunction(createPlayerRepository))
     // Register controllers
-    .register(
-      'matchController',
-      asFunction(createMatchController).proxy(),
-    )
+    .register('matchController', asValue(matchController))
     // Routes
     .register(
       'matchRouter',
-      asFunction(createMatchRouter).singleton(),
+      asFunction(createMatchRouter),
     );
 

@@ -7,12 +7,6 @@ import createContainer from './container';
 const config = createConfig();
 const container = createContainer(config);
 
-// Scope-per-request middleware
-// app.use((ctx, next) => {
-//   ctx.state.container = container.createScope();
-//   return next();
-// });
-
 const { logger } = container.cradle;
 
 mongo.connect(config.db.url)
@@ -26,6 +20,11 @@ mongo.connect(config.db.url)
   .then(() => {
     // Resolve app and logger into the DI container
     const { app, matchRouter } = container.cradle;
+    // Scope-per-request middleware
+    app.use(async (ctx, next) => {
+      ctx.state.container = container.createScope();
+      await next();
+    });
     // Register routes
     app.use(matchRouter.routes());
     app.use(matchRouter.allowedMethods());
