@@ -3,7 +3,7 @@ import sinon from 'sinon';
 
 import createPlayerRouter from '../../../../../src/interfaces/http/player';
 
-test.beforeEach('Create context', async (t) => {
+test.beforeEach('Create context', (t) => {
   const show = sinon.spy();
   t.context = {
     show,
@@ -11,8 +11,8 @@ test.beforeEach('Create context', async (t) => {
   };
 });
 
-test('Should create player routes', async (t) => {
-  const { router, show } = t.context;
+test('Should create player routes', (t) => {
+  const { router } = t.context;
   t.is(typeof router, 'object');
   t.is(router.opts.prefix, '/players');
 });
