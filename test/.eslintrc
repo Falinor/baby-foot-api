@@ -1,4 +1,17 @@
 {
-  "plugins": ["ava"],
-  "extends": "plugin:ava/recommended"
+  "plugins": [
+    "ava"
+  ],
+  "extends": "plugin:ava/recommended",
+  "rules": {
+    "ava/no-ignored-test-files": [
+      "error",
+      {
+        "files": [
+          "api/**/*.test.js",
+          "unit/**/*.test.js"
+        ]
+      }
+    ]
+  }
 }
