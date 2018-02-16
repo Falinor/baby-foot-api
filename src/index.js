@@ -3,6 +3,7 @@ import mongo from 'mongodb';
 
 import createConfig from './config';
 import createContainer from './container';
+import { scopePerRequest } from './utils';
 
 const config = createConfig();
 const container = createContainer(config);
@@ -21,10 +22,7 @@ mongo.connect(config.db.url)
     // Resolve app and logger into the DI container
     const { app, matchRouter } = container.cradle;
     // Scope-per-request middleware
-    app.use(async (ctx, next) => {
-      ctx.state.container = container.createScope();
-      await next();
-    });
+    app.use(scopePerRequest(container));
     // Register routes
     app.use(matchRouter.routes());
     app.use(matchRouter.allowedMethods());
