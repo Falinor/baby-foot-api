@@ -10,7 +10,7 @@ export default (environment = process.env) => ({
   appName: environment.APP_NAME || 'Baby-foot API',
   env: environment.NODE_ENV || 'development',
   host: environment.HOST || 'http://localhost',
-  port: environment.PORT || 9000,
+  port: Number(environment.PORT) || 9000,
   log: {
     level: environment.LOG_LEVEL || 'debug',
   },
