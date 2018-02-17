@@ -26,7 +26,7 @@
     "failFast": false,
     "failWithoutAssertions": true,
     "concurrency": 5,
-    "timeout": "5s",
+    "timeout": "30s",
     "tap": false,
     "powerAssert": true,
     "require": [
