@@ -13,6 +13,7 @@ import createTeamRepository from './infra/team/repository';
 import createApp from './interfaces/http/app';
 import createMatchRouter from './interfaces/http/match';
 import matchController from './interfaces/http/match/controller';
+import { contentType, errorHandler } from './interfaces/http/middlewares';
 
 /**
  * Create a DI container.
@@ -49,5 +50,6 @@ export default config =>
     .register(
       'matchRouter',
       asFunction(createMatchRouter),
-    );
+    )
+    .register('errorHandler', asFunction(errorHandler));
 

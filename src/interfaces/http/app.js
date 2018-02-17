@@ -1,21 +1,10 @@
 import Koa from 'koa';
 
-export default (logger, routes = null) => {
+export default (errorHandler, routes = null) => {
   const app = new Koa();
 
-  // Use error handler
-  app.use(async (ctx, next) => {
-    try {
-      await next();
-    } catch (err) {
-      logger.error(err);
-    }
-  });
-  // Set content type to JSON
-  app.use(async (ctx, next) => {
-    ctx.type = 'application/json';
-    await next();
-  });
+  // Register common middlewares
+  app.use(errorHandler);
   // Register routes
   if (routes) app.use(routes);
 
