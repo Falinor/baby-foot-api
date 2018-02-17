@@ -3,7 +3,7 @@ import test from 'ava';
 import createConfig from '../../../src/config/index';
 
 test('Should return a config object', (t) => {
-  const config = createConfig();
+  const config = createConfig({});
   t.is(typeof config, 'object');
   t.deepEqual(config, {
     appName: 'Baby-foot API',
