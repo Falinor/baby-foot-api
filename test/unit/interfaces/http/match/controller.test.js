@@ -13,6 +13,7 @@ test.beforeEach('Create context', (t) => {
           cradle: {},
         },
       },
+      throw: sinon.spy(),
     },
   };
 });
@@ -35,4 +36,16 @@ test('Should set status and body on success', async (t) => {
   t.deepEqual(ctx.body, matches);
 });
 
-test.todo('Should throw 500 Internal Server Error on error');
+test('Should throw 500 Internal Server Error on error', async (t) => {
+  const { ctx } = t.context;
+  const err = new Error('Internal Server Error');
+  const findMatches = new EventEmitter();
+  ctx.state.container.cradle.findMatches = findMatches;
+  findMatches.outputs = { ERROR: 'error' };
+  findMatches.execute = sinon.stub().callsFake(() => {
+    findMatches.emit(findMatches.outputs.ERROR, err);
+  });
+  await controller.index(ctx);
+  t.true(ctx.throw.calledOnce);
+  t.true(ctx.throw.calledWithExactly(500, 'Internal Server Error'));
+});
