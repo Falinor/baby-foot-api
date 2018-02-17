@@ -9,7 +9,7 @@
     "release": "standard-version --no-verify",
     "serve": "node dist/index.js",
     "start": "babel-node src/index.js",
-    "test": "npm run test:unit && npm run test:api",
+    "test": "npm run test:api && npm run cover",
     "test:api": "cross-env BABEL_ENV=test ava --serial \"test/api/**/matches.test.js\"",
     "test:api:watch": "npm run test:api -- --watch",
     "test:unit": "cross-env BABEL_ENV=test ava \"test/unit/**/*.test.js\"",
