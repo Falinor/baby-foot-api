@@ -81,3 +81,10 @@ test('Should resolve a match router', (t) => {
   const matchRouter = container.resolve('matchRouter');
   t.is(typeof matchRouter, 'object');
 });
+
+test('Should resolve an error handler middleware', (t) => {
+  const errorHandler = container.resolve('errorHandler');
+  t.is(typeof errorHandler, 'function');
+});
+
+test.todo('Should resolve a content type middleware');

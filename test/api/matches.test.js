@@ -32,6 +32,7 @@ test.serial('GET /matches -> 200 OK', async (t) => {
     .get('/matches');
   t.is(typeof res, 'object');
   t.is(res.status, 200);
+  t.is(res.type, 'application/json');
   const matches = res.body;
   t.true(Array.isArray(matches));
   // Check default limit
