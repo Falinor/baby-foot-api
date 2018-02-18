@@ -8,7 +8,7 @@
   },
   "scripts": {
     "docs": "nodemon -w docs/v3 -e yml --exec 'json-refs resolve -f docs/v3/openapi.yml > source/openapi.json'",
-    "release": "standard-version --no-verify",
+    "release": "standard-version",
     "commitmsg": "validate-commit-msg"
   },
   "devDependencies": {

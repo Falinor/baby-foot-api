@@ -7,7 +7,7 @@
     "contact": {
       "name": "Andrea GUEUGNAUT",
       "url": "https://falinor.github.io/baby-foot-api",
-      "email": "gue@octo.com"
+      "email": "andrea.gueugnaut@gmail.com"
     },
     "license": {
       "name": "Apache 2.0 ??",
@@ -67,8 +67,86 @@
       }
     },
     "schemas": {
+      "Match": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "red": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "points": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10,
+                "example": 5
+              },
+              "players": {
+                "type": "array",
+                "example": [
+                  "ABC",
+                  "DEF"
+                ],
+                "uniqueItems": true,
+                "minItems": 1,
+                "maxItems": 2,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3,4}$"
+                }
+              }
+            }
+          },
+          "blue": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "points": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10,
+                "example": 10
+              },
+              "players": {
+                "type": "array",
+                "example": [
+                  "GHI",
+                  "JKL"
+                ],
+                "uniqueItems": true,
+                "minItems": 1,
+                "maxItems": 2,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3,4}$"
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "red",
+          "blue"
+        ]
+      },
+      "Matches": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Match"
+        }
+      },
       "Player": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
@@ -93,6 +171,37 @@
     }
   },
   "paths": {
+    "/matches": {
+      "summary": "Manipulate match entites",
+      "get": {
+        "summary": "Find all matches",
+        "description": "TODO",
+        "operationId": "findMatches",
+        "tags": [
+          "Matches"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Matches"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/players": {
       "summary": "Manipulate player entities",
       "get": {

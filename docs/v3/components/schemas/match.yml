@@ -1,0 +1,53 @@
+type: object
+additionalProperties: false
+properties:
+  id:
+    type: string
+    readOnly: true
+  red:
+    type: object
+    additionalProperties: false
+    properties:
+      points:
+        type: integer
+        minimum: 0
+        maximum: 10
+        example: 5
+      players:
+        type: array
+        example:
+          - ABC
+          - DEF
+        uniqueItems: true
+        minItems: 1
+        maxItems: 2
+        items:
+          type: string
+          pattern: ^[A-Z]{3,4}$
+  blue:
+    type: object
+    additionalProperties: false
+    properties:
+      points:
+        type: integer
+        minimum: 0
+        maximum: 10
+        example: 10
+      players:
+        type: array
+        example:
+          - GHI
+          - JKL
+        uniqueItems: true
+        minItems: 1
+        maxItems: 2
+        items:
+          type: string
+          pattern: ^[A-Z]{3,4}$
+  createdAt:
+    type: string
+    format: date-time
+    readOnly: true
+required:
+  - red
+  - blue

@@ -33,12 +33,18 @@ components:
     limit:
       $ref: './components/parameters.yml#/limit'
   schemas:
+    Match:
+      $ref: './components/schemas/match.yml'
+    Matches:
+      $ref: './components/schemas/matches.yml'
     Player:
       $ref: './components/schemas/player.yml'
     Players:
       $ref: './components/schemas/players.yml'
 
 paths:
+  /matches:
+    $ref: './paths/match/matches.yml'
   /players:
     $ref: './paths/player/players.yml'
   /players/{id}:

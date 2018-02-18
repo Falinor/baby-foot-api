@@ -1,0 +1,18 @@
+summary: Manipulate match entites
+
+get:
+  summary: Find all matches
+  description: TODO
+  operationId: findMatches
+  tags:
+    - Matches
+  parameters:
+    - $ref: '#/components/parameters/skip'
+    - $ref: '#/components/parameters/limit'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Matches'
