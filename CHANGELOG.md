@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/Falinor/baby-foot-api/compare/v0.11.0...v0.12.0) (2018-02-18)
+
+
+### Bug Fixes
+
+* **container:** remove missing content type middleware ([12f7766](https://github.com/Falinor/baby-foot-api/commit/12f7766))
+
+
+### Features
+
+* **app:** externalize error handler ([0dbe0a3](https://github.com/Falinor/baby-foot-api/commit/0dbe0a3))
+* **config:** type cast some config properties ([e39d6cb](https://github.com/Falinor/baby-foot-api/commit/e39d6cb))
+* **index:** use scopePerRequest from utils module ([13245bb](https://github.com/Falinor/baby-foot-api/commit/13245bb))
+* **utils:** externalize scopePerRequest function in an utility module ([350af2e](https://github.com/Falinor/baby-foot-api/commit/350af2e))
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/Falinor/baby-foot-api/compare/v0.10.0...v0.11.0) (2018-02-16)
 
