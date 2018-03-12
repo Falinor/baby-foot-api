@@ -9,8 +9,11 @@ const requireProcessEnv = (env, name) => {
 export default (environment = process.env) => ({
   appName: environment.APP_NAME || 'Baby-foot API',
   env: environment.NODE_ENV || 'development',
-  host: environment.HOST || 'http://localhost',
-  port: Number(environment.PORT) || 9000,
+  url: {
+    host: environment.HOST || 'http://localhost',
+    port: Number(environment.PORT) || 9000,
+    prefix: 'api/v1',
+  },
   log: {
     level: environment.LOG_LEVEL || 'debug',
   },
