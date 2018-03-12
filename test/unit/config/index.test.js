@@ -8,8 +8,11 @@ test('Should return a config object', (t) => {
   t.deepEqual(config, {
     appName: 'Baby-foot API',
     env: 'development',
-    host: 'http://localhost',
-    port: 9000,
+    url: {
+      host: 'http://localhost',
+      port: 9000,
+      prefix: 'api/v1',
+    },
     log: {
       level: 'debug',
     },
@@ -36,8 +39,11 @@ test('Should return a completely customized config object', (t) => {
   t.deepEqual(config, {
     appName: 'myCoolAppName',
     env: 'myCoolEnv',
-    host: 'myCoolHost',
-    port: 8000,
+    url: {
+      host: 'myCoolHost',
+      port: 8000,
+      prefix: 'api/v1',
+    },
     log: {
       level: 'myLogLevel',
     },
