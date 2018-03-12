@@ -1,14 +1,3 @@
-export const inputMatch = {
-  red: {
-    points: 10,
-    players: ['ABC', 'DEF'],
-  },
-  blue: {
-    points: 6,
-    players: ['GHI', 'JKL'],
-  },
-};
-
 /**
  * Matches to be imported.
  * @type {Array<object>} An array of matches.
@@ -38,6 +27,8 @@ export const matches = [
   },
 ];
 
+export const [inputMatch] = matches;
+
 /**
  * Teams to be imported.
  * @type {Array<object>}
@@ -46,6 +37,8 @@ export const teams = [
   { createdAt: new Date() },
   { createdAt: new Date() },
 ];
+
+export const [inputTeam] = teams;
 
 /**
  *
@@ -58,4 +51,13 @@ export const players = [
   { id: 'JKL' },
 ];
 
-export default { inputMatch, matches, teams, players };
+export const [inputPlayer] = players;
+
+export default {
+  inputMatch,
+  inputPlayer,
+  inputTeam,
+  matches,
+  teams,
+  players,
+};
