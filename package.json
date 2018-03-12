@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm run test:unit:watch",
     "build": "cross-env BABEL_ENV=production babel src -d dist",
-    "release": "standard-version --no-verify",
+    "release": "standard-version",
     "serve": "node dist/index.js",
     "start": "babel-node src/index.js",
     "test": "npm run test:api && npm run cover",
