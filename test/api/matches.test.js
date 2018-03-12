@@ -13,7 +13,8 @@ test.beforeEach('Create context', async (t) => {
   const mongoClient = await mongo.connect(config.db.url);
   const db = mongoClient.db(config.db.name);
   const container = createContainer(config);
-  container.register('matchStore', asValue(db.collection('Matches')));
+  const matchStore = db.collection('Matches');
+  container.register('matchStore', asValue(matchStore));
   // Resolve an API instance and a match router
   const { app, matchRouter } = container.cradle;
   // Add a scoped container
@@ -22,6 +23,7 @@ test.beforeEach('Create context', async (t) => {
   app.use(matchRouter.routes());
   app.use(matchRouter.allowedMethods());
   t.context = {
+    matchStore,
     app: app.callback(),
   };
 });
@@ -59,8 +61,8 @@ test.serial('GET /matches -> 200 OK', async (t) => {
   return Promise.all(promises);
 });
 
-test.serial.skip('POST /matches -> 201 Created', async (t) => {
-  const { app } = t.context;
+test.serial('POST /matches -> 201 Created', async (t) => {
+  const { app, matchStore } = t.context;
   const res = await request(app)
     .post('/matches')
     .send({
@@ -79,4 +81,5 @@ test.serial.skip('POST /matches -> 201 Created', async (t) => {
   t.is(typeof res.headers.Location, 'string');
   // The header 'Location' should be something like `https://.../matches/{id}
   t.regex(res.headers.Location, /\/matches\/[a-g0-9]+$/);
+  await matchStore.drop();
 });
