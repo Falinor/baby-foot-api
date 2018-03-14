@@ -6,6 +6,7 @@ import request from 'supertest';
 import createConfig from '../../src/config';
 import createContainer from '../../src/container';
 import { scopePerRequest } from '../../src/utils';
+import { inputMatch } from '../data';
 
 test.beforeEach('Create context', async (t) => {
   const config = createConfig();
@@ -65,16 +66,7 @@ test.serial('POST /matches -> 201 Created', async (t) => {
   const { app, matchStore } = t.context;
   const res = await request(app)
     .post('/matches')
-    .send({
-      red: {
-        points: 10,
-        players: ['ABC', 'DEF'],
-      },
-      blue: {
-        points: 6,
-        players: ['GHI', 'JKL'],
-      },
-    })
+    .send(inputMatch)
     .set('Content-Type', 'application/json');
   t.is(typeof res, 'object');
   t.is(res.status, 201);
