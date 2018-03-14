@@ -7,7 +7,7 @@ import createMatchRepository, {
 } from '../../../../src/infra/match/repository';
 import { inputMatch } from '../../../data';
 
-test('Should convert an entity to a database object', async (t) => {
+test('Should convert an entity to a database object', (t) => {
   const matchDBO = {
     _id: 42,
     red: {
