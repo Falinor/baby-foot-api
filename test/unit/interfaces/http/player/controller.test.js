@@ -3,17 +3,39 @@ import { EventEmitter } from 'events';
 import Http from 'http-status';
 import sinon from 'sinon';
 
+import { players } from '../../../../data';
 import createPlayerController, {
+  index,
   show,
 } from '../../../../../src/interfaces/http/player/controller';
 
-test('Should create a player controller', async (t) => {
+test('Should create a player controller', (t) => {
   const useCases = {
     getPlayerUseCase: sinon.spy(),
   };
   const controller = createPlayerController(useCases);
   t.is(typeof controller, 'object');
+  t.is(typeof controller.index, 'function');
   t.is(typeof controller.show, 'function');
+});
+
+test('Should find players', async (t) => {
+  // Given
+  const findPlayersUseCase = new EventEmitter();
+  findPlayersUseCase.outputs = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+  };
+  findPlayersUseCase.execute = sinon.stub().callsFake(() => {
+    findPlayersUseCase.emit(findPlayersUseCase.outputs.SUCCESS, players);
+  });
+  const ctx = {};
+  // When
+  const findPlayers = index(findPlayersUseCase);
+  await findPlayers(ctx);
+  // Then
+  t.is(ctx.status, Http.OK);
+  t.is(ctx.body, players);
 });
 
 test('Should show a player\'s details', async (t) => {
@@ -22,7 +44,7 @@ test('Should show a player\'s details', async (t) => {
     SUCCESS: 'success',
     ERROR: 'error',
   };
-  getPlayerUseCase.execute = sinon.stub().callsFake(async () => {
+  getPlayerUseCase.execute = sinon.stub().callsFake(() => {
     getPlayerUseCase.emit(getPlayerUseCase.outputs.SUCCESS, 42);
   });
   const ctx = { params: { id: 1337 } };
