@@ -10,9 +10,10 @@ const container = createContainer(config);
 
 const { logger } = container.cradle;
 
-mongo.connect(config.db.url)
+mongo
+  .connect(config.db.url)
   .then(client => client.db(config.db.name))
-  .then((db) => {
+  .then(db => {
     container
       .register('matchStore', asValue(db.collection('Matches')))
       .register('teamStore', asValue(db.collection('Teams')))
@@ -31,6 +32,6 @@ mongo.connect(config.db.url)
       logger.info(`API listening on port ${config.port}.`);
     });
   })
-  .catch((err) => {
+  .catch(err => {
     logger.error(err);
   });

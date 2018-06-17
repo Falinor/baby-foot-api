@@ -24,22 +24,30 @@ export default config =>
   createContainer({ injectionMode: InjectionMode.CLASSIC })
     .register('config', asValue(config))
     // Logger
-    .register('logger', asValue(bunyan.createLogger({
-      name: config.appName,
-      level: config.log.level,
-    })))
+    .register(
+      'logger',
+      asValue(
+        bunyan.createLogger({
+          name: config.appName,
+          level: config.log.level,
+        }),
+      ),
+    )
     // Register application
     .register('app', asFunction(createApp).singleton())
-    .loadModules([
-      // Register use cases
-      'app/**/*.js',
-    ], {
-      cwd: __dirname,
-      formatName: 'camelCase',
-      resolverOptions: {
-        lifetime: Lifetime.SCOPED,
+    .loadModules(
+      [
+        // Register use cases
+        'app/**/*.js',
+      ],
+      {
+        cwd: __dirname,
+        formatName: 'camelCase',
+        resolverOptions: {
+          lifetime: Lifetime.SCOPED,
+        },
       },
-    })
+    )
     // Register repositories
     .register('matchRepository', asFunction(createMatchRepository))
     .register('teamRepository', asFunction(createTeamRepository))
@@ -47,9 +55,5 @@ export default config =>
     // Register controllers
     .register('matchController', asValue(matchController))
     // Routes
-    .register(
-      'matchRouter',
-      asFunction(createMatchRouter),
-    )
+    .register('matchRouter', asFunction(createMatchRouter))
     .register('errorHandler', asFunction(errorHandler));
-

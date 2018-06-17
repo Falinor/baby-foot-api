@@ -15,8 +15,12 @@ class CreateMatchUseCase extends EventEmitter {
   async execute(match) {
     try {
       // Create players
-      const redPlayerPromises = match.red.players.map(async p => this.playerRepository.create(p));
-      const bluePlayerPromises = match.blue.players.map(async p => this.playerRepository.create(p));
+      const redPlayerPromises = match.red.players.map(async p =>
+        this.playerRepository.create(p),
+      );
+      const bluePlayerPromises = match.blue.players.map(async p =>
+        this.playerRepository.create(p),
+      );
       const [redPlayerIds, bluePlayerIds] = await Promise.all([
         Promise.all(redPlayerPromises),
         Promise.all(bluePlayerPromises),
