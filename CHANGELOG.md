@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/Falinor/baby-foot-api/compare/v0.13.0...v0.14.0) (2018-06-17)
+
+
+### Features
+
+* **match:** implement match creation ([d5c679b](https://github.com/Falinor/baby-foot-api/commit/d5c679b))
+* **player:** implement controller ([7015c9f](https://github.com/Falinor/baby-foot-api/commit/7015c9f))
+* **player:** implement player search ([3d3e967](https://github.com/Falinor/baby-foot-api/commit/3d3e967))
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/Falinor/baby-foot-api/compare/v0.12.0...v0.13.0) (2018-03-12)
 
