@@ -51,6 +51,13 @@ export const players = [
   { id: 'JKL' },
 ];
 
+export const DBOPlayers = [
+  { _id: 'ABC' },
+  { _id: 'DEF' },
+  { _id: 'GHI' },
+  { _id: 'JKL' },
+];
+
 export const [inputPlayer] = players;
 
 export default {

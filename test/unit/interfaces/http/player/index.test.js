@@ -1,13 +1,12 @@
 import test from 'ava';
-import sinon from 'sinon';
 
 import createPlayerRouter from '../../../../../src/interfaces/http/player';
 
 test.beforeEach('Create context', (t) => {
-  const show = sinon.spy();
+  const index = () => {};
+  const show = () => {};
   t.context = {
-    show,
-    router: createPlayerRouter({ show }),
+    router: createPlayerRouter({ index, show }),
   };
 });
 

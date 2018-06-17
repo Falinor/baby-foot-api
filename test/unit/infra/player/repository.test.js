@@ -5,7 +5,7 @@ import createRepository, {
   toDBO,
   toEntity,
 } from '../../../../src/infra/player/repository';
-import { inputPlayer } from '../../../data';
+import {DBOPlayers, inputPlayer} from '../../../data';
 
 test('Should create a player repository', (t) => {
   const repo = createRepository();
@@ -39,22 +39,24 @@ test('Should create a player', async (t) => {
   const insertOne = sinon.stub().resolves(inputPlayer);
   const repo = createRepository({ insertOne });
   await repo.create(inputPlayer);
-  t.true(insertOne.calledOnce);
-  t.true(insertOne.calledWithExactly(inputPlayer));
+  t.true(insertOne.calledOnceWithExactly({
+    _id: inputPlayer.id,
+  }));
 });
 
 test('Should find players', async (t) => {
-  const find = sinon.stub().resolves();
-  const repo = createRepository({ find });
-  await repo.find();
-  t.true(find.calledOnce);
-  t.true(find.calledWithExactly({}));
+  const playerStore = {
+    find: sinon.stub().returnsThis(),
+    toArray: sinon.stub().resolves(DBOPlayers),
+  };
+  const repo = createRepository(playerStore);
+  const actual = await repo.find();
+  t.is(actual.length, DBOPlayers.length);
 });
 
 test('Should find a player by ID', async (t) => {
   const findOne = sinon.stub().resolves();
   const repo = createRepository({ findOne });
   await repo.findById(42);
-  t.true(findOne.calledOnce);
-  t.true(findOne.calledWithExactly({ _id: 42 }));
+  t.true(findOne.calledOnceWithExactly({ _id: 42 }));
 });

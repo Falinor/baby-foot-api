@@ -11,14 +11,21 @@ export const toDBO = playerEntity => ({
   _id: playerEntity.id,
 });
 
-export const create = playerStore =>
-  async player => playerStore.insertOne(player);
+export const create = playerStore => async player => {
+  const playerDBO = toDBO(player);
+  return playerStore.insertOne(playerDBO);
+};
 
-export const find = playerStore =>
-  async (search = {}) => playerStore.find(search);
+export const find = playerStore => async (search = {}) => {
+  const players = await playerStore.find(search).toArray();
+  const promises = players.map(async player => toEntity(player));
+  return Promise.all(promises);
+};
 
-export const findById = playerStore =>
-  async id => playerStore.findOne({ _id: id });
+export const findById = playerStore => async id => {
+  const player = playerStore.findOne({ _id: id });
+  return toEntity(player);
+};
 
 export default playerStore => ({
   toDBO,

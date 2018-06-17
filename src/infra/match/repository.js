@@ -7,16 +7,18 @@ export const toEntity = matchDBO => ({
 
 export const toDBO = matchEntity => matchEntity;
 
-const find = matchStore =>
-  async () => matchStore.find().toArray();
+const find = matchStore => async () => {
+  const matches = await matchStore.find().toArray();
+  const promises = matches.map(async match => toEntity(match));
+  return Promise.all(promises);
+};
 
-const create = matchStore =>
-  async (match) => {
-    // TODO: validate input data
-    // Transform entity into DB object
-    const matchDBO = toDBO(match);
-    return matchStore.insertOne(matchDBO);
-  };
+const create = matchStore => async match => {
+  // TODO: validate input data
+  // Transform entity into DB object
+  const matchDBO = toDBO(match);
+  return matchStore.insertOne(matchDBO);
+};
 
 export default matchStore => ({
   toEntity,
