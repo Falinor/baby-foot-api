@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-export default matchController =>
+export const createMatchRouter = matchController =>
   new Router()
     .prefix('/matches')
     .get('/', matchController.index)

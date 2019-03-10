@@ -1,10 +1,9 @@
 import Http from 'http-status';
 
-const index = async ctx => {
-  const { findMatches } = ctx.state.container.cradle;
+const index = findMatchesUseCase => async ctx => {
   const { SUCCESS, ERROR } = findMatches.outputs;
   // Register handlers
-  findMatches
+  findMatchesUseCase
     .on(SUCCESS, matches => {
       ctx.status = Http.OK;
       ctx.body = matches;
@@ -12,15 +11,13 @@ const index = async ctx => {
     .on(ERROR, err => {
       ctx.throw(Http.INTERNAL_SERVER_ERROR, err.message);
     });
-  return findMatches.execute();
+  return findMatchesUseCase.execute();
 };
 
-// show
-
-const create = async ctx => {
-  const { config, createMatch } = ctx.state.container.cradle;
-  const { SUCCESS, ERROR } = createMatch.outputs;
-  createMatch
+const create = createMatchUseCase => async ctx => {
+  const { config } = ctx.state.container.cradle;
+  const { SUCCESS, ERROR } = createMatchUseCase.outputs;
+  createMatchUseCase
     .on(SUCCESS, id => {
       ctx.status = Http.CREATED;
       const { host, port, prefix } = config.url;
@@ -29,10 +26,13 @@ const create = async ctx => {
     .on(ERROR, err => {
       ctx.throw(Http.INTERNAL_SERVER_ERROR, err.message);
     });
-  return createMatch.execute();
+  return createMatchUseCase.execute();
 };
 
-export default {
-  index,
-  create,
-};
+export const createMatchController = ({
+  findMatchesUseCase,
+  createMatchUseCase,
+}) => ({
+  index: index(findMatchesUseCase),
+  create: create(createMatchUseCase),
+});

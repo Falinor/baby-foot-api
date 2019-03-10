@@ -1,11 +1,9 @@
 import EventEmitter from 'events';
 
 class CreateMatchUseCase extends EventEmitter {
-  constructor(matchRepository, teamRepository, playerRepository) {
+  constructor({ matchRepository }) {
     super();
     this.matchRepository = matchRepository;
-    this.teamRepository = teamRepository;
-    this.playerRepository = playerRepository;
     this.outputs = {
       SUCCESS: 'success',
       ERROR: 'error',
@@ -14,34 +12,12 @@ class CreateMatchUseCase extends EventEmitter {
 
   async execute(match) {
     try {
-      // Create players
-      const redPlayerPromises = match.red.players.map(async p =>
-        this.playerRepository.create(p),
-      );
-      const bluePlayerPromises = match.blue.players.map(async p =>
-        this.playerRepository.create(p),
-      );
-      const [redPlayerIds, bluePlayerIds] = await Promise.all([
-        Promise.all(redPlayerPromises),
-        Promise.all(bluePlayerPromises),
-      ]);
-      // Create teams
-      const [redTeamId, blueTeamId] = await Promise.all([
-        this.teamRepository.create(redPlayerIds),
-        this.teamRepository.create(bluePlayerIds),
-      ]);
-      // Create match
-      const matchId = await this.matchRepository.create({
-        match,
-        redTeamId,
-        blueTeamId,
-      });
-      this.emit(this.outputs.SUCCESS, matchId);
+      const resultMatch = await this.matchRepository.create(match);
+      this.emit(this.outputs.SUCCESS, resultMatch);
     } catch (err) {
       this.emit(this.outputs.ERROR, err);
     }
   }
 }
 
-export default (matchRepository, teamRepository, playerRepository) =>
-  new CreateMatchUseCase(matchRepository, teamRepository, playerRepository);
+export default opts => new CreateMatchUseCase(opts);

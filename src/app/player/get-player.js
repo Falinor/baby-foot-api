@@ -19,7 +19,7 @@ class GetPlayerUseCase extends EventEmitter {
    */
   async execute(id) {
     try {
-      const player = await this.playerRepository.findById(id);
+      const player = await this.playerRepository.getById(id);
       this.emit(this.outputs.SUCCESS, player);
     } catch (err) {
       this.emit(this.outputs.ERROR, err);

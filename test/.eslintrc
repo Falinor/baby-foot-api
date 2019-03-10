@@ -9,7 +9,7 @@
       {
         "files": [
           "api/**/*.test.js",
-          "unit/**/*.test.js"
+          "test/**/*.test.js"
         ]
       }
     ]

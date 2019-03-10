@@ -4,20 +4,19 @@
   "main": "src/index.js",
   "private": true,
   "scripts": {
-    "dev": "npm run test:unit:watch",
+    "dev": "npm run test:watch",
     "build": "cross-env BABEL_ENV=production babel src -d dist",
     "release": "standard-version",
     "serve": "node dist/index.js",
     "start": "babel-node src/index.js",
-    "test": "npm run test:api && npm run cover",
-    "test:api": "cross-env BABEL_ENV=test ava --serial \"test/api/**/matches.test.js\"",
-    "test:api:watch": "npm run test:api -- --watch",
-    "test:unit": "cross-env BABEL_ENV=test ava \"test/unit/**/*.test.js\"",
-    "test:unit:watch": "npm run test:unit -- --watch",
-    "cover": "nyc -r lcov -r text-lcov -a npm run test:unit",
+    "test": "ava",
+    "test:watch": "npm test -- --watch",
+    "integ": "ava --serial \"integ/**/*.test.js\"",
+    "integ:watch": "npm run integ -- --watch",
+    "cover": "nyc -r lcov -r text-lcov -a npm test",
     "postcover": "opn coverage/lcov-report/index.html",
     "lint": "eslint src --fix",
-    "precommit": "lint-staged && npm run test:unit",
+    "precommit": "lint-staged && npm test",
     "commitmsg": "validate-commit-msg"
   },
   "lint-staged": {
@@ -27,7 +26,7 @@
     ]
   },
   "ava": {
-    "verbose": false,
+    "verbose": true,
     "failFast": false,
     "failWithoutAssertions": true,
     "concurrency": 5,
@@ -39,13 +38,12 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.39",
-    "@babel/core": "^7.0.0-beta.39",
-    "@babel/node": "^7.0.0-beta.39",
-    "@babel/preset-env": "^7.0.0-beta.39",
-    "@babel/preset-flow": "^7.0.0-beta.51",
-    "@babel/register": "^7.0.0-beta.39",
-    "ava": "^0.25.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "ava": "^1.3.1",
     "babel-eslint": "^8.2.3",
     "coveralls": "^3.0.0",
     "cross-env": "^5.1.3",
@@ -53,7 +51,6 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-ava": "^4.5.0",
-    "eslint-plugin-flowtype": "^2.49.3",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-standard": "^3.1.0",
@@ -68,13 +65,15 @@
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
-    "awilix": "^3.0.1",
+    "awilix": "^4.0.1",
     "bunyan": "^1.8.12",
-    "http-status": "^1.0.1",
-    "joi": "^13.4.0",
-    "koa": "^2.4.1",
+    "convict": "^4.4.0",
+    "dotenv": "^6.2.0",
+    "http-status": "^1.3.1",
+    "joi": "^14.3.0",
+    "koa": "^2.6.2",
     "koa-router": "^7.4.0",
-    "mongodb": "^3.0.2",
-    "morgan": "^1.8.2"
+    "mongodb": "^3.1.10",
+    "morgan": "^1.9.1"
   }
 }

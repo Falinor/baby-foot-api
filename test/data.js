@@ -33,10 +33,7 @@ export const [inputMatch] = matches;
  * Teams to be imported.
  * @type {Array<object>}
  */
-export const teams = [
-  { createdAt: new Date() },
-  { createdAt: new Date() },
-];
+export const teams = [{ createdAt: new Date() }, { createdAt: new Date() }];
 
 export const [inputTeam] = teams;
 
