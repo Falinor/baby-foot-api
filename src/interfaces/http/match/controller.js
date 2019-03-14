@@ -1,7 +1,7 @@
 import Http from 'http-status';
 
 const index = findMatchesUseCase => async ctx => {
-  const { SUCCESS, ERROR } = findMatches.outputs;
+  const { SUCCESS, ERROR } = findMatchesUseCase.outputs;
   // Register handlers
   findMatchesUseCase
     .on(SUCCESS, matches => {
@@ -29,10 +29,9 @@ const create = createMatchUseCase => async ctx => {
   return createMatchUseCase.execute();
 };
 
-export const createMatchController = ({
-  findMatchesUseCase,
-  createMatchUseCase,
-}) => ({
+const createMatchController = ({ findMatchesUseCase, createMatchUseCase }) => ({
   index: index(findMatchesUseCase),
   create: create(createMatchUseCase),
 });
+
+export default createMatchController;

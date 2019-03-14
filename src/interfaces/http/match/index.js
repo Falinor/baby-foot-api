@@ -1,7 +1,11 @@
 import Router from 'koa-router';
 
-export const createMatchRouter = matchController =>
+import matchSchemas from './schemas';
+
+const createMatchRouter = ({ validateInput, matchController }) =>
   new Router()
     .prefix('/matches')
     .get('/', matchController.index)
-    .post('/', matchController.create);
+    .post('/', validateInput(matchSchemas.create), matchController.create);
+
+export default createMatchRouter;
