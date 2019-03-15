@@ -53,7 +53,9 @@ export function createConfig(validate = true) {
       allowed: 'strict',
     });
   }
-  return config;
+  return {
+    get: name => config.get(name),
+  };
 }
 
 export default createConfig;

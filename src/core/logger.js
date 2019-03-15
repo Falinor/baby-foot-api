@@ -1,25 +1,25 @@
 import { createLogger as createBunyanLogger } from 'bunyan';
 
 export const LogLevel = {
-  FATAL: 'fatal',
-  ERROR: 'error',
-  WARN: 'warn',
-  INFO: 'info',
-  DEBUG: 'debug',
-  TRACE: 'trace',
+  Fatal: 'fatal',
+  Error: 'error',
+  Warn: 'warn',
+  Info: 'info',
+  Debug: 'debug',
+  Trace: 'trace',
 };
 
-export function createLogger(level = LogLevel.WARN) {
+export function createLogger(level = LogLevel.Warn) {
   const bunyan = createBunyanLogger({
     level,
     name: 'Baby-foot API',
   });
   return {
-    [LogLevel.FATAL]: bunyan.fatal,
-    [LogLevel.ERROR]: bunyan.error,
-    [LogLevel.WARN]: bunyan.warn,
-    [LogLevel.INFO]: bunyan.info,
-    [LogLevel.DEBUG]: bunyan.debug,
-    [LogLevel.TRACE]: bunyan.trace,
+    [LogLevel.Fatal]: bunyan.fatal,
+    [LogLevel.Error]: bunyan.error,
+    [LogLevel.Warn]: bunyan.warn,
+    [LogLevel.Info]: bunyan.info,
+    [LogLevel.Debug]: bunyan.debug,
+    [LogLevel.Trace]: bunyan.trace,
   };
 }

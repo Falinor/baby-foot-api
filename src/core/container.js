@@ -9,14 +9,20 @@ import { createConfig } from './config';
 import { createLogger } from './logger';
 
 export function createContainer(config) {
-  return createAwilixContainer({
+  const container = createAwilixContainer({
     injectionMode: InjectionMode.CLASSIC,
   }).register({
     config: config == null ? asValue(config) : asFunction(createConfig),
     logger: asFunction(createLogger, {
-      injector: container => ({
-        logLevel: container.resolve('config').get('log.level'),
+      injector: cont => ({
+        logLevel: cont.resolve('config').get('log.level'),
       }),
     }),
   });
+  return {
+    register: container.register,
+    resolve: container.resolve,
+  };
 }
+
+export default createContainer;
