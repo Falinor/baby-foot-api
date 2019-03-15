@@ -26,10 +26,17 @@
     ]
   },
   "ava": {
+    "files": [
+      "test"
+    ],
+    "sources": [
+      "src",
+      "test",
+      "integ"
+    ],
     "verbose": true,
     "failFast": false,
     "failWithoutAssertions": true,
-    "concurrency": 5,
     "timeout": "30s",
     "tap": false,
     "powerAssert": true,
