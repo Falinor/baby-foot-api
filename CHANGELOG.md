@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/Falinor/baby-foot-api/compare/v0.14.0...v0.15.0) (2019-04-07)
+
+
+### Features
+
+* **app:** implement match creation use case ([b562023](https://github.com/Falinor/baby-foot-api/commit/b562023))
+* **interfaces:** validate match creation input ([e4f3dbc](https://github.com/Falinor/baby-foot-api/commit/e4f3dbc))
+* implement match creation ([32d4c92](https://github.com/Falinor/baby-foot-api/commit/32d4c92))
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/Falinor/baby-foot-api/compare/v0.13.0...v0.14.0) (2018-06-17)
 
