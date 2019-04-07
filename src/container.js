@@ -41,6 +41,8 @@ export default (config = {}) =>
         },
       }),
       validateInput: asValue(passThrough),
-      matchRepository: asFunction(createMatchRepository('memory')),
+      matchRepository: asFunction(createMatchRepository('memory'), {
+        lifetime: Lifetime.SINGLETON,
+      }),
       errorHandler: asFunction(errorHandler),
     });

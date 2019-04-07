@@ -13,45 +13,29 @@ test.beforeEach('Create context', async t => {
 });
 
 test.serial('GET /matches -> 200 OK', async t => {
+  // Given
   const { app } = t.context;
-  await createMatch();
-  await createMatch();
-  const res = await request(app).get('/matches');
+  const sampleMatches = await Promise.all([
+    createMatch(),
+    createMatch(),
+    createMatch(),
+  ]);
+  // When
+  const res = await request(app).get('/v1/matches');
+  // Then
   t.is(typeof res, 'object');
   t.is(res.status, 200);
   t.is(res.type, 'application/json');
   const matches = res.body;
+  // Check array type and size
   t.true(Array.isArray(matches));
-  // Check default limit
-  t.true(matches.length <= 10);
-  const promises = matches.map(async match => {
-    t.is(typeof match.id, 'string');
-    // Red team
-    t.is(typeof match.red, 'object');
-    t.true(Array.isArray(match.red.players));
-    t.is(match.red.players.length, 2);
-    await Promise.all(
-      match.red.players.map(async player => {
-        t.is(typeof player, 'object');
-        t.is(typeof player.id, 'string');
-      }),
-    );
-    // Blue team
-    t.is(typeof match.blue, 'object');
-    t.true(Array.isArray(match.blue.players));
-    t.is(match.blue.players.length, 2);
-    await Promise.all(
-      match.blue.players.map(async player => {
-        t.is(typeof player, 'object');
-        t.is(typeof player.id, 'string');
-      }),
-    );
-  });
-  return Promise.all(promises);
+  t.is(matches.length, sampleMatches.length);
 });
 
-test.serial.only('POST /matches -> 201 Created', async t => {
+test.serial('POST /matches -> 201 Created', async t => {
+  // Given
   const { app } = t.context;
+  // When
   const res = await request(app)
     .post('/v1/matches')
     .send({
@@ -65,6 +49,7 @@ test.serial.only('POST /matches -> 201 Created', async t => {
       },
     })
     .set('Content-Type', 'application/json');
+  // Then
   t.is(typeof res, 'object');
   t.is(res.status, 201);
   t.is(typeof res.headers.location, 'string');

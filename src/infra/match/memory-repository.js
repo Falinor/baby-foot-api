@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 
-const find = matchStore => async () => matchStore;
+const find = matchStore => async () => Object.values(matchStore);
 
 const create = matchStore => async match => {
   match.id = uuid();
