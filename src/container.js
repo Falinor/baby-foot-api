@@ -1,40 +1,22 @@
-import {
-  asFunction,
-  asValue,
-  createContainer,
-  InjectionMode,
-  Lifetime,
-} from 'awilix';
-import bunyan from 'bunyan';
+import { asFunction, asValue, Lifetime } from 'awilix';
+import { createContainer } from './core/container';
 
-import createMatchRepository from './infra/match/repository';
-import createPlayerRepository from './infra/player/repository';
-import createTeamRepository from './infra/team/repository';
-import createApp from './interfaces/http/app';
+import createMatchRepository from './infra/match';
 import createMatchRouter from './interfaces/http/match';
-import matchController from './interfaces/http/match/controller';
+import createMatchController from './interfaces/http/match/controller';
 import { errorHandler } from './interfaces/http/middlewares';
+import createHttpServer from './interfaces/http/server';
+import { passThrough } from './utils';
 
 /**
  * Create a DI container.
  * @param config {Object} - A configuration object
  * @return {AwilixContainer}
  */
-export default config =>
-  createContainer({ injectionMode: InjectionMode.CLASSIC })
-    .register('config', asValue(config))
-    // Logger
-    .register(
-      'logger',
-      asValue(
-        bunyan.createLogger({
-          name: config.appName,
-          level: config.log.level,
-        }),
-      ),
-    )
+export default (config = {}) =>
+  createContainer(config)
     // Register application
-    .register('app', asFunction(createApp).singleton())
+    .register('httpServer', asFunction(createHttpServer).singleton())
     .loadModules(
       [
         // Register use cases
@@ -48,12 +30,17 @@ export default config =>
         },
       },
     )
-    // Register repositories
-    .register('matchRepository', asFunction(createMatchRepository))
-    .register('teamRepository', asFunction(createTeamRepository))
-    .register('playerRepository', asFunction(createPlayerRepository))
-    // Register controllers
-    .register('matchController', asValue(matchController))
-    // Routes
-    .register('matchRouter', asFunction(createMatchRouter))
-    .register('errorHandler', asFunction(errorHandler));
+    .register({
+      matchRouter: asFunction(createMatchRouter),
+      matchController: asFunction(createMatchController, {
+        injector: container => {
+          const conf = container.resolve('config');
+          return {
+            baseURL: `${conf.get('url.host')}:${conf.get('url.port')}`,
+          };
+        },
+      }),
+      validateInput: asValue(passThrough),
+      matchRepository: asFunction(createMatchRepository('memory')),
+      errorHandler: asFunction(errorHandler),
+    });

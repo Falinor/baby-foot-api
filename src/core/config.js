@@ -37,7 +37,7 @@ export function createConfig(validate = true) {
     },
     db: {
       url: {
-        format: 'url',
+        format: String,
         default: 'mongodb://localhost:27017',
         env: 'DB_URL',
       },
