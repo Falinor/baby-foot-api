@@ -14,24 +14,23 @@ const index = findMatchesUseCase => async ctx => {
   return findMatchesUseCase.execute();
 };
 
-const create = createMatchUseCase => async ctx => {
-  const { config } = ctx.state.container.cradle;
+const create = ({ baseURL, createMatchUseCase }) => async ctx => {
   const { SUCCESS, ERROR } = createMatchUseCase.outputs;
   createMatchUseCase
-    .on(SUCCESS, id => {
+    .on(SUCCESS, match => {
       ctx.status = Http.CREATED;
-      const { host, port, prefix } = config.url;
-      ctx.set('Location', `${host}:${port}/${prefix}/matches/${id}`);
+      ctx.set('Location', `${baseURL}/matches/${match.id}`);
     })
     .on(ERROR, err => {
       ctx.throw(Http.INTERNAL_SERVER_ERROR, err.message);
     });
-  return createMatchUseCase.execute();
+  // TODO: validate request body
+  return createMatchUseCase.execute(ctx.request.body);
 };
 
-const createMatchController = ({ findMatchesUseCase, createMatchUseCase }) => ({
-  index: index(findMatchesUseCase),
-  create: create(createMatchUseCase),
+const createMatchController = ({ baseURL, findMatches, createMatch }) => ({
+  index: index(findMatches),
+  create: create({ baseURL, createMatchUseCase: createMatch }),
 });
 
 export default createMatchController;

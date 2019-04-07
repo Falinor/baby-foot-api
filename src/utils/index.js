@@ -3,6 +3,8 @@ export const scopePerRequest = container => async (ctx, next) => {
   await next();
 };
 
+export const passThrough = () => async (ctx, next) => next();
+
 export default {
   scopePerRequest,
 };

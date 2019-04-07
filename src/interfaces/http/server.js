@@ -1,3 +1,4 @@
+import bodyParser from 'koa-bodyparser';
 import Koa from 'koa';
 import Router from 'koa-router';
 
@@ -9,7 +10,8 @@ function registerMiddlewares(middlewares, app) {
 
 function registerNestedRouters(routers, mainRouter) {
   routers.forEach(r => {
-    mainRouter.use(r.routes(), r.allowedMethods());
+    mainRouter.use(r.routes());
+    mainRouter.use(r.allowedMethods());
   });
 }
 
@@ -23,7 +25,15 @@ export function createServer({
     sensitive: false,
     prefix: versionPrefix || '/v1',
   });
+
+  // Register default middlewares
+  registerMiddlewares([bodyParser()], app);
+
   registerMiddlewares(middlewares, app);
   registerNestedRouters(routers, mainRouter);
+  app.use(mainRouter.routes());
+  app.use(mainRouter.allowedMethods());
   return app;
 }
+
+export default createServer;

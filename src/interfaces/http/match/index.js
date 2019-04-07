@@ -1,8 +1,9 @@
 import Router from 'koa-router';
 
 import matchSchemas from './schemas';
+import { passThrough } from '../../../utils';
 
-const createMatchRouter = ({ validateInput, matchController }) =>
+const createMatchRouter = ({ matchController, validateInput = passThrough }) =>
   new Router()
     .prefix('/matches')
     .get('/', matchController.index)

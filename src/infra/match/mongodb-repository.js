@@ -21,9 +21,12 @@ const create = matchStore => async match => {
   await matchStore.insertOne(infraMatch);
 };
 
-export const createMatchRepository = matchStore => ({
-  fromInfra,
-  toInfra,
-  find: find(matchStore),
-  create: create(matchStore),
-});
+export const createMatchRepository = db => {
+  const matchStore = db.collection('Matches');
+  return {
+    fromInfra,
+    toInfra,
+    find: find(matchStore),
+    create: create(matchStore),
+  };
+};

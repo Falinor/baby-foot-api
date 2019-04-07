@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 class FindMatchesUseCase extends EventEmitter {
-  constructor(matchRepository) {
+  constructor({ matchRepository }) {
     super();
     this.matchRepository = matchRepository;
     this.outputs = {
@@ -21,4 +21,4 @@ class FindMatchesUseCase extends EventEmitter {
   }
 }
 
-export default matchRepository => new FindMatchesUseCase(matchRepository);
+export default opts => new FindMatchesUseCase(opts);
