@@ -1,52 +1,39 @@
-import EventEmitter from 'events';
+import GameNotOverError from './errors/game-not-over-error'
+import PlayersError from './errors/players-error'
 
-import MaxPointsError from './errors/max-points-error';
-import PlayersError from './errors/players-error';
+export const MAX_POINTS = 10
 
-export const MAX_POINTS = 10;
-
-class CreateMatchUseCase extends EventEmitter {
-  constructor({ matchRepository }) {
-    super();
-    this.matchRepository = matchRepository;
-    this.outputs = {
-      SUCCESS: 'success',
-      MAX_POINTS_ERROR: 'max-points-error',
-      PLAYERS_ERROR: 'players-error',
-      ERROR: 'error',
-    };
+export class CreateMatchUseCase {
+  constructor({ saveMatch }) {
+    this.saveMatch = saveMatch
   }
 
-  async execute(match) {
-    try {
-      if (match.red.points < MAX_POINTS && match.blue.points < MAX_POINTS) {
-        this.emit(this.outputs.MAX_POINTS_ERROR, new MaxPointsError(match));
-        return;
-      }
-
-      if (match.red.points >= MAX_POINTS && match.blue.points >= MAX_POINTS) {
-        this.emit(
-          this.outputs.MAX_POINTS_ERROR,
-          new MaxPointsError(match, 'Both teams cannot win at the same time'),
-        );
-        return;
-      }
-
-      if (
-        match.red.players.some(redPlayer =>
-          match.blue.players.includes(redPlayer),
-        )
-      ) {
-        this.emit(this.outputs.PLAYERS_ERROR, new PlayersError(match));
-        return;
-      }
-
-      const resultMatch = await this.matchRepository.create(match);
-      this.emit(this.outputs.SUCCESS, resultMatch);
-    } catch (err) {
-      this.emit(this.outputs.ERROR, err);
+  async execute({ match, onMaxPointsError, onPlayersError, onSuccess }) {
+    if (match.red.points < MAX_POINTS && match.blue.points < MAX_POINTS) {
+      const error = new GameNotOverError(match)
+      return onMaxPointsError(error)
     }
+
+    if (match.red.points >= MAX_POINTS && match.blue.points >= MAX_POINTS) {
+      const error = new GameNotOverError(
+        match,
+        'Both teams cannot win at the same time'
+      )
+      return onMaxPointsError(error)
+    }
+
+    if (
+      match.red.players.some(redPlayer =>
+        match.blue.players.includes(redPlayer)
+      )
+    ) {
+      const error = new PlayersError(match)
+      return onPlayersError(error)
+    }
+
+    const resultMatch = await this.saveMatch(match)
+    return onSuccess(resultMatch)
   }
 }
 
-export default opts => new CreateMatchUseCase(opts);
+export default CreateMatchUseCase
