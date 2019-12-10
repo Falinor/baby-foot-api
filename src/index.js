@@ -1,14 +1,14 @@
-import { asValue } from 'awilix';
-import mongo from 'mongodb';
+import { asValue } from 'awilix'
+import mongo from 'mongodb'
 
-import createConfig from './config';
-import createContainer from './container';
-import { scopePerRequest } from './utils';
+import createConfig from './config'
+import createContainer from './container'
+import { scopePerRequest } from './utils'
 
-const config = createConfig();
-const container = createContainer(config);
+const config = createConfig()
+const container = createContainer(config)
 
-const { logger } = container.cradle;
+const { logger } = container.cradle
 
 mongo
   .connect(config.db.url)
@@ -17,21 +17,21 @@ mongo
     container
       .register('matchStore', asValue(db.collection('Matches')))
       .register('teamStore', asValue(db.collection('Teams')))
-      .register('playerStore', asValue(db.collection('Players')));
+      .register('playerStore', asValue(db.collection('Players')))
   })
   .then(() => {
     // Resolve app and logger into the DI container
-    const { app, matchRouter } = container.cradle;
+    const { app, matchRouter } = container.cradle
     // Scope-per-request middleware
-    app.use(scopePerRequest(container));
+    app.use(scopePerRequest(container))
     // Register routes
-    app.use(matchRouter.routes());
-    app.use(matchRouter.allowedMethods());
+    app.use(matchRouter.routes())
+    app.use(matchRouter.allowedMethods())
     // Start the API
     app.listen(config.port, () => {
-      logger.info(`API listening on port ${config.port}.`);
-    });
+      logger.info(`API listening on port ${config.port}.`)
+    })
   })
   .catch(err => {
-    logger.error(err);
-  });
+    logger.error(err)
+  })

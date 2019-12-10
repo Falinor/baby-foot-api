@@ -2,16 +2,16 @@
  * @module GetPlayer use-case interactor
  */
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'events'
 
 class GetPlayerUseCase extends EventEmitter {
   constructor(playerRepository) {
-    super();
-    this.playerRepository = playerRepository;
+    super()
+    this.playerRepository = playerRepository
     this.outputs = {
       SUCCESS: 'success',
-      ERROR: 'error',
-    };
+      ERROR: 'error'
+    }
   }
 
   /**
@@ -19,12 +19,12 @@ class GetPlayerUseCase extends EventEmitter {
    */
   async execute(id) {
     try {
-      const player = await this.playerRepository.getById(id);
-      this.emit(this.outputs.SUCCESS, player);
+      const player = await this.playerRepository.getById(id)
+      this.emit(this.outputs.SUCCESS, player)
     } catch (err) {
-      this.emit(this.outputs.ERROR, err);
+      this.emit(this.outputs.ERROR, err)
     }
   }
 }
 
-export default playerRepository => new GetPlayerUseCase(playerRepository);
+export default playerRepository => new GetPlayerUseCase(playerRepository)

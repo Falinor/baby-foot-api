@@ -1,18 +1,18 @@
-import defaultsDeep from 'lodash.defaultsdeep';
+import defaultsDeep from 'lodash.defaultsdeep'
 
-import createContainer from '../src/container';
-import { createServer } from '../src/interfaces/http/server';
+import createContainer from '../src/container'
+import { createServer } from '../src/interfaces/http/server'
 
-const container = createContainer();
+const container = createContainer()
 
 function createRouters(resources = []) {
-  const allowed = ['match'];
+  const allowed = ['match']
   return resources
     .filter(resource => allowed.includes(resource))
     .map(resource => {
-      const router = `${resource}Router`;
-      return container.resolve(router);
-    });
+      const router = `${resource}Router`
+      return container.resolve(router)
+    })
 }
 
 /**
@@ -27,32 +27,32 @@ function createRouters(resources = []) {
  */
 export function createTestServer(opts = {}) {
   defaultsDeep(opts, {
-    resources: ['match'],
-  });
-  const { resources } = opts;
-  const routers = createRouters(resources);
+    resources: ['match']
+  })
+  const { resources } = opts
+  const routers = createRouters(resources)
   return createServer({
     routers,
-    versionPrefix: '/v1',
-  });
+    versionPrefix: '/v1'
+  })
 }
 
 export async function createMatch(match = {}) {
-  const repo = container.resolve('matchRepository');
+  const repo = container.resolve('matchRepository')
   const finalMatch = defaultsDeep(match, {
     red: {
       points: 10,
-      players: ['ABC', 'DEF'],
+      players: ['ABC', 'DEF']
     },
     blue: {
       points: 6,
-      players: ['GHI', 'KLM'],
+      players: ['GHI', 'KLM']
     },
     playedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-  return repo.create(finalMatch);
+    updatedAt: new Date().toISOString()
+  })
+  return repo.create(finalMatch)
 }
 
-export default createTestServer;
+export default createTestServer

@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from 'joi'
 
 const teamSchema = Joi.object({
   points: Joi.number()
@@ -7,21 +7,21 @@ const teamSchema = Joi.object({
   players: Joi.array()
     .min(1)
     .max(2)
-    .unique(),
-});
+    .unique()
+})
 
 const create = {
   body: Joi.object({
     red: teamSchema,
-    blue: teamSchema,
+    blue: teamSchema
   }).options({
     presence: 'required',
-    stripUnknown: true,
-  }),
-};
+    stripUnknown: true
+  })
+}
 
 const schemas = {
-  create,
-};
+  create
+}
 
-export default schemas;
+export default schemas
