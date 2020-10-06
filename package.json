@@ -1,14 +1,17 @@
 {
   "name": "babyfoot-api",
   "version": "0.16.0",
-  "main": "src/index.js",
+  "main": "bin/index.js",
   "private": true,
   "scripts": {
     "dev": "npm run test:watch",
     "build": "cross-env BABEL_ENV=production babel src -d dist",
+    "db:create-migration": "migrate -c arangodb -t migration-template.js create",
+    "db:migrate": "migrate -c arangodb up",
+    "db:rollback": "migrate -c arangodb down",
     "release": "standard-version",
-    "serve": "node dist/index.js",
-    "start": "babel-node src/index.js",
+    "serve": "babel-node bin/index.js",
+    "start": "node dist/index.js",
     "test": "ava",
     "test:watch": "npm test -- --watch",
     "integ": "ava --serial \"integ/**/*.test.js\"",
@@ -29,62 +32,46 @@
       "pre-commit": "lint-staged && npm test"
     }
   },
-  "ava": {
-    "files": [
-      "test"
-    ],
-    "sources": [
-      "src",
-      "test",
-      "integ"
-    ],
-    "verbose": true,
-    "failFast": false,
-    "failWithoutAssertions": true,
-    "timeout": "30s",
-    "tap": false,
-    "powerAssert": true,
-    "require": [
-      "@babel/register"
-    ]
-  },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.10.3",
     "@babel/node": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
     "@babel/register": "^7.10.3",
+    "babel-plugin-lodash": "^3.3.4",
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.3.0",
+    "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-standard": "^4.0.1",
+    "faker": "^4.1.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
     "lint-staged": "^10.2.11",
+    "migrate": "^1.7.0",
     "nodemon": "^2.0.4",
     "nyc": "^15.1.0",
     "prettier": "^2.0.5",
+    "rosie": "^2.0.1",
     "standard-version": "^8.0.0",
     "supertest": "^4.0.2",
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
-    "@hapi/boom": "^9.1.0",
-    "@hapi/joi": "^17.1.1",
+    "arangojs": "^7.0.2",
+    "async": "^3.2.0",
     "awilix": "^4.2.6",
     "bunyan": "^1.8.12",
     "convict": "^5.2.0",
     "dotenv": "^8.2.0",
     "es6-error": "^4.1.1",
+    "http-status": "^1.4.2",
     "koa": "^2.13.0",
-    "koa-bodyparser": "^4.3.0",
-    "koa-router": "^9.0.1",
-    "lodash.defaultsdeep": "^4.6.1",
-    "morgan": "^1.10.0",
+    "koa-joi-router": "^6.0.2",
+    "lodash": "^4.17.20",
     "uuid": "^8.1.0"
   }
 }

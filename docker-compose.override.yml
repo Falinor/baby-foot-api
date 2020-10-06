@@ -13,16 +13,9 @@ services:
       PORT: 4000
       DB_URL: http://db:27017/baby-foot-dev
 
-  docs:
-    image: swaggerapi/swagger-ui:latest
-    ports:
-      - "4001:8080"
-    volumes:
-      - ./docs/v3/openapi.json:/docs/openapi.json
-    environment:
-      SWAGGER_JSON: /docs/openapi.json
-
   db:
-    image: mongo:latest
+    image: arangodb/arangodb:3.7.2
+    environment:
+      ARANGO_NO_AUTH: 1
     ports:
-      - "27017:27017"
+      - "8529:8529"

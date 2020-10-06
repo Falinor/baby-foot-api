@@ -1,4 +1,4 @@
-FROM kkarczmarczyk/node-yarn:latest
+FROM node:14-alpine
 
 LABEL maintainer="Andrea Gueugnaut <agueugnaut@octo.com>"
 

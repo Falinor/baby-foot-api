@@ -1,2 +1,3 @@
-export { default as MaxPointsError } from './game-not-over-error'
-export { default as PlayersError } from './players-error'
+export * from './game-not-over-error'
+export * from './players-not-found-error'
+export * from './players-error'

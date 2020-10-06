@@ -1,24 +1,13 @@
-import EventEmitter from 'events'
+import { UseCase } from '../use-case'
 
-class FindMatchesUseCase extends EventEmitter {
+export class FindMatchesUseCase extends UseCase {
   constructor({ matchRepository }) {
     super()
     this.matchRepository = matchRepository
-    this.outputs = {
-      SUCCESS: 'success',
-      ERROR: 'error'
-    }
   }
 
-  async execute() {
-    try {
-      // Find matches
-      const matches = await this.matchRepository.find()
-      this.emit(this.outputs.SUCCESS, matches)
-    } catch (err) {
-      this.emit(this.outputs.ERROR, err)
-    }
+  async execute({ onSuccess }) {
+    const matches = await this.matchRepository.find()
+    return onSuccess(matches)
   }
 }
-
-export default opts => new FindMatchesUseCase(opts)

@@ -1,48 +1,49 @@
-import { asFunction, asValue, Lifetime } from 'awilix'
-import { createContainer } from './core/container'
+import {
+  asClass,
+  asFunction,
+  createContainer as createAwilixContainer
+} from 'awilix'
 
-import createMatchRepository from './infra/match'
-import createMatchRouter from './interfaces/http/match'
-import createMatchController from './interfaces/http/match/controller'
-import { errorHandler } from './interfaces/http/middlewares'
-import createHttpServer from './interfaces/http/server'
-import { passThrough } from './utils'
+import CreateMatchUseCase from './app/match/create-match'
+import { FindMatchesUseCase } from './app/match/find-matches'
+import { createDatabase } from './core/arangodb'
+import {
+  createMatchArangoRepository,
+  createMatchMemoryRepository
+} from './infra/match'
+import { createPlayerMemoryRepository } from './infra/player'
+import { createPlayerArangoRepository } from './infra/player/arango-repository'
+import { createTeamArangoRepository } from './infra/team/arango-repository'
+import { createTeamMemoryRepository } from './infra/team/memory-repository'
+import {
+  createMatchController,
+  createMatchRouter
+} from './interfaces/http/match'
 
-/**
- * Create a DI container.
- * @param config {Object} - A configuration object
- * @return {AwilixContainer}
- */
-export default (config = {}) =>
-  createContainer(config)
-    // Register application
-    .register('httpServer', asFunction(createHttpServer).singleton())
-    .loadModules(
-      [
-        // Register use cases
-        'app/**/*.js'
-      ],
-      {
-        cwd: __dirname,
-        formatName: 'camelCase',
-        resolverOptions: {
-          lifetime: Lifetime.SCOPED
-        }
-      }
-    )
-    .register({
-      matchRouter: asFunction(createMatchRouter),
-      matchController: asFunction(createMatchController, {
-        injector: container => {
-          const conf = container.resolve('config')
-          return {
-            baseURL: `${conf.get('url.host')}:${conf.get('url.port')}`
-          }
-        }
-      }),
-      validateInput: asValue(passThrough),
-      matchRepository: asFunction(createMatchRepository('memory'), {
-        lifetime: Lifetime.SINGLETON
-      }),
-      errorHandler: asFunction(errorHandler)
-    })
+export function createContainer() {
+  const container = createAwilixContainer().register({
+    // Database
+    db: asFunction(createDatabase, { lifetime: 'SINGLETON' }),
+
+    // Match
+    matchRepository: asFunction(createMatchArangoRepository),
+    createMatchUseCase: asClass(CreateMatchUseCase),
+    findMatchesUseCase: asClass(FindMatchesUseCase),
+    matchController: asFunction(createMatchController),
+    matchRouter: asFunction(createMatchRouter),
+
+    // Team
+    teamRepository: asFunction(createTeamArangoRepository),
+
+    // Player
+    playerRepository: asFunction(createPlayerArangoRepository)
+  })
+
+  return {
+    register: container.register,
+    resolve: container.resolve,
+    loadModules: container.loadModules
+  }
+}
+
+export default createContainer()

@@ -40,11 +40,15 @@ None yet!
 ### In active development
 
 - Top 10 players
-  - Win rate by player
+  - Win rate by player `GET /v1/players?sort=-winRate&limit=10`
 - Top 10 teams
-  - Win rate by team
+  - Win rate by team `GET /v1/teams?sort=-winRate&limit=10`
 - Individual rank and scores
-- The last 10 matches
+- The last 10 matches `GET /v1/matches`
+- View a player's teams `GET /v1/players/{id}/teams`
+- View a player's matches `GET /v1/players/{id}/matches`
+- List the players with who I already played `GET /v1/players/{id}/players`
+- Have I played with this player? `GET /v1/players/{id}/players/{id}`
 - Analytics dashboard
   - Count of matches played
 

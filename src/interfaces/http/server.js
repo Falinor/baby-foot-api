@@ -1,39 +1,21 @@
-import bodyParser from 'koa-bodyparser'
 import Koa from 'koa'
-import Router from 'koa-router'
 
-function registerMiddlewares(middlewares, app) {
-  middlewares.forEach(m => {
-    app.use(m)
-  })
-}
+import container from '../../container'
+import { config, logger } from '../../core'
+import { errorHandler } from './middlewares'
 
-function registerNestedRouters(routers, mainRouter) {
-  routers.forEach(r => {
-    mainRouter.use(r.routes())
-    mainRouter.use(r.allowedMethods())
-  })
-}
-
-export function createServer({
-  versionPrefix = '/v1',
-  middlewares = [],
-  routers = []
-}) {
+export function createServer() {
   const app = new Koa()
-  const mainRouter = new Router({
-    sensitive: false,
-    prefix: versionPrefix || '/v1'
-  })
 
-  // Register default middlewares
-  registerMiddlewares([bodyParser()], app)
+  app.use(errorHandler({ logger }))
+  app.use(container.resolve('matchRouter'))
 
-  registerMiddlewares(middlewares, app)
-  registerNestedRouters(routers, mainRouter)
-  app.use(mainRouter.routes())
-  app.use(mainRouter.allowedMethods())
-  return app
+  return {
+    httpServer: app.callback(),
+    start() {
+      app.listen(config.port, () => {
+        logger.info(`API listening on port ${config.port}.`)
+      })
+    }
+  }
 }
-
-export default createServer

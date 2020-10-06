@@ -1,36 +1,32 @@
-import Http from 'http-status'
+import { created, notFound, ok, unprocessableEntity } from '../../../utils'
 
-const index = findMatchesUseCase => async ctx => {
-  const { SUCCESS, ERROR } = findMatchesUseCase.outputs
-  // Register handlers
-  findMatchesUseCase
-    .once(SUCCESS, matches => {
-      ctx.status = Http.OK
-      ctx.body = matches
-    })
-    .once(ERROR, err => {
-      ctx.throw(Http.INTERNAL_SERVER_ERROR, err.message)
-    })
-  return findMatchesUseCase.execute()
+const index = (findMatchesUseCase) => async (ctx) => {
+  const { body, status } = await findMatchesUseCase.execute({
+    onSuccess: ok
+  })
+  ctx.body = body
+  ctx.status = status
 }
 
-const create = ({ baseURL, createMatchUseCase }) => async ctx => {
-  const { SUCCESS, ERROR } = createMatchUseCase.outputs
+const create = (createMatchUseCase) => async (ctx) => {
+  const { body, status, location } = await createMatchUseCase.execute({
+    match: ctx.request.body,
+    onMaxPointsError: unprocessableEntity,
+    onPlayersError: unprocessableEntity,
+    onPlayersNotFound: notFound,
+    onSuccess: created('/v1/matches')
+  })
+  ctx.body = body
+  ctx.status = status
+  if (location) {
+    ctx.set('Location', location)
+  }
+}
+
+export const createMatchController = ({
+  findMatchesUseCase,
   createMatchUseCase
-    .once(SUCCESS, match => {
-      ctx.status = Http.CREATED
-      ctx.set('Location', `${baseURL}/matches/${match.id}`)
-    })
-    .once(ERROR, err => {
-      ctx.throw(Http.INTERNAL_SERVER_ERROR, err.message)
-    })
-  // TODO: validate request body
-  return createMatchUseCase.execute(ctx.request.body)
-}
-
-const createMatchController = ({ baseURL, findMatches, createMatch }) => ({
-  index: index(findMatches),
-  create: create({ baseURL, createMatchUseCase: createMatch })
+}) => ({
+  index: index(findMatchesUseCase),
+  create: create(createMatchUseCase)
 })
-
-export default createMatchController
