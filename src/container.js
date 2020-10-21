@@ -7,14 +7,10 @@ import {
 import CreateMatchUseCase from './app/match/create-match'
 import { FindMatchesUseCase } from './app/match/find-matches'
 import { createDatabase } from './core/arangodb'
-import {
-  createMatchArangoRepository,
-  createMatchMemoryRepository
-} from './infra/match'
-import { createPlayerMemoryRepository } from './infra/player'
+import { createMatchArangoRepository } from './infra/match'
 import { createPlayerArangoRepository } from './infra/player/arango-repository'
+import { createRankingService } from './infra/ranking'
 import { createTeamArangoRepository } from './infra/team/arango-repository'
-import { createTeamMemoryRepository } from './infra/team/memory-repository'
 import {
   createMatchController,
   createMatchRouter
@@ -36,7 +32,10 @@ export function createContainer() {
     teamRepository: asFunction(createTeamArangoRepository),
 
     // Player
-    playerRepository: asFunction(createPlayerArangoRepository)
+    playerRepository: asFunction(createPlayerArangoRepository),
+
+    // Ranking
+    rankingService: asFunction(createRankingService)
   })
 
   return {

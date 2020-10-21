@@ -16,7 +16,7 @@ describe('Integration | Repository | MatchArango', () => {
     matchRepository = createMatchArangoRepository({ db })
   })
 
-  describe('#save', () => {
+  describe('#create', () => {
     const match = matchFactory.build()
 
     beforeEach(async () => {
@@ -26,7 +26,7 @@ describe('Integration | Repository | MatchArango', () => {
     })
 
     it('saves the match', async () => {
-      const actual = await matchRepository.save(match)
+      const actual = await matchRepository.create(match)
       expect(actual).toStrictEqual({
         id: match.id,
         playedAt: match.playedAt,
@@ -36,7 +36,7 @@ describe('Integration | Repository | MatchArango', () => {
     })
 
     it('links match and teams together', async () => {
-      const actualMatch = await matchRepository.save(match)
+      const actualMatch = await matchRepository.create(match)
       const id = `matches/${actualMatch.id}`
       const edges = await db
         .query(

@@ -1,9 +1,10 @@
 import { map as mapAsync } from 'async'
+import { orderBy } from 'lodash'
 import request from 'supertest'
 
 import container from '../src/container'
 import { createDatabase } from '../src/core/arangodb'
-import { matchFactory } from '../src/utils'
+import { matchFactory, playerFactory } from '../src/utils'
 import { cleanUpDatabase, createTestServer } from './utils'
 
 describe('Integration | API | Matches', () => {
@@ -19,14 +20,17 @@ describe('Integration | API | Matches', () => {
 
     beforeEach(async () => {
       matches = matchFactory.buildList(3)
+      const teams = matches.flatMap((match) => match.teams)
+      // Save players
+      const playerRepository = container.resolve('playerRepository')
+      const players = teams.flatMap((team) => team.players)
+      await mapAsync(players, async (player) => playerRepository.create(player))
+      // Save teams
+      const teamRepository = container.resolve('teamRepository')
+      await mapAsync(teams, async (team) => teamRepository.create(team))
+      // Save matches
       const matchRepository = container.resolve('matchRepository')
-      const db = container.resolve('db')
-      const players = matches.map((match) => [
-        ...match.red.players,
-        ...match.blue.players
-      ])
-      await db.collection('players').saveAll(players)
-      await mapAsync(matches, async (match) => matchRepository.save(match))
+      await mapAsync(matches, async (match) => matchRepository.create(match))
     })
 
     test('200 OK', async () => {
@@ -39,24 +43,26 @@ describe('Integration | API | Matches', () => {
 
   describe('POST /v1/matches', () => {
     let match
+    let players
 
     beforeEach(async () => {
-      match = {
-        red: {
-          points: 10,
-          players: ['p1', 'p2']
-        },
-        blue: {
-          points: 6,
-          players: ['p3', 'p4']
-        }
-      }
-      const players = [
-        ...match.red.players,
-        ...match.blue.players
-      ].map((id) => ({ id }))
+      players = orderBy(playerFactory.buildList(4), ['rank', 'desc'])
       const playerRepository = container.resolve('playerRepository')
-      await mapAsync(players, async (player) => playerRepository.save(player))
+      await mapAsync(players, async (player) => playerRepository.create(player))
+      match = {
+        teams: [
+          {
+            color: 'black',
+            points: 10,
+            players: players.slice(0, 2).map((player) => player.id)
+          },
+          {
+            color: 'purple',
+            points: 6,
+            players: players.slice(2, 4).map((player) => player.id)
+          }
+        ]
+      }
     })
 
     test('201 Created', async () => {
@@ -67,16 +73,23 @@ describe('Integration | API | Matches', () => {
       expect(status).toBe(201)
       expect(type).toBe('application/json')
       expect(body).toStrictEqual({
-        ...match,
         id: expect.any(String),
-        red: {
-          ...match.red,
-          id: expect.any(String)
-        },
-        blue: {
-          ...match.blue,
-          id: expect.any(String)
-        },
+        teams: [
+          {
+            id: expect.any(String),
+            wins: 0,
+            losses: 0,
+            rank: 1000,
+            players: players.slice(0, 2)
+          },
+          {
+            id: expect.any(String),
+            wins: 0,
+            losses: 0,
+            rank: 1000,
+            players: players.slice(2, 4)
+          }
+        ],
         createdAt: expect.any(String),
         updatedAt: expect.any(String)
       })

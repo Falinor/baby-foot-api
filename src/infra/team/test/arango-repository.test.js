@@ -1,5 +1,6 @@
 import { aql } from 'arangojs'
 import { map as asyncMap } from 'async'
+import { orderBy } from 'lodash'
 
 import { cleanUpDatabase } from '../../../../integ/utils'
 import { createDatabase } from '../../../core/arangodb'
@@ -24,7 +25,10 @@ describe('Integration | Repository | PlayerArango', () => {
     const players = playerFactory.buildList(2)
 
     beforeEach(async () => {
-      const playerEntities = players.map(toPlayerDatabase)
+      const playerEntities = orderBy(players.map(toPlayerDatabase), [
+        'rank',
+        'desc'
+      ])
       await db.collection('players').saveAll(playerEntities)
     })
 
@@ -38,7 +42,7 @@ describe('Integration | Repository | PlayerArango', () => {
     })
 
     describe('The team exists', () => {
-      const team = teamFactory.build()
+      const team = teamFactory.build({ players })
 
       beforeEach(async () => {
         await db.collection('teams').save(toTeamDatabase(team))
@@ -55,16 +59,15 @@ describe('Integration | Repository | PlayerArango', () => {
 
       it('returns the team', async () => {
         const actual = await teamRepository.findOne({
-          players: players.map((p) => p.id)
+          players
         })
-        expect(actual).toStrictEqual({
-          id: team.id
-        })
+        console.log(actual)
+        expect(actual).toStrictEqual(team)
       })
     })
   })
 
-  describe('#save', () => {
+  describe('#create', () => {
     const team = teamFactory.build()
 
     beforeEach(async () => {

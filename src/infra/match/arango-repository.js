@@ -1,4 +1,7 @@
 import { aql } from 'arangojs'
+import { map as mapAsync } from 'async'
+
+import { fromDatabase as teamFromDatabase } from '../team'
 
 const find = (db) => async (where = {}) => {
   const limit = where.limit ?? 10
@@ -7,38 +10,80 @@ const find = (db) => async (where = {}) => {
   // LIMIT ${offset} ${limit}
   const cursor = await db.query(aql`
     FOR match IN matches
-    RETURN match
+      LET teams = (
+          FOR team IN INBOUND match played
+              OPTIONS {
+                bfs: true,
+                uniqueVertices: 'global'
+              }
+              LET players = (
+                  FOR player IN INBOUND team members
+                      OPTIONS {
+                          bfs: true,
+                          uniqueVertices: 'global'
+                      }
+                      RETURN player
+              )
+              RETURN MERGE(team, { players })
+      )
+      RETURN MERGE(match, { teams })
   `)
   const matches = await cursor.all()
   return matches.map(fromDatabase)
 }
 
-const save = (db) => async (match) => {
+const create = (db) => async (match) => {
   const graph = db.graph('baby-foot-graph')
   await graph.vertexCollection('matches').save(toDatabase(match))
-  // TODO: transform match.red and match.blue to match.teams
-  await Promise.all([
+  await mapAsync(match.teams, async (team) =>
     graph.edgeCollection('played').save({
-      _from: `teams/${match.red.id}`,
+      _from: `teams/${team.id}`,
       _to: `matches/${match.id}`,
-      points: match.red.points,
-      color: 'red'
-    }),
-    graph.edgeCollection('played').save({
-      _from: `teams/${match.blue.id}`,
-      _to: `matches/${match.id}`,
-      points: match.blue.points,
-      color: 'blue'
+      points: team.points,
+      color: team.color
     })
-  ])
-  return match
+  )
+  return get(db)(match.id)
+}
+
+const get = (db) => async (id) => {
+  const matchId = `matches/${id}`
+  const [match] = await db
+    .query(
+      aql`
+      LET match = DOCUMENT(${matchId})
+      LET teams = (
+          FOR team, played IN INBOUND match played
+              OPTIONS {
+                bfs: true,
+                uniqueVertices: 'global'
+              }
+              LET players = (
+                  FOR player IN INBOUND team members
+                      OPTIONS {
+                          bfs: true,
+                          uniqueVertices: 'global'
+                      }
+                      SORT player.rank DESC
+                      RETURN player
+              )
+              SORT team.rank DESC
+              RETURN MERGE(team, { players, points: played.points })
+      )
+      RETURN MERGE(match, { teams })
+    `
+    )
+    .then((cursor) => cursor.all())
+  console.log('Match', match.teams)
+  return match ? fromDatabase(match) : null
 }
 
 export const fromDatabase = (matchEntity) => ({
   id: matchEntity._key,
-  playedAt: new Date(matchEntity.playedAt),
-  createdAt: new Date(matchEntity.createdAt),
-  updatedAt: new Date(matchEntity.updatedAt)
+  teams: matchEntity.teams.map(teamFromDatabase),
+  playedAt: matchEntity.playedAt,
+  createdAt: matchEntity.createdAt,
+  updatedAt: matchEntity.updatedAt
 })
 
 export const toDatabase = (match) => ({
@@ -51,6 +96,7 @@ export const toDatabase = (match) => ({
 export function createMatchArangoRepository({ db }) {
   return {
     find: find(db),
-    save: save(db)
+    create: create(db),
+    get: get(db)
   }
 }

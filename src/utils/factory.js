@@ -4,28 +4,30 @@ import { v4 as uuid } from 'uuid'
 
 export const playerFactory = new Factory().attrs({
   id: () => uuid(),
-  createdAt: () => new Date(),
-  updatedAt: () => new Date()
+  rank: () => random.number({ min: 100, max: 10000 }),
+  wins: () => random.number(10),
+  losses: () => random.number(10),
+  createdAt: () => new Date().toJSON(),
+  updatedAt: () => new Date().toJSON()
 })
 
 export const teamFactory = new Factory().attrs({
   id: () => uuid(),
   players: () => playerFactory.buildList(2),
-  createdAt: () => new Date(),
-  updatedAt: () => new Date()
+  rank: () => random.number({ min: 100, max: 10000 }),
+  wins: () => random.number(10),
+  losses: () => random.number(10),
+  createdAt: () => new Date().toJSON(),
+  updatedAt: () => new Date().toJSON()
 })
 
 export const matchFactory = new Factory().attrs({
   id: () => uuid(),
-  red: () => ({
-    ...teamFactory.build(),
-    points: random.number({ min: 0, max: 10 })
-  }),
-  blue: () => ({
-    ...teamFactory.build(),
-    points: random.number({ min: 0, max: 10 })
-  }),
-  playedAt: () => date.recent(),
-  createdAt: () => new Date(),
-  updatedAt: () => new Date()
+  teams: () =>
+    teamFactory.buildList(2, {
+      points: random.number({ min: 0, max: 10 })
+    }),
+  playedAt: () => date.recent().toJSON(),
+  createdAt: () => new Date().toJSON(),
+  updatedAt: () => new Date().toJSON()
 })

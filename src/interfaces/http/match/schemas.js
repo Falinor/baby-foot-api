@@ -8,8 +8,7 @@ const teamSchema = Joi.object({
 const create = {
   type: 'json',
   body: Joi.object({
-    red: teamSchema,
-    blue: teamSchema
+    teams: Joi.array().items(teamSchema).length(2)
   }).options({
     presence: 'required',
     stripUnknown: true

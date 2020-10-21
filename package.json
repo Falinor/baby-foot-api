@@ -5,19 +5,16 @@
   "private": true,
   "scripts": {
     "dev": "npm run test:watch",
-    "build": "cross-env BABEL_ENV=production babel src -d dist",
+    "build": "babel src -d dist",
     "db:create-migration": "migrate -c arangodb -t migration-template.js create",
     "db:migrate": "migrate -c arangodb up",
     "db:rollback": "migrate -c arangodb down",
+    "jobs:ranking": "babel-node src/jobs/ranking.js",
     "release": "standard-version",
-    "serve": "babel-node bin/index.js",
+    "serve": "nodemon -x babel-node bin/index.js",
     "start": "node dist/index.js",
-    "test": "ava",
+    "test": "jest",
     "test:watch": "npm test -- --watch",
-    "integ": "ava --serial \"integ/**/*.test.js\"",
-    "integ:watch": "npm run integ -- --watch",
-    "cover": "nyc -r lcov -r text-lcov -a npm test",
-    "postcover": "opn coverage/lcov-report/index.html",
     "lint": "eslint src --fix"
   },
   "lint-staged": {
@@ -29,7 +26,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "validate-commit-msg",
-      "pre-commit": "lint-staged && npm test"
+      "pre-commit": "lint-staged"
     }
   },
   "devDependencies": {
@@ -40,7 +37,6 @@
     "@babel/register": "^7.10.3",
     "babel-plugin-lodash": "^3.3.4",
     "coveralls": "^3.1.0",
-    "cross-env": "^7.0.2",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -53,7 +49,6 @@
     "lint-staged": "^10.2.11",
     "migrate": "^1.7.0",
     "nodemon": "^2.0.4",
-    "nyc": "^15.1.0",
     "prettier": "^2.0.5",
     "rosie": "^2.0.1",
     "standard-version": "^8.0.0",
@@ -62,8 +57,10 @@
   },
   "dependencies": {
     "arangojs": "^7.0.2",
+    "arpad": "^1.0.2",
     "async": "^3.2.0",
     "awilix": "^4.2.6",
+    "bull": "^3.18.0",
     "bunyan": "^1.8.12",
     "convict": "^5.2.0",
     "dotenv": "^8.2.0",

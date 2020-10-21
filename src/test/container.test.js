@@ -15,4 +15,6 @@ function tests(context, dependencies) {
 
 describe('Unit | Container', () => {
   tests('Match', ['matchRouter'])
+
+  tests('Ranking', ['rankingService'])
 })

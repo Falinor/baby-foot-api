@@ -1,24 +1,31 @@
 import { aql } from 'arangojs'
 import { map as asyncMap } from 'async'
 
-const findOne = (db) => async (where) => {
-  const players = where.players.map((p) => `players/${p}`)
+import { fromDatabase as playerFromDatabase } from '../player'
+
+const findOne = (db) => async ({ players }) => {
   const [team] = await db
     .query(
       aql`
-    FOR edge IN members
-      FOR team IN teams
-        FILTER edge._to == team._id
-        AND edge._from IN ${players}
-        LIMIT 1
-        RETURN team
+      LET team = FIRST(
+        FOR member IN members
+        FILTER member._from IN ${players}
+        RETURN DISTINCT(member._to)
+      )
+      LET players = (
+        FOR player IN players
+        FILTER player._id IN ${players}
+        RETURN player
+      )
+      RETURN MERGE(DOCUMENT(team), { players })
   `
     )
     .then((cursor) => cursor.all())
+  console.log('Team', team)
   return team ? fromDatabase(team) : null
 }
 
-const save = (db) => async (team) => {
+const create = (db) => async (team) => {
   const graph = db.graph('baby-foot-graph')
   await graph.vertexCollection('teams').save(toDatabase(team))
   await asyncMap(team.players, async (player) =>
@@ -30,17 +37,57 @@ const save = (db) => async (team) => {
   return team
 }
 
+const get = (db) => async (id) => {
+  const teamId = `teams/${id}`
+  const [team] = await db
+    .query(
+      aql`
+      LET team = DOCUMENT(${teamId})
+      LET players = (
+        FOR player IN INBOUND team members
+          OPTIONS {
+            bfs: true,
+            uniqueVertices: 'global'
+          }
+          RETURN player
+      )
+      RETURN MERGE(team, { players })
+    `
+    )
+    .then((cursor) => cursor.all())
+  return team ? fromDatabase(team) : null
+}
+
+const update = (db) => async (team) => {
+  const graph = db.graph('baby-foot-graph')
+  await graph.vertexCollection('teams').update(team.id, toDatabase(team))
+  return team
+}
+
 export const fromDatabase = (teamEntity) => ({
-  id: teamEntity._key
+  id: teamEntity._key,
+  points: teamEntity.points,
+  wins: teamEntity.wins,
+  losses: teamEntity.losses,
+  rank: teamEntity.rank,
+  players: teamEntity.players.map(playerFromDatabase),
+  createdAt: teamEntity.createdAt,
+  updatedAt: teamEntity.updatedAt
 })
 
 export const toDatabase = (team) => ({
-  _key: team.id
+  _key: team.id,
+  wins: team.wins,
+  losses: team.losses,
+  rank: team.rank,
+  createdAt: team.createdAt,
+  updatedAt: team.updatedAt
 })
 
 export function createTeamArangoRepository({ db }) {
   return {
     findOne: findOne(db),
-    save: save(db)
+    create: create(db),
+    update: update(db)
   }
 }

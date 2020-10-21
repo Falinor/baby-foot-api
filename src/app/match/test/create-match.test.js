@@ -12,7 +12,7 @@ describe('Unit | Use case | CreateMatch', () => {
 
   beforeEach(() => {
     matchRepository = {
-      save: jest.fn(async (match) => ({
+      create: jest.fn(async (match) => ({
         ...match,
         id: uuid()
       }))
@@ -155,7 +155,7 @@ describe('Unit | Use case | CreateMatch', () => {
       })
 
       it('saves the match', () => {
-        expect(matchRepository.save).toHaveBeenCalledWith({
+        expect(matchRepository.create).toHaveBeenCalledWith({
           ...match,
           id: expect.any(String)
         })

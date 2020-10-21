@@ -39,6 +39,11 @@ const configuration = convict({
       default: '_system',
       env: 'ARANGODB_NAME'
     }
+  },
+  redis: {
+    env: 'REDIS_URI',
+    format: String,
+    default: 'redis://localhost:6379'
   }
 })
 
