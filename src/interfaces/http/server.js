@@ -1,3 +1,4 @@
+import cors from '@koa/cors'
 import Koa from 'koa'
 
 import container from '../../container'
@@ -8,6 +9,7 @@ export function createServer() {
   const app = new Koa()
 
   app.use(errorHandler({ logger }))
+  app.use(cors())
   app.use(container.resolve('matchRouter'))
   app.use(container.resolve('playerRouter'))
 

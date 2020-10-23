@@ -34,6 +34,8 @@ const update = (graph) => async (player) => {
 
 export const fromDatabase = (playerEntity) => ({
   id: playerEntity._key,
+  email: playerEntity.email,
+  nickname: playerEntity.nickname,
   wins: playerEntity.wins,
   losses: playerEntity.losses,
   rank: playerEntity.rank,

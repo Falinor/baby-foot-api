@@ -59,7 +59,7 @@ const configuration = convict({
     password: {
       format: String,
       env: 'BATTLEMYTHE_API_PASSWORD',
-      default: null
+      default: ''
     }
   }
 })
