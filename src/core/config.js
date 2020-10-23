@@ -36,14 +36,31 @@ const configuration = convict({
   arangodb: {
     name: {
       format: String,
-      default: '_system',
-      env: 'ARANGODB_NAME'
+      env: 'ARANGODB_NAME',
+      default: '_system'
     }
   },
   redis: {
     env: 'REDIS_URI',
     format: String,
     default: 'redis://localhost:6379'
+  },
+  battlemytheAPI: {
+    host: {
+      format: String,
+      env: 'BATTLEMYTHE_API_HOST',
+      default: 'https://dev.battlemythe.net/api/anniv/2020'
+    },
+    username: {
+      format: String,
+      env: 'BATTLEMYTHE_API_USERNAME',
+      default: 'Inad'
+    },
+    password: {
+      format: String,
+      env: 'BATTLEMYTHE_API_PASSWORD',
+      default: null
+    }
   }
 })
 

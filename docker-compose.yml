@@ -10,8 +10,8 @@ services:
     links:
       - db
     environment:
-      PORT: 4000
-      DB_URL: http://db:27017/baby-foot-dev
+      PORT: 9000
+      DB_URL: http://db:8529/baby-foot-dev
       REDIS_URI: 'redis://redis:6379'
 
   ranking:

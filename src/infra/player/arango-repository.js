@@ -1,3 +1,20 @@
+import { aql } from 'arangojs'
+
+const find = (db) => async ({ where }) => {
+  const filterPlayers = where.id
+    ? aql`FILTER player._key IN ${where.id}`
+    : aql``
+  const cursor = await db.query(
+    aql`
+      FOR player IN players
+        ${filterPlayers}
+        SORT player.rank DESC
+        RETURN player
+    `
+  )
+  return cursor.map(fromDatabase)
+}
+
 const get = (graph) => async (id) => {
   const playerCollection = graph.vertexCollection('players')
   const player = await playerCollection.vertex({ _key: id }, { graceful: true })
@@ -36,6 +53,7 @@ export const toDatabase = (player) => ({
 export function createPlayerArangoRepository({ db }) {
   const graph = db.graph('baby-foot-graph')
   return {
+    find: find(db),
     get: get(graph),
     create: create(graph),
     update: update(graph)

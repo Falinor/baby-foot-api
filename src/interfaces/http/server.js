@@ -9,6 +9,7 @@ export function createServer() {
 
   app.use(errorHandler({ logger }))
   app.use(container.resolve('matchRouter'))
+  app.use(container.resolve('playerRouter'))
 
   return {
     httpServer: app.callback(),

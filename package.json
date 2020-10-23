@@ -65,6 +65,7 @@
     "convict": "^5.2.0",
     "dotenv": "^8.2.0",
     "es6-error": "^4.1.1",
+    "got": "^11.8.0",
     "http-status": "^1.4.2",
     "koa": "^2.13.0",
     "koa-joi-router": "^6.0.2",

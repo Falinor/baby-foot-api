@@ -3,6 +3,25 @@ import { map as asyncMap } from 'async'
 
 import { fromDatabase as playerFromDatabase } from '../player'
 
+const find = (db) => async ({ where }) => {
+  const cursor = await db.query(
+    aql`
+      FOR team IN teams
+        LET players = (
+          FOR player IN INBOUND team members
+          OPTIONS {
+            bfs: true,
+            uniqueVertices: 'global'
+          }
+          RETURN player
+        )
+        SORT team.rank DESC
+        RETURN MERGE(team, { players })
+    `
+  )
+  return cursor.map(fromDatabase)
+}
+
 const findOne = (db) => async ({ players }) => {
   const [team] = await db
     .query(
@@ -21,7 +40,6 @@ const findOne = (db) => async ({ players }) => {
   `
     )
     .then((cursor) => cursor.all())
-  console.log('Team', team)
   return team ? fromDatabase(team) : null
 }
 
@@ -86,6 +104,7 @@ export const toDatabase = (team) => ({
 
 export function createTeamArangoRepository({ db }) {
   return {
+    find: find(db),
     findOne: findOne(db),
     create: create(db),
     update: update(db)

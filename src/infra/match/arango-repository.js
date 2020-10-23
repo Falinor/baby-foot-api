@@ -28,8 +28,7 @@ const find = (db) => async (where = {}) => {
       )
       RETURN MERGE(match, { teams })
   `)
-  const matches = await cursor.all()
-  return matches.map(fromDatabase)
+  return cursor.map(fromDatabase)
 }
 
 const create = (db) => async (match) => {

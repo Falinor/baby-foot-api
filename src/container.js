@@ -15,6 +15,10 @@ import {
   createMatchController,
   createMatchRouter
 } from './interfaces/http/match'
+import {
+  createPlayerController,
+  createPlayerRouter
+} from './interfaces/http/player'
 
 export function createContainer() {
   const container = createAwilixContainer().register({
@@ -33,6 +37,8 @@ export function createContainer() {
 
     // Player
     playerRepository: asFunction(createPlayerArangoRepository),
+    playerController: asFunction(createPlayerController),
+    playerRouter: asFunction(createPlayerRouter),
 
     // Ranking
     rankingService: asFunction(createRankingService)
