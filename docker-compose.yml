@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   api:
@@ -6,20 +6,20 @@ services:
     image: inadvertance/baby-foot-api
     command: start
     ports:
-      - "4000:4000"
+      - "9000:9000"
     links:
       - db
     environment:
       PORT: 9000
       DB_URL: http://db:8529/baby-foot-dev
-      REDIS_URI: 'redis://redis:6379'
+      REDIS_URI: redis://redis:6379
 
   ranking:
     build: .
     image: inadvertance/baby-foot-api-ranking-job
     command: jobs:ranking
     environment:
-      REDIS_URI: 'redis://redis:6379'
+      REDIS_URI: redis://redis:6379
 
   db:
     image: arangodb/arangodb:3.7.2
