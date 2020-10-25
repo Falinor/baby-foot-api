@@ -11,6 +11,7 @@ export function createServer() {
   app.use(errorHandler({ logger }))
   app.use(cors())
   app.use(container.resolve('matchRouter'))
+  app.use(container.resolve('teamRouter'))
   app.use(container.resolve('playerRouter'))
 
   return {

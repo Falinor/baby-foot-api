@@ -19,6 +19,8 @@ import {
   createPlayerController,
   createPlayerRouter
 } from './interfaces/http/player'
+import { createTeamRouter } from './interfaces/http/team'
+import { createTeamController } from './interfaces/http/team/controller'
 
 export function createContainer() {
   const container = createAwilixContainer().register({
@@ -34,6 +36,8 @@ export function createContainer() {
 
     // Team
     teamRepository: asFunction(createTeamArangoRepository),
+    teamController: asFunction(createTeamController),
+    teamRouter: asFunction(createTeamRouter),
 
     // Player
     playerRepository: asFunction(createPlayerArangoRepository),
