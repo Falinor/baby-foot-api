@@ -23,20 +23,21 @@ const find = (db) => async ({ where }) => {
 }
 
 const findOne = (db) => async ({ players }) => {
+  const playerIds = players.map((player) => `players/${player}`)
   const [team] = await db
     .query(
       aql`
-      LET team = FIRST(
-        FOR member IN members
-        FILTER member._from IN ${players}
-        RETURN DISTINCT(member._to)
-      )
-      LET players = (
-        FOR player IN players
-        FILTER player._id IN ${players}
-        RETURN player
-      )
-      RETURN MERGE(DOCUMENT(team), { players })
+        LET team = FIRST(
+          FOR member IN members
+            FILTER member._from IN ${playerIds}
+            RETURN DISTINCT(member._to)
+        )
+        LET players = (
+          FOR player IN players
+            FILTER player._id IN ${playerIds}
+            RETURN player
+        )
+        RETURN MERGE(DOCUMENT(team), { players })
   `
     )
     .then((cursor) => cursor.all())

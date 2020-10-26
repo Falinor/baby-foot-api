@@ -1,9 +1,10 @@
-import { date, random } from 'faker'
+import { date, name, random } from 'faker'
 import { Factory } from 'rosie'
 import { v4 as uuid } from 'uuid'
 
 export const playerFactory = new Factory().attrs({
   id: () => uuid(),
+  nickname: () => name.findName(),
   rank: () => random.number({ min: 100, max: 10000 }),
   wins: () => random.number(10),
   losses: () => random.number(10),

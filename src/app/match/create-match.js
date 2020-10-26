@@ -61,7 +61,6 @@ export class CreateMatchUseCase extends UseCase {
     // Find or create teams
     const teams = await mapAsync(match.teams, async (team) => {
       const foundTeam = await this.teamRepository.findOne(team)
-      console.log(foundTeam)
       return foundTeam
         ? foundTeam
         : await this.teamRepository.create({

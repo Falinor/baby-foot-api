@@ -3,7 +3,7 @@ import { map as asyncMap } from 'async'
 import { orderBy } from 'lodash'
 
 import { cleanUpDatabase } from '../../../../integ/utils'
-import { createDatabase } from '../../../core/arangodb'
+import { createContainer } from '../../../container'
 import { playerFactory, teamFactory } from '../../../utils'
 import { toDatabase as toPlayerDatabase } from '../../player/arango-repository'
 import {
@@ -12,24 +12,23 @@ import {
 } from '../arango-repository'
 
 describe('Integration | Repository | PlayerArango', () => {
+  let container
   let db
   let teamRepository
 
   beforeEach(async () => {
-    db = createDatabase()
+    container = createContainer()
+    db = container.resolve('db')
     await cleanUpDatabase(db)
     teamRepository = createTeamArangoRepository({ db })
   })
 
   describe('#findOne', () => {
-    const players = playerFactory.buildList(2)
+    const players = orderBy(playerFactory.buildList(2), ['rank', 'desc'])
 
     beforeEach(async () => {
-      const playerEntities = orderBy(players.map(toPlayerDatabase), [
-        'rank',
-        'desc'
-      ])
-      await db.collection('players').saveAll(playerEntities)
+      const playerRepository = container.resolve('playerRepository')
+      await asyncMap(players, async (player) => playerRepository.create(player))
     })
 
     describe('The team does not exist', () => {
@@ -45,23 +44,16 @@ describe('Integration | Repository | PlayerArango', () => {
       const team = teamFactory.build({ players })
 
       beforeEach(async () => {
-        await db.collection('teams').save(toTeamDatabase(team))
-        const memberCollection = db
-          .graph('baby-foot-graph')
-          .edgeCollection('members')
-        await asyncMap(players, async (player) =>
-          memberCollection.save({
-            _from: `players/${player.id}`,
-            _to: `teams/${team.id}`
-          })
-        )
+        await teamRepository.create({
+          ...team,
+          players: players.map((player) => player.id)
+        })
       })
 
       it('returns the team', async () => {
         const actual = await teamRepository.findOne({
-          players
+          players: players.map((player) => player.id)
         })
-        console.log(actual)
         expect(actual).toStrictEqual(team)
       })
     })
@@ -76,12 +68,18 @@ describe('Integration | Repository | PlayerArango', () => {
     })
 
     it('saves the team', async () => {
-      const actual = await teamRepository.save(team)
+      const actual = await teamRepository.create({
+        ...team,
+        players: team.players.map((player) => player.id)
+      })
       expect(actual).toStrictEqual(team)
     })
 
     it('links team and players together', async () => {
-      const actualTeam = await teamRepository.save(team)
+      const actualTeam = await teamRepository.create({
+        ...team,
+        players: team.players.map((player) => player.id)
+      })
       const id = `teams/${actualTeam.id}`
       const edges = await db
         .query(

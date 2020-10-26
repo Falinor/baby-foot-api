@@ -73,7 +73,6 @@ const get = (db) => async (id) => {
     `
     )
     .then((cursor) => cursor.all())
-  console.log('Match', match.teams)
   return match ? fromDatabase(match) : null
 }
 

@@ -45,6 +45,8 @@ export const fromDatabase = (playerEntity) => ({
 
 export const toDatabase = (player) => ({
   _key: player.id,
+  email: player.email,
+  nickname: player.nickname,
   wins: player.wins,
   losses: player.losses,
   rank: player.rank,
