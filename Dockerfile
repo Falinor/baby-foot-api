@@ -11,8 +11,6 @@ RUN yarn
 
 COPY . $APP
 
-VOLUME [ "$APP/src"  ]
-
 EXPOSE $PORT
 
 ENTRYPOINT [ "yarn"  ]
