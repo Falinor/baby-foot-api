@@ -1,6 +1,6 @@
 import Elo from 'arpad'
 import Queue from 'bull'
-import http from 'got'
+import http from 'axios'
 
 import { maxBy, minBy } from 'lodash'
 
@@ -71,18 +71,23 @@ queue.process(async (job) => {
     ])
 
     // Send new ranks to the Battlemythe API
+    const toBattlemytheScore = (newRanks) => (player, i) => ({
+      userId: player.id,
+      elo: newRanks[i]
+    })
+    const winnerScores = winner.players.map(toBattlemytheScore(winnerNewRanks))
+    const loserScores = loser.players.map(toBattlemytheScore(loserNewRanks))
+    logger.log({
+      userId: config.battlemytheAPI.userId,
+      password: config.battlemytheAPI.password,
+      scores: [...winnerScores, ...loserScores]
+    })
     await http.post(
       `${config.battlemytheAPI.host}/attractions/babyfoot/score`,
       {
-        json: {
-          userId: config.battlemytheAPI.username,
-          password: config.battlemytheAPI.password,
-          scores: [...winnerNewRanks, ...loserNewRanks].map((player) => ({
-            userId: player.id,
-            elo: player.rank
-          }))
-        },
-        responseType: 'json'
+        userId: config.battlemytheAPI.userId,
+        password: config.battlemytheAPI.password,
+        scores: [...winnerScores, ...loserScores]
       }
     )
     logger.info('Scores sent to the Battlemythe API')

@@ -58,8 +58,8 @@ const configuration = convict({
     },
     username: {
       format: String,
-      env: 'BATTLEMYTHE_API_USERNAME',
-      default: 'Inad'
+      env: 'BATTLEMYTHE_API_USERID',
+      default: ''
     },
     password: {
       format: String,
