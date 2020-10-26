@@ -1,4 +1,4 @@
-import { createLogger as createBunyanLogger } from 'bunyan'
+import loglevel from 'loglevel'
 
 import { config } from './config'
 
@@ -12,10 +12,9 @@ export const LogLevel = {
 }
 
 export function createLogger({ level = LogLevel.Debug }) {
-  return createBunyanLogger({
-    level,
-    name: 'Baby-foot API'
-  })
+  const logger = loglevel.getLogger('Baby-foot API')
+  logger.setLevel(level)
+  return logger
 }
 
 export const logger = createLogger({ level: config.log.level })
