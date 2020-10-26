@@ -18,6 +18,8 @@ const MAX = 10000
 const container = createContainer()
 const queue = new Queue('ranking', config.redis)
 
+logger.info('Ranking job started')
+
 queue.process(async (job) => {
   logger.info(`Processing job ${job}`)
   const match = job.data
@@ -65,7 +67,7 @@ queue.process(async (job) => {
       losses: (loser.losses ?? 0) + 1,
       rank: average(loserNewRanks)
     })
-  ])
+  ]).catch(logger.error)
 
   // Send new ranks to the Battlemythe API
   await http.post(`${config.battlemytheAPI.host}/attractions/babyfoot/score`, {
@@ -81,6 +83,7 @@ queue.process(async (job) => {
   })
   logger.info('Scores sent to the Battlemythe API')
   logger.info(`Treated job for match ${match.id}`)
+  logger.debug('End job ranking')
 })
 
 const ranks = (team) => team.players.map((p) => p.rank ?? 1000)
