@@ -98,4 +98,30 @@ describe('Integration | Repository | PlayerArango', () => {
       expect(edges).toHaveLength(2)
     })
   })
+
+  describe('#update', () => {
+    const team = teamFactory.build({
+      wins: 0,
+      losses: 0,
+      rank: 1000
+    })
+
+    beforeEach(async () => {
+      await db.collection('teams').save(toTeamDatabase(team))
+    })
+
+    it('updates the team', async () => {
+      await teamRepository.update(team.id, {
+        wins: 1,
+        losses: 1,
+        rank: 1020
+      })
+      const actual = await teamRepository.get(team.id)
+      expect(actual).toMatchObject({
+        wins: 1,
+        losses: 1,
+        rank: 1020
+      })
+    })
+  })
 })

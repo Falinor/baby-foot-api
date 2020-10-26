@@ -45,26 +45,22 @@ queue.process(async (job) => {
     // Save new ranks
     await Promise.all([
       ...winner.players.map((p, i) =>
-        playerRepository.update({
-          ...p,
+        playerRepository.update(p.id, {
           wins: (p.wins ?? 0) + 1,
           rank: winnerNewRanks[i]
         })
       ),
       ...loser.players.map((p, i) =>
-        playerRepository.update({
-          ...p,
+        playerRepository.update(p.id, {
           losses: (p.losses ?? 0) + 1,
           rank: loserNewRanks[i]
         })
       ),
-      teamRepository.update({
-        id: winner.id,
+      teamRepository.update(winner.id, {
         wins: (winner.wins ?? 0) + 1,
         rank: average(winnerNewRanks)
       }),
-      teamRepository.update({
-        id: loser.id,
+      teamRepository.update(loser.id, {
         losses: (loser.losses ?? 0) + 1,
         rank: average(loserNewRanks)
       })
@@ -77,11 +73,6 @@ queue.process(async (job) => {
     })
     const winnerScores = winner.players.map(toBattlemytheScore(winnerNewRanks))
     const loserScores = loser.players.map(toBattlemytheScore(loserNewRanks))
-    logger.log({
-      userId: config.battlemytheAPI.userId,
-      password: config.battlemytheAPI.password,
-      scores: [...winnerScores, ...loserScores]
-    })
     await http.post(
       `${config.battlemytheAPI.host}/attractions/babyfoot/score`,
       {

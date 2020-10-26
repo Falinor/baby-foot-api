@@ -27,9 +27,9 @@ const create = (graph) => async (player) => {
   return player
 }
 
-const update = (graph) => async (player) => {
+const update = (graph) => async (id, player) => {
   const playerCollection = graph.vertexCollection('players')
-  await playerCollection.update(player.id, toDatabase(player))
+  await playerCollection.update(id, toDatabase(player))
 }
 
 export const fromDatabase = (playerEntity) => ({

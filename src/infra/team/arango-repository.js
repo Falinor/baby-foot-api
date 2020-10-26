@@ -76,10 +76,9 @@ const get = (db) => async (id) => {
   return team ? fromDatabase(team) : null
 }
 
-const update = (db) => async (team) => {
+const update = (db) => async (id, team) => {
   const graph = db.graph('baby-foot-graph')
-  await graph.vertexCollection('teams').update(team.id, toDatabase(team))
-  return team
+  await graph.vertexCollection('teams').update(id, toDatabase(team))
 }
 
 export const fromDatabase = (teamEntity) => ({
@@ -106,6 +105,7 @@ export function createTeamArangoRepository({ db }) {
   return {
     find: find(db),
     findOne: findOne(db),
+    get: get(db),
     create: create(db),
     update: update(db)
   }
