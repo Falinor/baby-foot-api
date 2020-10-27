@@ -1,5 +1,6 @@
 import { aql } from 'arangojs'
 import { map as mapAsync } from 'async'
+import { logger } from '../../core'
 
 import { fromDatabase as teamFromDatabase } from '../team'
 
@@ -86,7 +87,6 @@ export const fromDatabase = (matchEntity) => ({
 
 export const toDatabase = (match) => ({
   _key: match.id,
-  playedAt: match.playedAt,
   createdAt: match.createdAt,
   updatedAt: match.updatedAt
 })

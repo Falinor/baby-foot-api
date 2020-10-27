@@ -1,5 +1,6 @@
 import { aql } from 'arangojs'
 import { map as asyncMap } from 'async'
+import { logger } from '../../core'
 
 import { fromDatabase as playerFromDatabase } from '../player'
 
@@ -23,25 +24,31 @@ const find = (db) => async ({ where }) => {
 }
 
 const findOne = (db) => async ({ players }) => {
+  logger.debug(`Finding team by players ${players.join(', ')}`)
   const playerIds = players.map((player) => `players/${player}`)
   const [team] = await db
     .query(
       aql`
-        LET team = FIRST(
-          FOR member IN members
-            FILTER member._from IN ${playerIds}
-            RETURN DISTINCT(member._to)
+        FOR team IN INTERSECTION(
+          (FOR team, member IN OUTBOUND ${playerIds[0]} members
+            OPTIONS { bfs: true, uniqueVertices: 'global' }
+            RETURN team
+          ),
+          (FOR team, member IN OUTBOUND ${playerIds[1]} members
+            OPTIONS { bfs: true, uniqueVertices: 'global' }
+            RETURN team
+          )
         )
-        LET players = (
-          FOR player IN players
-            FILTER player._id IN ${playerIds}
-            RETURN player
-        )
-        RETURN MERGE(DOCUMENT(team), { players })
-  `
+        RETURN MERGE(team, { players: [DOCUMENT(${playerIds[0]}), DOCUMENT(${playerIds[1]})] })
+    `
     )
     .then((cursor) => cursor.all())
-  return team ? fromDatabase(team) : null
+
+  if (team) {
+    logger.debug(`Found team ${team._key} for players ${players.join(', ')}`)
+    return fromDatabase(team)
+  }
+  return null
 }
 
 const create = (db) => async (team) => {

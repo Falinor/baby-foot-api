@@ -1,8 +1,8 @@
 import { filter as filterAsync, map as mapAsync } from 'async'
-import { merge } from 'lodash'
+import { defaultsDeep, merge } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
-import { hasDuplicate } from '../../core'
+import { hasDuplicate, logger } from '../../core'
 import { UseCase } from '../use-case'
 import { GameNotOverError, PlayersError, PlayersNotFoundError } from './errors'
 
@@ -73,17 +73,12 @@ export class CreateMatchUseCase extends UseCase {
     })
 
     const now = new Date()
-    const resultMatch = await this.matchRepository.create(
-      merge(
-        {
-          id: uuid(),
-          createdAt: now,
-          updatedAt: now
-        },
-        match,
-        { teams }
-      )
-    )
+    const resultMatch = await this.matchRepository.create({
+      id: uuid(),
+      createdAt: now,
+      updatedAt: now,
+      teams: defaultsDeep(teams, match.teams)
+    })
     this.rankingService.updateRanks(resultMatch)
     return onSuccess(resultMatch)
   }
