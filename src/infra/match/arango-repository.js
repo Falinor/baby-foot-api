@@ -12,7 +12,7 @@ const find = (db) => async (where = {}) => {
   const cursor = await db.query(aql`
     FOR match IN matches
       LET teams = (
-          FOR team IN INBOUND match played
+          FOR team, pl IN INBOUND match played
               OPTIONS {
                 bfs: true,
                 uniqueVertices: 'global'
@@ -25,7 +25,11 @@ const find = (db) => async (where = {}) => {
                       }
                       RETURN player
               )
-              RETURN MERGE(team, { players })
+              RETURN MERGE(team, {
+                players,
+                points: pl.points,
+                color: pl.color
+              })
       )
       RETURN MERGE(match, { teams })
   `)
