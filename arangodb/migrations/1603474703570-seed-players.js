@@ -1,6 +1,6 @@
 const http = require('got')
 
-const { db } = require('../db')
+const { database } = require('../db')
 
 const PLAYERS = 'players'
 
@@ -12,6 +12,7 @@ const config = {
 }
 
 module.exports.up = async () => {
+  const db = database()
   const users = await http
     .get(`${config.battlemytheAPI}/users`, {
       responseType: 'json'
@@ -22,6 +23,7 @@ module.exports.up = async () => {
 }
 
 module.exports.down = async () => {
+  const db = database()
   await db.collection(PLAYERS).truncate()
 }
 

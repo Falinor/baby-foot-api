@@ -2,7 +2,9 @@ import convict from 'convict'
 import dotenv from 'dotenv'
 
 // Load environment variables from .env file
-dotenv.config()
+dotenv.config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+})
 
 // Load full config
 const configuration = convict({
@@ -12,9 +14,14 @@ const configuration = convict({
     default: 'Baby-foot API',
     env: 'APP_NAME'
   },
+  maxPoints: {
+    format: Number,
+    default: 10,
+    env: 'MAX_POINTS'
+  },
   env: {
     format: ['production', 'development', 'test'],
-    default: 'production',
+    default: 'development',
     env: 'NODE_ENV'
   },
   host: {

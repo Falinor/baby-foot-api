@@ -1,8 +1,9 @@
-const { db } = require('../db')
+const { database } = require('../db')
 
 const GRAPH = 'baby-foot-graph'
 
 module.exports.up = async () => {
+  const db = database()
   const graph = db.graph(GRAPH)
   const graphExists = await graph.exists()
   if (!graphExists) {
@@ -22,6 +23,7 @@ module.exports.up = async () => {
 }
 
 module.exports.down = async () => {
+  const db = database()
   const graph = db.graph(GRAPH)
   await graph.drop()
   await Promise.all([
