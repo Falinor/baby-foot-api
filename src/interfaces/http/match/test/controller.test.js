@@ -1,4 +1,5 @@
-import createMatchController from '../controller'
+import { matchFactory } from '../../../../utils'
+import { createMatchController } from '../controller'
 
 const createUseCaseStub = () => ({ execute: jest.fn() })
 
@@ -12,25 +13,14 @@ describe('Unit | Controller | Match', () => {
     ctx = {}
     createMatch = createUseCaseStub()
     findMatches = createUseCaseStub()
-    controller = createMatchController({ createMatch, findMatches })
+    controller = createMatchController({
+      createMatchUseCase: createMatch,
+      findMatchesUseCase: findMatches
+    })
   })
 
   describe('#index', () => {
-    const matches = [
-      {
-        id: 'match uuid',
-        red: {
-          id: 'red uuid',
-          players: ['ABC', 'DEF'],
-          points: 10
-        },
-        blue: {
-          id: 'blue uuid',
-          players: ['GHI', 'KLM'],
-          points: 0
-        }
-      }
-    ]
+    const matches = matchFactory.buildList(2)
 
     beforeEach(async () => {
       findMatches.execute.mockImplementation(async ({ onSuccess }) => {
@@ -49,33 +39,86 @@ describe('Unit | Controller | Match', () => {
   })
 
   describe('#create', () => {
-    const match = {
-      id: 'match uuid',
-      red: {
-        id: 'red uuid',
-        players: ['ABC', 'DEF'],
-        points: 10
-      },
-      blue: {
-        id: 'blue uuid',
-        players: ['GHI', 'KLM'],
-        points: 0
-      }
-    }
+    const match = matchFactory.build()
 
-    beforeEach(async () => {
-      createMatch.execute.mockImplementation(async ({ onSuccess }) => {
-        return onSuccess(match)
+    beforeAll(() => {
+      ctx.request = {}
+      ctx.set = jest.fn()
+    })
+
+    describe('onSuccess', () => {
+      beforeEach(async () => {
+        createMatch.execute.mockImplementation(({ onSuccess }) => {
+          return onSuccess(match)
+        })
+        await controller.create(ctx)
       })
-      await controller.create(ctx)
+
+      it('should set the response status to 201 Created', () => {
+        expect(ctx.status).toBe(201)
+      })
+
+      it('should set the response body to the created match', () => {
+        expect(ctx.body).toStrictEqual(match)
+      })
+
+      it('should set the location', () => {
+        expect(ctx.set).toHaveBeenCalledWith(
+          'Location',
+          `/v1/matches/${match.id}`
+        )
+      })
     })
 
-    it('should set the response status to 201 Created', () => {
-      expect(ctx.status).toBe(201)
+    describe('onMaxPointsError', () => {
+      beforeEach(async () => {
+        createMatch.execute.mockImplementation(({ onMaxPointsError }) => {
+          return onMaxPointsError('MaxPointsError')
+        })
+        await controller.create(ctx)
+      })
+
+      it('should set the response status to 422 Unprocessable entity', () => {
+        expect(ctx.status).toBe(422)
+      })
+
+      it('should set the response body to an error', () => {
+        expect(ctx.body).toBe('MaxPointsError')
+      })
     })
 
-    it('should set the response body to the created match', () => {
-      expect(ctx.body).toStrictEqual(match)
+    describe('onPlayersError', () => {
+      beforeEach(async () => {
+        createMatch.execute.mockImplementation(({ onPlayersError }) => {
+          return onPlayersError('PlayersError')
+        })
+        await controller.create(ctx)
+      })
+
+      it('should set the response status to 422 Unprocessable entity', () => {
+        expect(ctx.status).toBe(422)
+      })
+
+      it('should set the response body to an error', () => {
+        expect(ctx.body).toBe('PlayersError')
+      })
+    })
+
+    describe('onPlayersNotFound', () => {
+      beforeEach(async () => {
+        createMatch.execute.mockImplementation(({ onPlayersNotFound }) => {
+          return onPlayersNotFound('Not found')
+        })
+        await controller.create(ctx)
+      })
+
+      it('should set the response status to 404 Not found', () => {
+        expect(ctx.status).toBe(404)
+      })
+
+      it('should set the response body to an error', () => {
+        expect(ctx.body).toBe('Not found')
+      })
     })
   })
 })

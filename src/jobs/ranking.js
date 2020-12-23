@@ -73,14 +73,11 @@ queue.process(async (job) => {
     })
     const winnerScores = winner.players.map(toBattlemytheScore(winnerNewRanks))
     const loserScores = loser.players.map(toBattlemytheScore(loserNewRanks))
-    await http.post(
-      `${config.battlemytheAPI.host}/attractions/babyfoot/score`,
-      {
-        userId: config.battlemytheAPI.userId,
-        password: config.battlemytheAPI.password,
-        scores: [...winnerScores, ...loserScores]
-      }
-    )
+    await http.post(`${config.battlemythe.api}/attractions/babyfoot/score`, {
+      userId: config.battlemythe.username,
+      password: config.battlemythe.password,
+      scores: [...winnerScores, ...loserScores]
+    })
     logger.info('Scores sent to the Battlemythe API')
     logger.info(`Treated job for match ${match.id}`)
     logger.debug('End job ranking')

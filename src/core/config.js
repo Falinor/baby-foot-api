@@ -8,71 +8,82 @@ dotenv.config({
 
 // Load full config
 const configuration = convict({
-  name: {
-    doc: 'The application name',
-    format: String,
-    default: 'Baby-foot API',
-    env: 'APP_NAME'
+  arangodb: {
+    name: {
+      env: 'ARANGODB_NAME',
+      format: String,
+      default: '_system'
+    },
+    url: {
+      env: 'ARANGODB_URL',
+      format: String,
+      default: 'http://localhost:8529'
+    }
   },
-  maxPoints: {
-    format: Number,
-    default: 10,
-    env: 'MAX_POINTS'
+  battlemythe: {
+    api: {
+      env: 'BATTLEMYTHE_API',
+      format: String,
+      default: 'https://dev.battlemythe.net/api/anniv/2020'
+    },
+    username: {
+      env: 'BATTLEMYTHE_API_USERNAME',
+      format: String,
+      default: ''
+    },
+    password: {
+      env: 'BATTLEMYTHE_API_PASSWORD',
+      format: String,
+      default: ''
+    }
   },
   env: {
+    env: 'NODE_ENV',
     format: ['production', 'development', 'test'],
-    default: 'development',
-    env: 'NODE_ENV'
+    default: 'development'
+  },
+  feature: {
+    ranking: {
+      format: Boolean,
+      default: false,
+      env: 'FEATURE_RANKING'
+    }
   },
   host: {
     format: 'url',
     default: 'http://localhost'
   },
+  log: {
+    level: {
+      env: 'LOG_LEVEL',
+      format: ['error', 'warn', 'info', 'debug', 'trace'],
+      default: 'debug'
+    }
+  },
+  maxPoints: {
+    env: 'MAX_POINTS',
+    format: Number,
+    default: 10
+  },
+  name: {
+    doc: 'The application name',
+    env: 'APP_NAME',
+    format: String,
+    default: 'Baby-foot API'
+  },
   port: {
     format: 'port',
     default: 9000
-  },
-  log: {
-    level: {
-      format: ['error', 'warn', 'info', 'debug', 'trace'],
-      default: 'debug',
-      env: 'LOG_LEVEL',
-      arg: 'log-level'
-    }
-  },
-  arangodb: {
-    name: {
-      format: String,
-      env: 'ARANGODB_NAME',
-      default: '_system'
-    },
-    url: {
-      format: String,
-      env: 'ARANGODB_URL',
-      default: 'http://localhost:8529'
-    }
   },
   redis: {
     env: 'REDIS_URI',
     format: String,
     default: 'redis://localhost:6379'
   },
-  battlemytheAPI: {
-    host: {
-      format: String,
-      env: 'BATTLEMYTHE_API_HOST',
-      default: 'https://dev.battlemythe.net/api/anniv/2020'
-    },
-    username: {
-      format: String,
-      env: 'BATTLEMYTHE_API_USERID',
-      default: ''
-    },
-    password: {
-      format: String,
-      env: 'BATTLEMYTHE_API_PASSWORD',
-      default: ''
-    }
+  server: {
+    env: 'SERVER',
+    format: String,
+    default: 'ws://localhost:4000'
   }
 })
 

@@ -11,8 +11,8 @@
     "db:rollback": "migrate -c arangodb down",
     "jobs:ranking": "babel-node src/jobs/ranking.js",
     "release": "standard-version",
-    "serve": "nodemon -x babel-node bin/index.js",
-    "start": "node dist/index.js",
+    "serve": "nodemon -i node_modules -x babel-node bin/index.js",
+    "start": "babel-node bin/index.js",
     "test": "jest",
     "test:watch": "npm test -- --watch",
     "lint": "eslint src --fix"
@@ -69,8 +69,11 @@
     "http-status": "^1.4.2",
     "koa": "^2.13.0",
     "koa-joi-router": "^6.0.2",
+    "koa-morgan": "^1.0.1",
     "lodash": "^4.17.20",
     "loglevel": "^1.7.0",
+    "ramda": "^0.27.1",
+    "socket.io-client": "^3.0.4",
     "uuid": "^8.1.0"
   }
 }

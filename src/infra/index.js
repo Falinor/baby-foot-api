@@ -1,0 +1,7 @@
+export { createBetArangoRepository } from './bet'
+export { createBettorArangoRepository } from './bettor'
+export { createEventArangoRepository } from './event'
+export { createMatchArangoRepository } from './match'
+export { createPlayerArangoRepository } from './player'
+export { createRankingService } from './ranking'
+export { createTeamArangoRepository } from './team'

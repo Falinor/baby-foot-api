@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid'
-import { playerFactory } from '../../../utils'
 
-import { CreateMatchUseCase, MAX_POINTS } from '../create-match'
-import { GameNotOverError, PlayersNotFoundError, PlayersError } from '../errors'
+import { config } from '../../../core'
+import { matchFactory, playerFactory, teamFactory } from '../../../utils'
+import { CreateMatchUseCase, config.maxPoints } from '../create-match'
+import { GameNotOverError, PlayersError, PlayersNotFoundError } from '../errors'
 
 describe('Unit | Use case | CreateMatch', () => {
   let useCase
@@ -51,34 +52,20 @@ describe('Unit | Use case | CreateMatch', () => {
         onSuccess
       })
 
-    describe('No team has won yet', () => {
-      it('calls "onMaxPointsError"', async () => {
-        await executeUseCase({
-          red: {
-            points: MAX_POINTS - 1,
-            players: ['ABC', 'DEF']
-          },
-          blue: {
-            points: 0,
-            players: ['GHI', 'JKL']
-          }
-        })
-        expect(onMaxPointsError).toHaveBeenCalledWith(new GameNotOverError())
-      })
-    })
-
     describe('Both teams cannot win at the same time', () => {
       it('calls "onMaxPointsError"', async () => {
-        const match = {
-          red: {
-            points: MAX_POINTS + 1,
-            players: ['ABC', 'DEF']
-          },
-          blue: {
-            points: MAX_POINTS,
-            players: ['GHI', 'JKL']
-          }
-        }
+        const match = matchFactory.build({
+          teams: [
+            {
+              points: config.maxPoints + 1,
+              players: ['ABC', 'DEF']
+            },
+            {
+              points: config.maxPoints,
+              players: ['GHI', 'JKL']
+            }
+          ]
+        })
         await executeUseCase(match)
         expect(onMaxPointsError).toHaveBeenCalledWith(
           new GameNotOverError(match, 'Both teams cannot win at the same time')
@@ -89,14 +76,16 @@ describe('Unit | Use case | CreateMatch', () => {
     describe('A player cannot appear in both teams', () => {
       it('calls "onPlayersError"', async () => {
         await executeUseCase({
-          red: {
-            points: MAX_POINTS,
+          teams: [
+          {
+            points: config.maxPoints,
             players: ['ABC', 'DEF']
           },
-          blue: {
+          {
             points: 0,
             players: ['GHI', 'ABC']
           }
+          ]
         })
         expect(onPlayersError).toHaveBeenCalledWith(new PlayersError())
       })
@@ -107,7 +96,7 @@ describe('Unit | Use case | CreateMatch', () => {
         playerRepository.get.mockResolvedValueOnce(null)
         await executeUseCase({
           red: {
-            points: MAX_POINTS,
+            points: config.maxPoints,
             players: ['ABC', 'DEF']
           },
           blue: {
@@ -141,11 +130,11 @@ describe('Unit | Use case | CreateMatch', () => {
     describe('Everything is fine', () => {
       const match = {
         red: {
-          points: MAX_POINTS,
+          points: config.maxPoints,
           players: ['ABC', 'DEF']
         },
         blue: {
-          points: MAX_POINTS - 1,
+          points: config.maxPoints - 1,
           players: ['GHI', 'JKL']
         }
       }

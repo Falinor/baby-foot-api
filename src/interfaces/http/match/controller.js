@@ -1,4 +1,10 @@
-import { created, notFound, ok, unprocessableEntity } from '../../../utils'
+import {
+  created,
+  noContent,
+  notFound,
+  ok,
+  unprocessableEntity
+} from '../../../utils'
 
 const index = (findMatchesUseCase) => async (ctx) => {
   const { body, status } = await findMatchesUseCase.execute({
@@ -23,10 +29,39 @@ const create = (createMatchUseCase) => async (ctx) => {
   }
 }
 
+const update = (updateMatchUseCase) => async (ctx) => {
+  const { body, status, location } = await updateMatchUseCase.execute({
+    id: ctx.params.id,
+    payload: ctx.request.body,
+    onMaxPointsError: unprocessableEntity,
+    onPlayersError: unprocessableEntity,
+    onPlayersNotFound: notFound,
+    onCreate: created('/v1/matches'),
+    onUpdate: ok
+  })
+  ctx.body = body
+  ctx.status = status
+  if (location) {
+    ctx.set('Location', location)
+  }
+}
+
+const remove = (removeMatchUseCase) => async (ctx) => {
+  const { status } = await removeMatchUseCase.execute({
+    id: ctx.params.id,
+    onSuccess: noContent
+  })
+  ctx.status = status
+}
+
 export const createMatchController = ({
   findMatchesUseCase,
-  createMatchUseCase
+  createMatchUseCase,
+  updateMatchUseCase,
+  removeMatchUseCase
 }) => ({
   index: index(findMatchesUseCase),
-  create: create(createMatchUseCase)
+  create: create(createMatchUseCase),
+  update: update(updateMatchUseCase),
+  remove: remove(removeMatchUseCase)
 })

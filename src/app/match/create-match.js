@@ -1,12 +1,11 @@
 import { filter as filterAsync, map as mapAsync } from 'async'
-import { defaultsDeep, merge } from 'lodash'
+import { defaultsDeep } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
-import { hasDuplicate, logger } from '../../core'
+import { config, hasDuplicate } from '../../core'
 import { UseCase } from '../use-case'
 import { GameNotOverError, PlayersError, PlayersNotFoundError } from './errors'
-
-export const MAX_POINTS = 10
+import { MatchStatus } from './match-status'
 
 export class CreateMatchUseCase extends UseCase {
   constructor({
@@ -29,12 +28,7 @@ export class CreateMatchUseCase extends UseCase {
     onPlayersNotFound,
     onSuccess
   }) {
-    if (match.teams.every((team) => team.points < MAX_POINTS)) {
-      const error = new GameNotOverError(match)
-      return onMaxPointsError(error)
-    }
-
-    if (match.teams.every((team) => team.points >= MAX_POINTS)) {
+    if (match.teams.every((team) => team.points >= config.maxPoints)) {
       const error = new GameNotOverError(
         match,
         'Both teams cannot win at the same time'
@@ -65,6 +59,7 @@ export class CreateMatchUseCase extends UseCase {
         ? foundTeam
         : await this.teamRepository.create({
             ...team,
+            players: team.players.map((player) => ({ id: player })),
             wins: 0,
             losses: 0,
             rank: 1000,
@@ -73,13 +68,17 @@ export class CreateMatchUseCase extends UseCase {
     })
 
     const now = new Date()
+    const isOver = match.teams.some((team) => team.points === config.maxPoints)
     const resultMatch = await this.matchRepository.create({
       id: uuid(),
+      status: isOver ? MatchStatus.OVER : MatchStatus.PLAYING,
+      teams: defaultsDeep(teams, match.teams),
       createdAt: now,
-      updatedAt: now,
-      teams: defaultsDeep(teams, match.teams)
+      updatedAt: now
     })
-    this.rankingService.updateRanks(resultMatch)
+    if (config.feature.ranking && isOver) {
+      this.rankingService.updateRanks(resultMatch)
+    }
     return onSuccess(resultMatch)
   }
 }

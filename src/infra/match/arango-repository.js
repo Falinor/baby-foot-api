@@ -1,6 +1,5 @@
 import { aql } from 'arangojs'
 import { map as mapAsync } from 'async'
-import { logger } from '../../core'
 
 import { fromDatabase as teamFromDatabase } from '../team'
 
@@ -25,11 +24,7 @@ const find = (db) => async (where = {}) => {
                       }
                       RETURN player
               )
-              RETURN MERGE(team, {
-                players,
-                points: pl.points,
-                color: pl.color
-              })
+              RETURN MERGE(team, { players }, pl)
       )
       RETURN MERGE(match, { teams })
   `)
@@ -44,10 +39,34 @@ const create = (db) => async (match) => {
       _from: `teams/${team.id}`,
       _to: `matches/${match.id}`,
       points: team.points,
-      color: team.color
+      color: team.color,
+      name: team.name
     })
   )
   return get(db)(match.id)
+}
+
+const update = (db) => async (id, match) => {
+  const graph = db.graph('baby-foot-graph')
+  await graph
+    .vertexCollection('matches')
+    .update({ _key: id }, toDatabase(match))
+
+  const matchId = `matches/${id}`
+  await mapAsync(match.teams, async (team) => {
+    const teamId = `teams/${team.id}`
+    return db.query(aql`
+      FOR p IN played
+        FILTER p._from == ${teamId}
+        FILTER p._to == ${matchId}
+        UPDATE p WITH {
+          points: ${team.points},
+          color: ${team.color},
+          name: ${team.name}
+        } IN played
+    `)
+  })
+  return get(db)(id)
 }
 
 const get = (db) => async (id) => {
@@ -72,7 +91,7 @@ const get = (db) => async (id) => {
                       RETURN player
               )
               SORT team.rank DESC
-              RETURN MERGE(team, { players, points: played.points })
+              RETURN MERGE(played, team, { players })
       )
       RETURN MERGE(match, { teams })
     `
@@ -81,16 +100,32 @@ const get = (db) => async (id) => {
   return match ? fromDatabase(match) : null
 }
 
+const exists = (db) => async (id) => {
+  const matchCollection = db.collection('matches')
+  return matchCollection.documentExists({ _key: id })
+}
+
+const remove = (db) => async (id) => {
+  const graph = db.graph('baby-foot-graph')
+  await graph.vertexCollection('matches').remove({ _key: id })
+}
+
 export const fromDatabase = (matchEntity) => ({
   id: matchEntity._key,
-  teams: matchEntity.teams.map(teamFromDatabase),
-  playedAt: matchEntity.playedAt,
+  status: matchEntity.status,
+  teams: matchEntity.teams.map((team) => ({
+    ...teamFromDatabase(team),
+    points: team.points,
+    color: team.color,
+    name: team.name
+  })),
   createdAt: matchEntity.createdAt,
   updatedAt: matchEntity.updatedAt
 })
 
 export const toDatabase = (match) => ({
   _key: match.id,
+  status: match.status,
   createdAt: match.createdAt,
   updatedAt: match.updatedAt
 })
@@ -99,6 +134,9 @@ export function createMatchArangoRepository({ db }) {
   return {
     find: find(db),
     create: create(db),
-    get: get(db)
+    update: update(db),
+    get: get(db),
+    exists: exists(db),
+    remove: remove(db)
   }
 }

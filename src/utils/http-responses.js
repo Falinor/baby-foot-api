@@ -11,8 +11,14 @@ export const created = (location) => (resource) => ({
   location: `${location}/${resource.id}`
 })
 
+export const noContent = () => ({
+  status: Http.NO_CONTENT,
+  body: null
+})
+
 const httpError = (httpStatus) => (error) => ({
   status: httpStatus,
+  name: Http[httpStatus].replace(/\s/g, '') + 'Error',
   body: error
 })
 

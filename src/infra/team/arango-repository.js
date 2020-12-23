@@ -56,7 +56,7 @@ const create = (db) => async (team) => {
   await graph.vertexCollection('teams').save(toDatabase(team))
   await asyncMap(team.players, async (player) =>
     graph.edgeCollection('members').save({
-      _from: `players/${player}`,
+      _from: `players/${player.id}`,
       _to: `teams/${team.id}`
     })
   )
@@ -91,7 +91,6 @@ const update = (db) => async (id, team) => {
 
 export const fromDatabase = (teamEntity) => ({
   id: teamEntity._key,
-  points: teamEntity.points,
   wins: teamEntity.wins,
   losses: teamEntity.losses,
   rank: teamEntity.rank,

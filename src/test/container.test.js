@@ -14,6 +14,8 @@ function tests(context, dependencies) {
 }
 
 describe('Unit | Container', () => {
+  tests('Core', ['babyfootAttractionRepository'])
+
   tests('Match', ['matchRouter'])
 
   tests('Ranking', ['rankingService'])

@@ -6,15 +6,14 @@ const PLAYERS = 'players'
 
 // TODO: replace by a call to the real config
 const config = {
-  battlemytheAPI:
-    process.env.BATTLEMYTHE_API_HOST ??
-    'https://dev.battlemythe.net/api/anniv/2020'
+  battlemythe:
+    process.env.BATTLEMYTHE_API ?? 'https://battlemythe.net/api/anniv/2020'
 }
 
 module.exports.up = async () => {
   const db = database()
   const users = await http
-    .get(`${config.battlemytheAPI}/users`, {
+    .get(`${config.battlemythe}/users`, {
       responseType: 'json'
     })
     .json()

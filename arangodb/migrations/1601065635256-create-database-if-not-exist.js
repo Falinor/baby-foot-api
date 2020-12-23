@@ -7,7 +7,7 @@ module.exports.up = async () => {
   const databases = await system.listUserDatabases()
   const db = databases.find((db) => db === newDatabase)
   if (!db) {
-    await system.createDatabase(database.name)
+    await system.createDatabase(newDatabase)
   }
 }
 

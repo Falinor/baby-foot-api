@@ -8,7 +8,13 @@ const index = (playerRepository) => async (ctx) => {
 }
 
 const show = (playerRepository) => async (ctx) => {
-  ctx.body = await playerRepository.get(ctx.params.id)
+  const player = await playerRepository.get(ctx.params.id)
+  if (!player) {
+    ctx.status = HttpStatus.NOT_FOUND
+    return
+  }
+
+  ctx.body = player
   ctx.status = HttpStatus.OK
 }
 
